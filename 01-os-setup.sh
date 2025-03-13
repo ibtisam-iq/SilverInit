@@ -3,13 +3,6 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Ensure the script is running on Ubuntu
-[[ -f /etc/os-release ]] && . /etc/os-release
-if [[ "$ID" != "ubuntu" ]]; then
-    echo "This script is for Ubuntu only."
-    exit 1
-fi
-
 # Update and install necessary dependencies
 echo "Updating system and installing dependencies..."
 sudo apt update -qq && sudo apt install -yq net-tools apt-transport-https ca-certificates curl gpg
