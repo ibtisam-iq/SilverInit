@@ -9,7 +9,8 @@ sudo systemctl restart containerd
 echo "Starting Kubernetes service..."
 sudo systemctl start kubelet
 sudo systemctl enable kubelet --now
-sudo ss -l | grep containerd
+sudo netstat -tulnp | grep containerd
+sudo netstat -tulnp | grep 6443
 
 # Pull Kubernetes images
 echo "Pulling required Kubernetes images..."
@@ -40,12 +41,12 @@ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 
 # Verify cluster status
 echo "Verifying Kubernetes cluster setup..."
-kubectl get nodes
+
 sleep 60
+kubectl get nodes
 kubectl get pods -A
 kubectl get pods -n kube-system
 
 echo "Kubernetes control node plane setup is complete! 🎉"
 echo "Please note that the control plane components may take a few minutes to stabilize."
 echo "You can now join worker nodes to this cluster using the kubeadm join command."
-echo "Happy Kuberneting! 🚀"

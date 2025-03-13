@@ -12,13 +12,23 @@ echo "Disabling swap..."
 sudo swapoff -a
 sudo sed -i '/\s\+swap\s\+/d' /etc/fstab
 
-# Set hostname for the control plane
-echo "Setting hostname to k8s-master"
-if command -v hostnamectl &>/dev/null; then
-    sudo hostnamectl set-hostname k8s-master
+
+# Prompt user for a hostname (leave empty to keep the current one)
+read -p "Enter hostname for the control plane (leave empty to keep current): " HOSTNAME
+
+# Set hostname if provided
+
+if [[ -n "$HOSTNAME" ]]; then
+    echo "Setting hostname to $HOSTNAME"
+    if command -v hostnamectl &>/dev/null; then
+        sudo hostnamectl set-hostname "$HOSTNAME"
+    else
+        echo "Warning: hostnamectl not found, skipping hostname update."
+    fi
 else
-    echo "Warning: hostnamectl not found, skipping hostname update."
+    echo "Keeping the existing hostname."
 fi
+
 
 # Display system information before Kubernetes setup
 
