@@ -14,7 +14,7 @@ sudo sed -i '/\s\+swap\s\+/d' /etc/fstab
 
 
 # Prompt user for a hostname (leave empty to keep the current one)
-read -p "Enter hostname for the control plane (leave empty to keep current): " HOSTNAME
+read -p "Enter hostname for the control plane (leave empty to keep current): " HOSTNAME < /dev/tty
 
 # Set hostname if provided
 
@@ -66,8 +66,9 @@ echo "Installing Kubernetes components (kubelet, kubeadm, kubectl)..."
 sudo apt-get install -y kubelet kubeadm kubectl
 sudo apt-mark hold kubelet kubeadm kubectl
 echo "Kubelet version: $(kubelet --version | awk '{print $2}')"
-echo "Kubectl version: $(kubectl version --client --short | awk '{print $3}')"
-echo "Kubeadm version: $(kubeadm version --short | awk '{print $2}')"
+echo "Kubectl version: $(kubectl version --client --output=yaml | grep gitVersion | awk '{print $2}')"
+echo "Kubeadm version: $(kubeadm version -o short)"
+# echo "Kubeadm version: $(kubeadm version | grep -oP 'GitVersion:\s*"\K[^"]+')" # Alternative method
 echo "Kubernetes components installed successfully!"
 
 echo "====================================="

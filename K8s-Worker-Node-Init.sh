@@ -6,6 +6,9 @@
 # It executes a sequence of scripts to configure the OS, install container runtime, 
 # and initialize the control plane.
 
+# Exit immediately if a command exits with a non-zero status
+set -e
+
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
 # Ensure the script is running on Ubuntu
