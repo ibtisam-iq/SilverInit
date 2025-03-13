@@ -9,7 +9,6 @@ sudo systemctl restart containerd
 echo "Starting Kubernetes service..."
 sudo systemctl start kubelet
 sudo systemctl enable kubelet --now
-sudo ss -tulnp | grep 6443
 sudo ss -l | grep containerd
 
 # Pull Kubernetes images
