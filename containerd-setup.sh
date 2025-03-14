@@ -1,12 +1,33 @@
 #!/bin/bash
 
+# SilverInit - Containerd Setup
+# -------------------------------------------------
+# This script automates the setup of containerd on a Linux system.
+# It installs containerd, configures it, and downloads CNI plugins for networking. 
+
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Ensure the script is running on Ubuntu
-[[ -f /etc/os-release ]] && . /etc/os-release
-if [[ "$ID" != "ubuntu" ]]; then
-    echo "This script is for Ubuntu only."
+# Ensure the script is running on Ubuntu or Linux Mint
+if [[ -f /etc/os-release ]]; then
+    . /etc/os-release
+    if [[ "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]; then
+        echo -e "\n✅ Detected supported OS: $NAME ($ID)"
+    else
+        echo -e "\n❌ This script is only for Ubuntu or Linux Mint. Exiting...\n"
+        exit 1
+    fi
+else
+    echo -e "\n❌ Unable to determine OS type. Exiting...\n"
+    exit 1
+fi
+
+# Ensure the system is running on a 64-bit architecture (x86_64 or amd64)
+ARCH=$(uname -m)
+if [[ "$ARCH" == "x86_64" || "$ARCH" == "amd64" ]]; then
+    echo -e "\n✅ Architecture supported: $ARCH"
+else
+    echo -e "\n❌ Unsupported architecture: $ARCH. This script only supports x86_64 (amd64). Exiting...\n"
     exit 1
 fi
 

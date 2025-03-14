@@ -3,7 +3,7 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Just before running kubeadm init
+# Just before running kubeadm init on the control plane node...
 sudo swapoff -a
 sudo systemctl restart containerd
 echo "Starting Kubernetes service..."

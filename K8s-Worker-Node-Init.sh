@@ -26,7 +26,7 @@ if ! command -v curl &>/dev/null; then
 fi
 
 # Execute scripts in sequence
-bash <(curl -sL "$REPO_URL/01-os-setup.sh")
-bash <(curl -sL "$REPO_URL/02-containerd-setup.sh")
+bash <(curl -sL "$REPO_URL/os-setup-for-k8s-cluster.sh")
+bash <(curl -sL "$REPO_URL/containerd-setup.sh")
 
 echo "✅ The Worker Node is ready to join the Kubernetes cluster!"

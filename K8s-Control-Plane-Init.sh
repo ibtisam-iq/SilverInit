@@ -6,6 +6,9 @@
 # It executes a sequence of scripts to configure the OS, install container runtime, 
 # and initialize the control plane.
 
+# Exit immediately if a command fails
+set -e
+
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
 # Ensure the script is running on Ubuntu
@@ -23,9 +26,9 @@ if ! command -v curl &>/dev/null; then
 fi
 
 # Execute scripts in sequence
-bash <(curl -sL "$REPO_URL/01-os-setup.sh")
-bash <(curl -sL "$REPO_URL/02-containerd-setup.sh")
-bash <(curl -sL "$REPO_URL/03-kubeadm-init.sh")
+bash <(curl -sL "$REPO_URL/os-setup-for-k8s-cluster.sh")
+bash <(curl -sL "$REPO_URL/containerd-setup.sh")
+bash <(curl -sL "$REPO_URL/control-plane-init.sh")
 
 echo "✅ Kubernetes control plane initialization completed successfully!"
 
