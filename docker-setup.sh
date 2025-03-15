@@ -22,21 +22,45 @@ else
     exit 1
 fi
 
+# Check if Docker is already installed
+if command -v docker &> /dev/null; then
+    echo -e "\n✅ Docker is already installed.\n"
+    echo "🔹 Docker version: $(docker --version | awk '{print $3}' | sed 's/,//')"
+    exit 0
+fi
+
+
+# Update system and install required dependencies
+echo -e "\n🚀 Updating package list and checking required dependencies..."
+sudo apt update -qq && sudo apt install -yq ca-certificates > /dev/null 2>&1
+
+DEPS=("curl" "wget")
+
+for pkg in "${DEPS[@]}"; do
+    if ! command -v "$pkg" &>/dev/null; then
+        echo -e "🔹 Installing missing dependency: $pkg..."
+        sudo apt-get install -yq "$pkg" > /dev/null 2>&1
+    else
+        echo -e "✅ $pkg is already installed."
+    fi
+done
+
+
 # Install Docker
-echo -e "\n🚀 Updating packages  ...\n"
-sudo apt-get update > /dev/null 2>&1
-sudo apt-get install -y ca-certificates curl wget openjdk-17-jdk-headless > /dev/null 2>&1
+echo -e "\n🚀 Adding Docker's official GPG key...\n"   
 sudo install -m 0755 -d /etc/apt/keyrings 
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc 
 sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo -e "\n🚀 Adding Docker repository for installing Docker...\n"
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 echo -e "\n🚀 Installing Docker ...\n"
 sudo apt-get update > /dev/null 2>&1
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null 2>&1
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugins > /dev/null 2>&1
 
 # Add Jenkins user to the Docker group
-sudo usermod -aG docker jenkins
+sudo usermod -aG docker $USER
 
 # Open a new shell for 'newgrp docker' without stopping script execution
 echo -e "\n🔄 Applying group changes for 'docker' (without logging out)..."

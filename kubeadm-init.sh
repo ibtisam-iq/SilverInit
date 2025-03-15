@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# SilverInit - Kubernetes First Control Plane Initializer
+# SilverInit - Kubernetes Control Plane Initializer
 # -------------------------------------------------
 # This script automates the setup of the first Kubernetes control plane node using kubeadm.
 # It executes a sequence of scripts to configure the OS, install the container runtime,

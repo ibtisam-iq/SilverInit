@@ -22,6 +22,12 @@ else
     exit 1
 fi
 
+# Check if Ansible is already installed
+if command -v ansible &> /dev/null; then
+    echo -e "\n✅ Ansible is already installed. Version:\n$(ansible --version)\n"
+    exit 0
+fi
+
 # Install dependencies
 echo -e "\n🚀 Installing dependencies...\n"
 sudo apt update -qq && sudo apt install -y software-properties-common > /dev/null 2>&1
@@ -36,7 +42,7 @@ else
 fi
 
 if sudo apt update -qq && sudo apt install -y ansible > /dev/null 2>&1; then
-    echo -e "✅ Ansible installed successfully. Version:\n$(ansible --version)"
+    echo -e "✅ Ansible installed successfully. Version:\n$(ansible --version)\n"
 else
     echo -e "\n❌ Ansible installation failed. Exiting...\n"
     exit 1

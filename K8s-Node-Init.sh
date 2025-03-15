@@ -8,9 +8,34 @@
 # - Installing required dependencies
 # - Configuring sysctl settings for Kubernetes networking
 # - Adding the Kubernetes APT repository and installing kubeadm, kubelet, and kubectl.
+# - Running containerd and configuring it for Kubernetes
 
 set -e  # Exit immediately if a command fails
-trap 'echo -e "\n❌ An error occurred. Exiting..."; exit 1' ERR  # Handle failures gracefully
+set -o pipefail  # Ensure failures in piped commands are detected
+
+# Function to handle script failures
+trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
+
+# Ensure the script is running on Ubuntu or Linux Mint
+if [[ -f /etc/os-release ]]; then
+    . /etc/os-release
+    if [[ "$ID" != "ubuntu" && "$ID" != "linuxmint" ]]; then
+        echo -e "\n❌ Unsupported OS: $NAME ($ID). This script is only for Ubuntu/Linux Mint. Exiting...\n"
+        exit 1
+    fi
+    echo -e "\n✅ Detected OS: $NAME ($ID)\n"
+else
+    echo -e "\n❌ Unable to determine OS type. Exiting...\n"
+    exit 1
+fi
+
+# Ensure 64-bit architecture
+ARCH=$(uname -m)
+if [[ "$ARCH" != "x86_64" || "$ARCH" != "amd64" ]]; then
+    echo -e "\n❌ Unsupported architecture: $ARCH. This script supports only x86_64 (amd64). Exiting...\n"
+    exit 1
+fi
+echo -e "\n✅ Architecture supported: $ARCH\n"
 
 echo -e "\n🚀 Starting Kubernetes Node Preparation...\n"
 
@@ -100,5 +125,14 @@ sysctl net.bridge.bridge-nf-call-iptables
 sysctl net.bridge.bridge-nf-call-ip6tables
 sysctl net.ipv4.ip_forward
 
-echo -e "\n🎉 Kubernetes Node Preparation Completed Successfully!"
-echo "====================================="
+echo -e "\n🎉 Kernal modules are loaded, and sysctl settings are applied successfully!"
+
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+echo -e "\n🚀 Running containerd-setup.sh script to configure containerd..."
+bash <(curl -sL "$REPO_URL/containerd-setup.sh") || { echo "❌ Failed to execute containerd-setup.sh. Exiting..."; exit 1; }
+
+echo -e "\n✅ All scripts executed successfully."
+
+echo -e "\n✅ This node is ready to join the Kubernetes cluster either as worker node or control plane." 
+echo -e "\n🎉 Happy Kuberneting! 🚀"

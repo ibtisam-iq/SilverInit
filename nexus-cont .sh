@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# SilverInit - Sonarqube Container Setup Script
+# SilverInit - Nexus Container Setup Script
 # -------------------------------------------------
-# This script installs and runs SonarQube container on Linux.
+# This script installs and runs Nexus container on Linux.
 
 # Exit on any error
 set -e
@@ -16,7 +16,7 @@ if ! command -v docker &> /dev/null; then
     sudo usermod -aG docker $USER
     sudo systemctl enable docker --now
     sudo systemctl start docker
-    echo -e "\n✅ Docker installed successfully to deploy Sonarqube container!"
+    echo -e "\n✅ Docker installed successfully to deploy Nexus container!"
 fi
 
 # ✅ Ensure Docker is running
@@ -36,10 +36,10 @@ validate_port() {
     return 0
 }
 
-# Prompt user for port (default: 9000)
+# Prompt user for port (default: 8081)
 while true; do
-    read -rp "🔹 Please enter the port for SonarQube container (Press Enter for default: 9000): " USER_PORT
-    USER_PORT=${USER_PORT:-9000}  # Default to 9000 if empty
+    read -rp "🔹 Please enter the port for Nexus container (Press Enter for default: 8081): " USER_PORT
+    USER_PORT=${USER_PORT:-8081}  # Default to 8081 if empty
     if validate_port "$USER_PORT"; then
         break
     fi
@@ -49,26 +49,25 @@ echo -e "\n✅ Using port: $USER_PORT"
 
 # Remove old container if exists
 
-if sudo docker inspect sonarqube &>/dev/null; then
-    echo "✅ Removing existing SonarQube container..."
-    sudo docker rm -f sonarqube
+if sudo docker inspect nexus &>/dev/null; then
+    echo "✅ Removing existing Nexus container..."
+    sudo docker rm -f nexus
 fi
 
-# Run SonarQube container
-echo -e "\n🚀 Deploying SonarQube on port $USER_PORT..."
-sudo docker run -d --name sonarqube \
-  -p ${USER_PORT}:9000 \
-  -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true \
+# Run Nexus container
+echo -e "\n🚀 Deploying Nexus on port $USER_PORT..."
+sudo docker run -d --name nexus \
+  -p ${USER_PORT}:8081 \
   --restart always \
-  sonarqube:lts-community
+  sonatype/nexus3
 
 # Check container status
-echo -e "\n🔍 Checking SonarQube status..."
-if sudo docker ps --filter "name=sonarqube" --filter "status=running" | grep sonarqube; then
-    echo -e "\n✅ SonarQube is running on port $USER_PORT!" 
+echo -e "\n🔍 Checking Nexus status..."
+if sudo docker ps --filter "name=nexus" --filter "status=running" | grep nexus; then
+    echo -e "\n✅ Nexus is running on port $USER_PORT!" 
 else
-    echo -e "\n❌ SonarQube failed to start. Restarting..."
-    sudo docker restart sonarqube
+    echo -e "\n❌ Nexus failed to start. Restarting..."
+    sudo docker restart nexus
 fi
 
 # Get the local machine's primary IP
@@ -78,11 +77,12 @@ LOCAL_IP=$(hostname -I | awk '{print $1}')
 PUBLIC_IP=$(curl -s ifconfig.me || echo "Not Available")
 
 # Print both access URLs and let the user decide
-echo -e "\n🔗 Access SonarQube using one of the following based on your network:"
+echo -e "\n🔗 Access Nexus using one of the following based on your network:"
 echo -e "\n - Local Network:  http://$LOCAL_IP:$USER_PORT"
 echo -e "\n - Public Network: http://$PUBLIC_IP:$USER_PORT\n"
 
 
-# Display SonarQube Access URL
-echo -e "\n🔑 Default credentials: admin/admin\n"
-echo -e "\n📌 Note: It may take a few minutes for SonarQube container to start completely.\n"
+# Display Nexus Access URL
+
+echo -e "\n🔑 Please put the password to unlock Nexus: $(sudo docker exec nexus cat /nexus-data/admin.password)\n"
+echo -e "\n📌 Note: It may take a few minutes for Nexus container to start completely.\n"

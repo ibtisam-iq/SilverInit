@@ -21,9 +21,26 @@ else
     exit 1
 fi
 
-# Install dependencies
-echo -e "\n🚀 Installing dependencies...\n"
-sudo apt update -qq && sudo apt install -y gnupg software-properties-common curl lsb-release > /dev/null 2>&1
+# Check if Terraform is already installed
+if command -v terraform &> /dev/null; then
+    echo -e "\n✅ Terraform is already installed. Version:\n$(terraform --version)\n"
+    exit 0
+fi
+
+# Update system and install required dependencies
+echo -e "\n🚀 Updating package list and checking required dependencies..."
+sudo apt update -qq && sudo apt install -yq software-properties-common lsb-release gnupg > /dev/null 2>&1
+
+DEPS=("curl" "wget")
+
+for pkg in "${DEPS[@]}"; do
+    if ! command -v "$pkg" &>/dev/null; then
+        echo -e "🔹 Installing missing dependency: $pkg..."
+        sudo apt-get install -yq "$pkg" > /dev/null 2>&1
+    else
+        echo -e "✅ $pkg is already installed."
+    fi
+done
 
 # Add HashiCorp GPG key and repository
 if wget -qO- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg; then

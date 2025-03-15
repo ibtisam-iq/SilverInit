@@ -21,6 +21,13 @@ else
     exit 1
 fi
 
+# Check if Jenkins is already installed
+if command -v jenkins &> /dev/null; then
+    echo -e "\n✅ Jenkins is already installed.\n"
+    echo -e "\n📌 Installed Jenkins Version: $(jenkins --version)\n"
+    exit 0
+fi
+
 # AWS Security Group Warning
 echo -e "\n⚠️  If you're running this on an AWS EC2 instance, you must manually open port 8080 in the security group."
 
@@ -48,13 +55,25 @@ while true; do
     fi
 done
 
+# Update system and install required dependencies
+echo -e "\n🚀 Updating package list and checking required dependencies..."
+sudo apt update -qq
+
+# Check if Java is installed
+if java -version &>/dev/null; then
+    echo -e "✅ Java is already installed."
+else
+    echo -e "🔹 Installing missing dependency: OpenJDK 17..."
+    sudo apt-get install -yq openjdk-17-jdk-headless > /dev/null 2>&1
+fi
+
 # Install Jenkins
 echo -e "\n🚀 Installing Jenkins..."
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key > /dev/null 2>&1
 echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 echo -e "\n🔑 The server is updating its packages and installing Jenkins..."
 sudo apt update -qq > /dev/null 2>&1
-sudo apt install openjdk-17-jre-headless jenkins -y > /dev/null 2>&1
+sudo apt install jenkins -y > /dev/null 2>&1
 
 # Enable & Start Jenkins
 sudo systemctl enable jenkins > /dev/null 2>&1
@@ -62,17 +81,30 @@ sudo systemctl restart jenkins > /dev/null 2>&1
 
 # Check Jenkins Status
 if systemctl is-active --quiet jenkins; then
-    echo "✅ Jenkins is running."
+    echo -e "\n✅ Jenkins is running.\n"
 else
     echo "❌ Jenkins is NOT running. Starting Jenkins..."
     sudo systemctl start jenkins
 fi
 
-# Display Jenkins Initial Admin Password
-echo -e "\n🔑 Please use the following password to unlock Jenkins:"
-echo -e "$(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)\n"
+# Display Jenkins Version
 
-# Show Jenkins Access URL
-echo -e "\n✅ Jenkins is installed successfully! Access it via: http://$(hostname -I | awk '{print $1}'):8080\n"
+echo -e "\n📌 Installed Jenkins Version: $(jenkins --version)\n"
+# echo -e "\n📌 Installed Jenkins Version: $(sudo dpkg -l | grep jenkins | awk '{print $3}')\n"
+
+# Get the local machine's primary IP
+LOCAL_IP=$(hostname -I | awk '{print $1}')
+
+# Get the public IP (if accessible)
+PUBLIC_IP=$(curl -s ifconfig.me || echo "Not Available")
+
+# Print both access URLs and let the user decide
+echo -e "\n🔗 Access Jenkins server using one of the following based on your network:"
+echo -e "\n - Local Network:  http://$LOCAL_IP:$USER_PORT"
+echo -e "\n - Public Network: http://$PUBLIC_IP:$USER_PORT\n"
+
+
+## Display Jenkins Initial Admin Password
+echo -e "\n🔑 Please use the following password to unlock Jenkins: $(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)\n"
 
 
