@@ -7,28 +7,10 @@
 # Exit immediately if a command fails
 set -e  
 
-# Ensure the script is running on Ubuntu or Linux Mint
-if [[ -f /etc/os-release ]]; then
-    . /etc/os-release
-    if [[ "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]; then
-        echo -e "\n✅ Detected supported OS: $NAME ($ID)"
-    else
-        echo -e "\n❌ This script is only for Ubuntu or Linux Mint. Exiting...\n"
-        exit 1
-    fi
-else
-    echo -e "\n❌ Unable to determine OS type. Exiting...\n"
-    exit 1
-fi
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
-# Ensure the system is running on a 64-bit architecture (x86_64 or amd64)
-ARCH=$(uname -m)
-if [[ "$ARCH" == "x86_64" || "$ARCH" == "amd64" ]]; then
-    echo -e "\n✅ Architecture supported: $ARCH"
-else
-    echo -e "\n❌ Unsupported architecture: $ARCH. This script only supports x86_64 (amd64). Exiting...\n"
-    exit 1
-fi
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements ..."
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
 
 # Update and install necessary dependencies
 echo -e "\n🚀 Updating system and installing dependencies...\n"
@@ -45,10 +27,10 @@ if [[ -n "$NEW_HOSTNAME" ]]; then
         sudo hostnamectl set-hostname "$NEW_HOSTNAME"
         echo "✅ Hostname updated successfully."
     else
-        echo "⚠️ Warning: 'hostnamectl' not found, skipping hostname update."
+        echo -e "\n⚠️ Warning: 'hostnamectl' not found, skipping hostname update."
     fi
 else
-    echo "ℹ️ Keeping the existing hostname."
+    echo -e "\nℹ️ Keeping the existing hostname: $(hostname)"
 fi
 
 # Display system information before Kubernetes setup
