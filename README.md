@@ -76,7 +76,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/nexus-cont
 ### Containerd
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/containerd-setup.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/containerd-setup.sh | sudo bash
 ```
 
 ### Helm
