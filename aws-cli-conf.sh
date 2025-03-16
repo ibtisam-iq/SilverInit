@@ -33,9 +33,8 @@ if command -v aws &>/dev/null; then
         exit 1  # Exit with an error code if the version is unrecognized
     fi
 else
-    echo -e "\n❌ AWS CLI is not installed."
+    echo -e "\n❌ AWS CLI v2 is not installed."
 fi
-
 
 # Remove AWS CLI v1 configuration files
 if [[ -d "$HOME/.aws" ]]; then
@@ -52,7 +51,7 @@ DEPS=("unzip" "python3" "groff" "less")
 
 for pkg in "${DEPS[@]}"; do
     if ! command -v "$pkg" &>/dev/null; then
-        echo -e "🔹 Installing missing dependency: $pkg..."
+        echo -e "\n🔹 Installing missing dependency: $pkg..."
         sudo apt-get install -yq "$pkg" > /dev/null 2>&1
     else
         echo -e "✅ $pkg is already installed."
@@ -66,7 +65,8 @@ sudo apt update -qq && sudo apt install -yq unzip python3 groff less libc6 > /de
 unzip awscliv2.zip > /dev/null 2>&1
 sudo ./aws/install
 rm -rf aws awscliv2.zip aws
-echo -e "/n✅ AWS CLI is installed successfully. Version:$(aws --version)"
+echo -e "\n✅ AWS CLI is installed successfully." 
+echo -e "\n🔹 AWS CLI Version: $(aws --version | awk '{print $1}' | cut -d'/' -f2)"
 
 # Configure AWS CLI
 echo -e "\n🔧 Configuring AWS CLI..."

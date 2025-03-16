@@ -58,7 +58,7 @@ if [[ -n "$HOSTNAME" ]]; then
     echo "\n🖥️ Setting hostname to: $HOSTNAME"
     sudo hostnamectl set-hostname "$HOSTNAME" # Requires sudo privileges
     echo -e "\nℹ️ Hostname changed. Please reconnect using the new hostname."
-#   exit 0
+#   exit 1
 else
     echo -e "\nℹ️ Keeping the existing hostname: $(hostname)"
 fi
