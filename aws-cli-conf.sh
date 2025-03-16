@@ -69,11 +69,14 @@ echo -e "\n🔹 AWS CLI Version: $(aws --version | awk '{print $1}' | cut -d'/' 
 configure_aws_cli() {
     echo -e "\n🔧 Configuring AWS CLI..."
 
+    # Ensure input works even in 'curl | bash' mode
+    exec </dev/tty
+
     while true; do
-        echo -n "AWS Access Key ID: " && read -r AWS_ACCESS_KEY </dev/tty
-        echo -n "AWS Secret Access Key: " && read -r AWS_SECRET_KEY </dev/tty
-        echo -n "Default region name: " && read -r AWS_REGION </dev/tty
-        echo -n "Default output format [json/text/table]: " && read -r AWS_OUTPUT </dev/tty 
+        read -r -p "AWS Access Key ID: " AWS_ACCESS_KEY
+        read -r -p "AWS Secret Access Key: " AWS_SECRET_KEY
+        read -r -p "Default region name: " AWS_REGION
+        read -r -p "Default output format [json/text/table]: " AWS_OUTPUT 
 
         # Configure AWS CLI with provided credentials
         aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
