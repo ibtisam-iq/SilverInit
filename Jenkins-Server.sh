@@ -38,11 +38,11 @@ done
 
 # Install Trivy securely
 echo -e "\n🚀 Installing Trivy..."
-if curl -fsSL curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.60.0 | bash; then
+if curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.60.0; then
     echo -e "\n✅ Trivy installation completed successfully."
     trivy --version | head -n 1 | awk '{print $2}' || echo "⚠️ Trivy installed, but version check failed."
 else
-    echo -e "\n❌ Failed to install Helm. Exiting..."
+    echo -e "\n❌ Failed to install Trivy. Exiting..."
     exit 1
 fi
 
@@ -62,8 +62,8 @@ PUBLIC_IP=$(curl -s ifconfig.me || echo "Not Available")
 
 # Print both access URLs and let the user decide
 echo -e "\n🔗 Access Jenkins server using one of the following based on your network:"
-echo -e "\n - Local Network:  http://$LOCAL_IP:$USER_PORT"
-echo -e "\n - Public Network: http://$PUBLIC_IP:$USER_PORT\n"
+echo -e "\n - Local Network:  http://$LOCAL_IP:8080"
+echo -e "\n - Public Network: http://$PUBLIC_IP:8080\n"
 
 
 ## Display Jenkins Initial Admin Password
