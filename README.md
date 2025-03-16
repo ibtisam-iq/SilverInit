@@ -64,7 +64,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/kubectl-an
 ### SonarQube Container
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sonarqube-cont.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sonarqube-cont.sh | sudo bash
 ```
 
 ### Nexus Container
