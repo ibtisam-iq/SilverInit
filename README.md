@@ -46,7 +46,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/ansible-se
 ### Terraform
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/terraform-setup.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/terraform-setup.sh | sudo bash
 ```
 
 ### AWS CLI
