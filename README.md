@@ -16,7 +16,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Contro
 ## Jumpbox Server Initialization
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/Jumpbox.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/Jumpbox.sh | sudo bash
 ```
 
 ## Jenkins Server Initialization
