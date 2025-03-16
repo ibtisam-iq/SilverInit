@@ -38,13 +38,16 @@ done
 
 # Install Helm securely
 echo -e "\n🚀 Installing Helm..."
-if curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash; then
+if curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash; then
     echo -e "\n✅ Helm installation completed successfully."
-    helm version || echo "⚠️ Helm installed, but version check failed."
 else
-    echo -e "\n❌ Failed to install Helm. Exiting..."
-    exit 1
+    echo -e "\n❌ Helm installation script failed. Debugging..."
+    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 -o get-helm.sh || { echo "❌ Failed to download Helm installation script. Exiting..."; exit 1; }
+    chmod +x get-helm.sh
+    sudo ./get-helm.sh > /dev/null 2>&1 || { echo "❌ Failed to install Helm. Exiting..."; exit 1; }
 fi
+helm version || echo "⚠️ Helm installed, but version check failed."
 
 echo -e "\n✅ All scripts executed successfully.\n"
+
 echo -e "🎉 Jumpbox setup completed. You can now manage AWS resources using this server.\n"
