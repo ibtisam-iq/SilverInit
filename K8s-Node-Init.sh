@@ -44,7 +44,7 @@ echo -e "\n🔄 Updating package lists and installing dependencies..."
 sudo apt update -qq && sudo apt install -yq net-tools apt-transport-https ca-certificates curl gpg > /dev/null 2>&1
 
 # Disable swap permanently
-echo -e "\n🔧 Disabling swap..."
+echo -e "\n🔧 Disabling swap...\n"
 sudo swapoff -a
 sudo sed -i '/\s\+swap\s\+/d' /etc/fstab
 
@@ -54,8 +54,10 @@ read -p "🔹 Please enter hostname for this node (leave empty to keep current):
 # Set hostname if provided
 
 if [[ -n "$HOSTNAME" ]]; then
-    echo "🖥️ Setting hostname to: $HOSTNAME"
-    hostnamectl set-hostname "$HOSTNAME"
+    echo "\n🖥️ Setting hostname to: $HOSTNAME"
+    sudo hostnamectl set-hostname "$HOSTNAME" # Requires sudo privileges
+    echo "\nℹ️ Hostname changed. Please reconnect using the new hostname."
+#   exit 0
 else
     echo "ℹ️ Keeping the existing hostname: $(hostname)"
 fi
@@ -63,7 +65,7 @@ fi
 # Display system information before Kubernetes setup
 echo -e "\n📊 System Information Before Kubernetes Setup:"
 echo "---------------------------------------------"
-echo "🔹 Hostname: $(hostnamectl --static)"
+echo "🔹 Hostname: $(sudo hostnamectl --static)"
 # echo "🔹 Machine UUID: $(sudo cat /sys/class/dmi/id/product_uuid)"
 if [[ -r /sys/class/dmi/id/product_uuid ]]; then
     echo "🔹 Machine UUID: $(sudo cat /sys/class/dmi/id/product_uuid)"
