@@ -40,11 +40,13 @@ done
 echo -e "\n🚀 Installing Trivy..."
 if curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.60.0; then
     echo -e "\n✅ Trivy installation completed successfully."
-    trivy --version | head -n 1 | awk '{print $2}' || echo "⚠️ Trivy installed, but version check failed."
+    echo -e "\n🔹 Trivy version: $(trivy --version | head -n 1 | awk '{print $2}')" 
 else
     echo -e "\n❌ Failed to install Trivy. Exiting..."
     exit 1
 fi
+
+
 
 echo -e "\n✅ All scripts executed successfully.\n"
 
