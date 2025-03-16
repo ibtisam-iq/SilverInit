@@ -13,7 +13,7 @@
 # 4. terraform-setup.sh
 # 5. ansible-setup.sh
 # 6. kubectl-and-eksctl.sh
-# 7. Helm installation
+# 7. helm-setup.sh
 
 set -e  # Exit immediately if a command fails
 set -o pipefail  # Ensure failures in piped commands are detected
