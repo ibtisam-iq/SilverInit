@@ -35,21 +35,9 @@ SCRIPTS=(
 )
 
 for script in "${SCRIPTS[@]}"; do
-    echo -e "\n🚀 Running $script..."
-    bash <(curl -fsSL "$REPO_URL/$script") || { echo -e "\n❌ Failed to execute $script. Exiting...\n"; exit 1; }
+    echo -e "\n🚀 Running $script script..."
+    bash <(curl -fsSL "$REPO_URL/$script") || { echo -e "\n❌ Failed to execute $script script. Exiting...\n"; exit 1; }
 done
-
-# Install Helm securely
-echo -e "\n🚀 Installing Helm..."
-if curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash; then
-    echo -e "\n✅ Helm installation completed successfully."
-else
-    echo -e "\n❌ Helm installation script failed. Debugging..."
-    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 -o get-helm.sh || { echo "❌ Failed to download Helm installation script. Exiting..."; exit 1; }
-    chmod +x get-helm.sh
-    sudo ./get-helm.sh > /dev/null 2>&1 || { echo "❌ Failed to install Helm. Exiting..."; exit 1; }
-fi
-echo -e "\n🔹 Helm version: $(helm version --template '{{.Version}}')"
 
 echo -e "\n✅ All scripts executed successfully.\n"
 

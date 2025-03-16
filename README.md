@@ -82,7 +82,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/containerd
 ### Helm
 
 ```bash
-curl -sL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+curl -sL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash
 echo -e "\n🔹 Helm Version: $(helm version)\n"
 ```
 
