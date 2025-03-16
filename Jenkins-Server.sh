@@ -67,6 +67,6 @@ echo -e "\n - Public Network: http://$PUBLIC_IP:8080\n"
 
 
 ## Display Jenkins Initial Admin Password
-echo -e "\n🔑 Please use the following password to unlock Jenkins: $(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)\n"
+echo -e "\n🔑 Please use this password to unlock Jenkins: $(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)\n"
 
 echo -e "🎉 Jenkins server setup completed. You can now access Jenkins using the provided URL.\n"
