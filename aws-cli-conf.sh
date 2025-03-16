@@ -12,7 +12,7 @@ REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
 echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements ..."
 bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
-echo -e "\n✅ System meets the requirements."
+echo -e "\n✅ System meets the requirements to install AWS CLI v2."
 
 # Check if AWS CLI is installed
 if command -v aws &>/dev/null; then
@@ -41,7 +41,7 @@ if [[ -d "$HOME/.aws" ]]; then
 fi
 
 # Update system and install required dependencies
-echo -e "\n🚀 Updating package list and checking required dependencies..."
+echo -e "\n🚀 Updating package list and checking required dependencies to install AWS CLI v2..."
 sudo apt update -qq
 
 DEPS=("unzip" "python3" "groff" "less")

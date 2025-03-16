@@ -7,19 +7,11 @@
 # Exit immediately if a command fails
 set -e  
 
-# Ensure the script is running on Ubuntu or Linux Mint or Debian
-if [[ -f /etc/os-release ]]; then
-    . /etc/os-release
-    if [[ "$ID" == "ubuntu" || "$ID" == "linuxmint" || "$ID" == "debian" ]]; then
-        echo -e "\n✅ Detected supported OS: $NAME ($ID)"
-    else
-        echo -e "\n❌ This script is only for Ubuntu & its derivatives. Exiting...\n"
-        exit 1
-    fi
-else
-    echo -e "\n❌ Unable to determine OS type. Exiting...\n"
-    exit 1
-fi
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements ..."
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
+echo -e "\n✅ System meets the requirements to install Terraform."
 
 # Check if Terraform is already installed
 if command -v terraform &> /dev/null; then
