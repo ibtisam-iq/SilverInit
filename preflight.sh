@@ -90,4 +90,4 @@ if [[ "$ARCH" != "x86_64" && "$ARCH" != "amd64" ]]; then
 fi
 echo -e "✅ ${GREEN}Architecture supported: $ARCH${RESET}\n"
 
-echo -e "🚀 ${GREEN}Preflight checks completed successfully! Your system is ready.${RESET}\n"
+echo -e "🚀 ${GREEN}Preflight checks completed successfully! Your system is ready.${RESET}\n" 
