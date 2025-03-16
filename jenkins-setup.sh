@@ -61,14 +61,14 @@ done
 
 
 # Update system and install required dependencies
-echo -e "\n🚀 Updating package list and checking required dependencies..."
+echo -e "\n🚀 Updating package list and checking required dependencies to install Jenkins...\n"
 sudo apt update -qq
 
 # Check if Java is installed
 if java -version &>/dev/null; then
     echo -e "✅ Java is already installed."
 else
-    echo -e "🔹 Installing missing dependency: OpenJDK 17..."
+    echo -e "\n🔹 Installing missing dependency: OpenJDK 17..."
     sudo apt-get install -yq openjdk-17-jdk-headless > /dev/null 2>&1
 fi
 
@@ -105,11 +105,11 @@ PUBLIC_IP=$(curl -s ifconfig.me || echo "Not Available")
 
 # Print both access URLs and let the user decide
 echo -e "\n🔗 Access Jenkins server using one of the following based on your network:"
-echo -e "\n - Local Network:  http://$LOCAL_IP:$USER_PORT"
-echo -e "\n - Public Network: http://$PUBLIC_IP:$USER_PORT\n"
+echo -e "\n - Local Network:  http://$LOCAL_IP:8080"
+echo -e "\n - Public Network: http://$PUBLIC_IP:8080\n"
 
 
 ## Display Jenkins Initial Admin Password
-echo -e "\n🔑 Please use the following password to unlock Jenkins: $(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)\n"
+echo -e "\n🔑 Please use this password to unlock Jenkins: $(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)\n"
 
 
