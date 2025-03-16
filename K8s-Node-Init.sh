@@ -49,6 +49,7 @@ sudo swapoff -a
 sudo sed -i '/\s\+swap\s\+/d' /etc/fstab
 
 # Prompt user for a hostname (leave empty to keep the current one)
+echo -e "\n🔹 Current hostname: $(hostname)\n"
 read -p "🔹 Please enter hostname for this node (leave empty to keep current): " HOSTNAME < /dev/tty
 
 # Set hostname if provided
