@@ -37,7 +37,7 @@ fi
 if [[ -d "$HOME/.aws" ]]; then
     echo -e "\n🔻 Removing AWS CLI v1 configuration files..."
     rm -rf "$HOME/.aws"
-    echo -e "✅ AWS CLI v1 configuration files are removed successfully."
+    echo -e "\n✅ AWS CLI v1 configuration files are removed successfully."
 fi
 
 # Update system and install required dependencies
@@ -65,35 +65,37 @@ rm -rf aws awscliv2.zip aws
 echo -e "\n✅ AWS CLI is installed successfully." 
 echo -e "\n🔹 AWS CLI Version: $(aws --version | awk '{print $1}' | cut -d'/' -f2)"
 
-# Configure AWS CLI
+# Function to configure AWS CLI
 
 echo -e "\n🔧 Checking AWS CLI configuration..."
 
-# Function to configure AWS CLI
-configure_aws_cli() {
+if aws configure list | grep -q "access_key"; then
+    echo -e "✅ AWS credentials found. Skipping setup.\n"
+else
+    echo -e "⚠️ No AWS credentials found. Prompting for setup...\n"
+    
     while true; do
         read -p "AWS Access Key ID: " AWS_ACCESS_KEY
         read -p "AWS Secret Access Key: " AWS_SECRET_KEY
         read -p "Default region name: " AWS_REGION
         read -p "Default output format [json/text/table]: " AWS_OUTPUT
-
-        # Set credentials
+        
+        # Configure AWS CLI with provided credentials
         aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
         aws configure set aws_secret_access_key "$AWS_SECRET_KEY"
         aws configure set region "$AWS_REGION"
-        aws configure set output "${AWS_OUTPUT:-json}"  # Default to JSON if empty
+        aws configure set output "$AWS_OUTPUT"
 
-        echo -e "\nPlease wait, verifying AWS CLI credentials...\n"
-
-        # Verify AWS configuration
-        if aws sts get-caller-identity &>/dev/null; then
-            echo -e "✅ AWS CLI setup verified successfully.\n"
-            break  # Exit loop if credentials are correct
+        # Verify if setup was successful
+        if aws configure list | grep -q "access_key"; then
+            echo -e "✅ AWS CLI is configured successfully.\n"
+            break
         else
-            echo -e "❌ AWS CLI setup failed. Incorrect credentials. Please try again.\n"
+            echo -e "\n❌ AWS CLI setup failed. Please check your input and try again.\n"
         fi
     done
-}
+fi
+
 
 # Check if AWS credentials file exists
 if [[ -f "$HOME/.aws/credentials" ]]; then
