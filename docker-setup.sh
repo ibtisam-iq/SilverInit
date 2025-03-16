@@ -56,13 +56,11 @@ sudo apt-get update -qq
 sudo apt-get install -yq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null 2>&1
 
 # Add Jenkins user to the Docker group
-echo -e "\n🚀 Adding the current user to the Docker group...\n"
 sudo usermod -aG docker $USER
+echo -e "\n🚀 The current user is added to the Docker group...\n"
+echo -e "\n🔄 Please run this command to activate the changes to groups, once this script has finished running: newgrp docker\n"
 
-# Open a new shell for 'newgrp docker' without stopping script execution
-echo -e "\n🔄 Applying group changes for 'docker' (without logging out)..."
-sg docker -c "echo '✅ Docker group applied successfully!'"
-echo -e "\n✅ Docker installed and Jenkins user added to Docker group.\n"
+echo -e "\n✅ Docker has been installed successfully.\n"
 
 # Enable & Start Jenkins
 sudo systemctl enable docker > /dev/null 2>&1
@@ -76,9 +74,9 @@ echo "🔹 Runc version: $(runc --version | awk '{print $3}')"
 
 # Ensure Docker is Running
 if systemctl is-active --quiet docker; then
-    echo "✅ Docker is running."
+    echo -e "\n✅ Docker is running."
 else
-    echo "❌ Docker is NOT running. Starting Docker..."
+    echo -e "\n❌ Docker is NOT running. Starting Docker..."
     sudo systemctl start docker
 fi
 
