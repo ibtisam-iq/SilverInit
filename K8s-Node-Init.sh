@@ -56,10 +56,10 @@ read -p "🔹 Please enter hostname for this node (leave empty to keep current):
 if [[ -n "$HOSTNAME" ]]; then
     echo "\n🖥️ Setting hostname to: $HOSTNAME"
     sudo hostnamectl set-hostname "$HOSTNAME" # Requires sudo privileges
-    echo "\nℹ️ Hostname changed. Please reconnect using the new hostname."
+    echo -e "\nℹ️ Hostname changed. Please reconnect using the new hostname."
 #   exit 0
 else
-    echo "\nℹ️ Keeping the existing hostname: $(hostname)"
+    echo -e "\nℹ️ Keeping the existing hostname: $(hostname)"
 fi
 
 # Display system information before Kubernetes setup
