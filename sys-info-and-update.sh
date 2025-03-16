@@ -53,45 +53,75 @@ echo -e "🔹 CPU Load: $(uptime | awk -F 'load average:' '{print $2}')\n"
 
 echo -e "✅ The system is now updated and ready now!\n"
 
+# Compare this snippet from SilverInit/sys-info-and-update.sh:
+echo -e "now let's compare this snippet from SilverInit/sys-info-and-update.sh"
 
-# Define a function for formatting
-print_line() {
-    echo -e "========================================"
+#/bin/bash
+
+# SilverInit - Update OS and Get System Information
+# -------------------------------------------------
+# This script updates the system and displays system information.
+
+# Exit immediately if a command fails
+set -e  
+
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+# Colors for better readability
+GREEN=$(tput setaf 2)
+CYAN=$(tput setaf 6)
+YELLOW=$(tput setaf 3)
+RESET=$(tput sgr0)
+
+# Section Divider
+divider() {
+    echo -e "${CYAN}========================================${RESET}"
 }
-print_title() {
-    echo -e "📌 \033[1;36m$1\033[0m"
-}
 
-# Display system information
-clear
-print_line
-print_title "System Information"
-print_line
+# Preflight Check
+echo -e "\n🚀 Running preflight.sh script to ensure system meets requirements..."
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
 
-# Hostname & IP Details
-echo -e "🔹 \033[1;32mHostname       \033[0m: $(hostname)"
-echo -e "🔹 \033[1;32mPrivate IP     \033[0m: $(hostname -I | awk '{print $1}')"
-echo -e "🔹 \033[1;32mPublic IP      \033[0m: $(curl -s --max-time 5 ifconfig.me || curl -s --max-time 5 https://ipinfo.io/ip || echo '⚠️ Failed to retrieve IP')"
+# Update and install necessary dependencies
+echo -e "\n🚀 Updating system and installing dependencies, please wait...\n"
+sudo apt update -qq && sudo apt install -yq net-tools apt-transport-https ca-certificates curl gpg jq lsb-release python3-pip tree wget gnupg > /dev/null 2>&1
 
-# MAC Address & Network Info
-echo -e "🔹 \033[1;32mMAC Address    \033[0m: $(ip link show | awk '/link\/ether/ {print $2}' | paste -sd ', ' -)"
-echo -e "🔹 \033[1;32mNetwork        \033[0m: $(ip addr show | awk '/inet / {print $2}' | paste -sd ', ' -)"
-echo -e "🔹 \033[1;32mDNS            \033[0m: $(awk '/nameserver/ {print $2}' /etc/resolv.conf | paste -sd ', ' -)"
+# Prompt user for hostname update
+divider
+echo -e "🔹 ${YELLOW}Current hostname${RESET}: $(hostname)"
+read -p "🔄 Do you want to update the hostname? Enter new name (or press Enter to keep current): " NEW_HOSTNAME < /dev/tty
 
-# System Details
-echo -e "🔹 \033[1;34mKernel         \033[0m: $(uname -r)"
-echo -e "🔹 \033[1;34mOS             \033[0m: $(lsb_release -ds)"
-echo -e "🔹 \033[1;34mCPU            \033[0m: $(lscpu | grep 'Model name' | awk -F ':' '{print $2}' | xargs)"
-echo -e "🔹 \033[1;34mMemory         \033[0m: $(free -h | awk '/Mem/ {print $2}')"
+if [[ -n "$NEW_HOSTNAME" ]]; then
+    echo -e "\n🖥️ Updating hostname to '$NEW_HOSTNAME'..."
+    if command -v hostnamectl &>/dev/null; then
+        sudo hostnamectl set-hostname "$NEW_HOSTNAME"
+        echo -e "\n✅ Hostname updated successfully."
+    else
+        echo -e "\n⚠️ Warning: 'hostnamectl' not found, skipping hostname update."
+    fi
+else
+    echo -e "\nℹ️ Keeping the existing hostname: $(hostname)"
+fi
 
-# Disk Usage & Load
-disk_usage=$(df -h --total | awk '/total/ {print $3 "/" $2}')
-cpu_load=$(uptime | awk -F 'load average:' '{print $2}' | xargs)
+# Get System Information
+divider
+echo -e "📌 ${CYAN}System Information${RESET}"
+divider
 
-echo -e "🔹 \033[1;35mDisk Usage     \033[0m: $disk_usage"
-echo -e "🔹 \033[1;35mCPU Load       \033[0m: $cpu_load"
+echo -e "🔹 Hostname       : $(hostname)"
+echo -e "🔹 Private IP     : $(hostname -I | awk '{print $1}')"
+echo -e "🔹 Public IP      : $(curl -s --max-time 5 ifconfig.me || curl -s --max-time 5 https://ipinfo.io/ip || echo '⚠️ Failed to retrieve IP')"
+echo -e "🔹 MAC Address    : $(ip link show | awk '/link\/ether/ {print $2}' | paste -sd ', ')"
+echo -e "🔹 Network        : $(ip addr show | awk '/inet / {print $2}' | paste -sd ', ')"
+echo -e "🔹 DNS            : $(awk '/nameserver/ {print $2}' /etc/resolv.conf | paste -sd ', ')"
+echo -e "🔹 Kernel         : $(uname -r)"
+echo -e "🔹 OS             : $(lsb_release -ds)"
+echo -e "🔹 CPU            : $(lscpu | grep 'Model name' | awk -F ':' '{print $2}' | xargs)"
+echo -e "🔹 Memory         : $(free -h | awk '/Mem/ {print $2}')"
+echo -e "🔹 Disk Usage     : $(df -h --total | grep 'total' | awk '{print $3 "/" $2}')"
+echo -e "🔹 CPU Load       : $(uptime | awk -F 'load average:' '{print $2}')"
+echo -e "🔹 UUID           : $(cat /etc/machine-id)"
 
-print_line
-echo -e '✅ \033[1;32mThe system is now updated and ready!\033[0m'
-print_line
-
+divider
+echo -e "✅ ${GREEN}The system is now updated and ready!${RESET}"
+divider
