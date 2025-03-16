@@ -28,7 +28,7 @@ REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 SCRIPTS=(
     "preflight.sh"
     "sys-info-and-update.sh"
-    "aws-cli-conf.sh"
+    #"aws-cli-conf.sh"
     "terraform-setup.sh"
     "ansible-setup.sh"
     "kubectl-and-eksctl.sh"
