@@ -58,7 +58,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/aws-cli-co
 ### Kubectl & Eksctl
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/kubectl-and-eksctl.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/kubectl-and-eksctl.sh | sudo bash
 ```
 
 ### SonarQube Container
