@@ -95,4 +95,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/trivy-setu
 
 ```bash
 curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sys-info-and-update.sh | sudo bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sys-info-and-update.sh | sudo bash -s -- -q
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sys-info-and-update.sh | sudo bash -s -- --no-update
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sys-info-and-update.sh | sudo bash -s -- -h
 ```
