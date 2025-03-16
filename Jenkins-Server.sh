@@ -32,7 +32,7 @@ SCRIPTS=(
 )
 
 for script in "${SCRIPTS[@]}"; do
-    echo -e "\n🚀 Running $script..."
+    echo -e "\n🚀 Running $script script..."
     bash <(curl -fsSL "$REPO_URL/$script") || { echo -e "\n❌ Failed to execute $script. Exiting...\n"; exit 1; }
 done
 
