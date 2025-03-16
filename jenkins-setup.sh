@@ -31,6 +31,9 @@ fi
 # AWS Security Group Warning
 echo -e "\n⚠️  If you're running this on an AWS EC2 instance, ensure port 8080 is open in the security group."
 
+# Ensure input works even in 'curl | bash' mode
+exec </dev/tty
+
 while true; do
     read -r -p "Have you opened port 8080 in your AWS Security Group? (yes/no): " port_check
     port_check=$(echo "$port_check" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
