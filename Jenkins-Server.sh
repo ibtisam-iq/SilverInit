@@ -11,7 +11,7 @@
 # 3. jenkins-setup.sh
 # 4. docker-setup.sh
 # 5. kubectl-and-eksctl.sh
-# 6. Trivy installation
+# 6. trivy-setup.sh
 
 set -e  # Exit immediately if a command fails
 set -o pipefail  # Ensure failures in piped commands are detected
@@ -29,22 +29,13 @@ SCRIPTS=(
     "jenkins-setup.sh"
     "docker-setup.sh"
     "kubectl-and-eksctl.sh"
+    "trivy-setup.sh"
 )
 
 for script in "${SCRIPTS[@]}"; do
     echo -e "\n🚀 Running $script script..."
     bash <(curl -fsSL "$REPO_URL/$script") || { echo -e "\n❌ Failed to execute $script. Exiting...\n"; exit 1; }
 done
-
-# Install Trivy securely
-echo -e "\n🚀 Installing Trivy..."
-if curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.60.0; then
-    echo -e "\n✅ Trivy installation completed successfully."
-    echo -e "\n🔹 Trivy version: $(trivy --version | head -n 1 | awk '{print $2}')" 
-else
-    echo -e "\n❌ Failed to install Trivy. Exiting..."
-    exit 1
-fi
 
 echo -e "\n✅ All scripts executed successfully.\n"
 
