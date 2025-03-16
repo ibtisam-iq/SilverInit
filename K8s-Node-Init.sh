@@ -19,7 +19,7 @@ trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ER
 # Ensure the script is running on Ubuntu or Linux Mint
 if [[ -f /etc/os-release ]]; then
     . /etc/os-release
-    if [[ "$ID" != "ubuntu" || "$ID" != "linuxmint" ]]; then
+    if [[ "$ID" != "ubuntu" && "$ID" != "linuxmint" ]]; then
         echo -e "\n❌ Unsupported OS: $NAME ($ID). This script is only for Ubuntu/Linux Mint. Exiting...\n"
         exit 1
     fi
@@ -31,7 +31,7 @@ fi
 
 # Ensure 64-bit architecture
 ARCH=$(uname -m)
-if [[ "$ARCH" != "x86_64" || "$ARCH" != "amd64" ]]; then
+if [[ "$ARCH" == "x86_64" || "$ARCH" == "amd64" ]]; then
     echo -e "\n❌ Unsupported architecture: $ARCH. This script supports only x86_64 (amd64). Exiting...\n"
     exit 1
 fi
