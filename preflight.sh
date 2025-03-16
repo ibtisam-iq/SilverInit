@@ -10,6 +10,12 @@
 # - Verifying internet connectivity
 # - Validating the OS and architecture
 
+set -e  # Exit immediately if a command fails
+set -o pipefail  # Ensure failures in piped commands are detected
+
+# Function to handle script failures
+trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
+
 # Ensure the script is running as root
 if [[ $EUID -ne 0 ]]; then
     echo -e "\n❌ This script must be run as root. Please use: sudo bash $(basename "$0")\n"
