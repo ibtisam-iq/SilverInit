@@ -40,7 +40,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/docker-set
 ### Ansible
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/ansible-setup.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/ansible-setup.sh | sudo bash
 ```
 
 ### Terraform
