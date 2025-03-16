@@ -22,7 +22,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/Jumpbox.sh
 ## Jenkins Server Initialization
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/Jenkins-Server.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/Jenkins-Server.sh | sudo bash
 ```
 
 ### Jenkins
