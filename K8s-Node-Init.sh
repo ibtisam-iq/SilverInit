@@ -31,7 +31,7 @@ fi
 
 # Ensure 64-bit architecture
 ARCH=$(uname -m)
-if [[ "$ARCH" != "x86_64" || "$ARCH" != "amd64" ]]; then
+if [[ "$ARCH" != "x86_64" && "$ARCH" != "amd64" ]]; then # FIX: Use `&&` instead of `||`
     echo -e "\n❌ Unsupported architecture: $ARCH. This script supports only x86_64 (amd64). Exiting...\n"
     exit 1
 fi
