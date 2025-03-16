@@ -34,7 +34,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/jenkins-se
 ### Docker
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/docker-setup.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/docker-setup.sh | sudo bash
 ```
 
 ### Ansible
