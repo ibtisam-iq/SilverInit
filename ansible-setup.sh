@@ -16,7 +16,7 @@ echo -e "\n✅ System meets the requirements to install Ansible."
 
 # Check if Ansible is already installed
 if command -v ansible &> /dev/null; then
-    echo -e "\n✅ Ansible is already installed. Version:\n$(ansible --version)\n"
+    echo -e "\n✅ Ansible is already installed. Version: $(ansible --version | head -n1 | awk '{print $NF}' | tr -d ']')\n"
     exit 0
 fi
 
@@ -25,16 +25,16 @@ echo -e "\n🚀 Installing dependencies to install Ansible...\n"
 sudo apt update -qq && sudo apt install -y software-properties-common > /dev/null 2>&1
 
 # Add Ansible PPA and install Ansible
-echo -e "\n🚀 Adding Ansible PPA and installing Ansible...\n"
+echo -e "\n🚀 Adding Ansible PPA...\n"
 if sudo add-apt-repository --yes --update ppa:ansible/ansible > /dev/null 2>&1; then
     echo -e "✅ Ansible PPA added successfully."
 else
     echo -e "\n❌ Failed to add Ansible PPA. Exiting...\n"
     exit 1
 fi
-
+echo -e "\n🚀 Installing Ansible... Please wait...\n"
 if sudo apt update -qq && sudo apt install -y ansible > /dev/null 2>&1; then
-    echo -e "\n✅ Ansible installed successfully. Version: $(ansible --version | head -n1 | awk '{print $3}')"
+    echo -e "\n✅ Ansible installed successfully. Version: $(ansible --version | head -n1 | awk '{print $NF}' | tr -d ']')"
 else
     echo -e "\n❌ Ansible installation failed. Exiting...\n"
     exit 1
