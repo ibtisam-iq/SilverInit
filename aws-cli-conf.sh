@@ -66,20 +66,15 @@ echo -e "\n✅ AWS CLI is installed successfully."
 echo -e "\n🔹 AWS CLI Version: $(aws --version | awk '{print $1}' | cut -d'/' -f2)"
 
 # Function to configure AWS CLI
+configure_aws_cli() {
+    echo -e "\n🔧 Configuring AWS CLI..."
 
-echo -e "\n🔧 Checking AWS CLI configuration..."
-
-if aws configure list | grep -q "access_key"; then
-    echo -e "✅ AWS credentials found. Skipping setup.\n"
-else
-    echo -e "⚠️ No AWS credentials found. Prompting for setup...\n"
-    
     while true; do
         read -p "AWS Access Key ID: " AWS_ACCESS_KEY
         read -p "AWS Secret Access Key: " AWS_SECRET_KEY
         read -p "Default region name: " AWS_REGION
         read -p "Default output format [json/text/table]: " AWS_OUTPUT
-        
+
         # Configure AWS CLI with provided credentials
         aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
         aws configure set aws_secret_access_key "$AWS_SECRET_KEY"
@@ -87,19 +82,20 @@ else
         aws configure set output "$AWS_OUTPUT"
 
         # Verify if setup was successful
-        if aws configure list | grep -q "access_key"; then
+        if aws sts get-caller-identity &>/dev/null; then
             echo -e "✅ AWS CLI is configured successfully.\n"
-            break
+            return 0
         else
             echo -e "\n❌ AWS CLI setup failed. Please check your input and try again.\n"
         fi
     done
-fi
-
+}
 
 # Check if AWS credentials file exists
+echo -e "\n🔧 Checking AWS CLI configuration..."
+
 if [[ -f "$HOME/.aws/credentials" ]]; then
-    echo -e "✅ AWS credentials found. Extracting details...\n"
+    echo -e "✅ AWS credentials file found. Extracting details...\n"
 
     AWS_ACCESS_KEY=$(awk '/aws_access_key_id/ {print $3}' "$HOME/.aws/credentials")
     AWS_SECRET_KEY=$(awk '/aws_secret_access_key/ {print $3}' "$HOME/.aws/credentials")
@@ -110,7 +106,7 @@ if [[ -f "$HOME/.aws/credentials" ]]; then
         aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
         aws configure set aws_secret_access_key "$AWS_SECRET_KEY"
         aws configure set region "$AWS_REGION"
-        
+
         # Verify existing credentials
         if aws sts get-caller-identity &>/dev/null; then
             echo -e "✅ AWS CLI is configured with existing credentials.\n"
