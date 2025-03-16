@@ -59,7 +59,7 @@ if [[ -n "$HOSTNAME" ]]; then
     echo "\nℹ️ Hostname changed. Please reconnect using the new hostname."
 #   exit 0
 else
-    echo "ℹ️ Keeping the existing hostname: $(hostname)"
+    echo "\nℹ️ Keeping the existing hostname: $(hostname)"
 fi
 
 # Display system information before Kubernetes setup
@@ -94,7 +94,7 @@ sudo apt update -qq
 
 # Install Kubernetes components
 echo -e "\n📥 Installing Kubernetes components (kubelet, kubeadm, kubectl)..."
-sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-get install -yq kubelet kubeadm kubectl > /dev/null 2>&1
 sudo apt-mark hold kubelet kubeadm kubectl
 
 echo -e "\n🔹 Kubelet Version: $(kubelet --version | awk '{print $2}')"
