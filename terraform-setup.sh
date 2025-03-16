@@ -1,59 +1,80 @@
-#!/bin/bash
-
+# ==================================================
 # SilverInit - Terraform Setup
-# -------------------------------------------------
+# --------------------------------------------------
 # This script installs Terraform on Ubuntu or its derivatives.
+# Author: Muhammad Ibtisam Iqbal
+# License: MIT
+# ==================================================
 
-# Exit immediately if a command fails
-set -e  
+set -e  # Exit immediately if a command fails
+set -o pipefail  # Ensure failures in piped commands are detected
 
+# Handle script failures
+trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
-echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements to install Terraform..."
-bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
-echo -e "\n✅ System meets the requirements to install Terraform."
+# ==================================================
+# 🛠️ Preflight Check
+# ==================================================
+echo -e "\n\033[1;34m🚀 Running preflight.sh script to ensure that system meets the requirements to install Terraform...\033[0m"
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo -e "\n\033[1;31m❌ Failed to execute preflight.sh. Exiting...\033[0m"; exit 1; }
+echo -e "\n\033[1;32m✅ System meets the requirements to install Terraform.\033[0m"
 
-# Check if Terraform is already installed
+# ==================================================
+# 🔍 Checking for Existing Installation
+# ==================================================
 if command -v terraform &> /dev/null; then
-    echo -e "\n✅ Terraform is already installed. Version:\n$(terraform --version)\n"
+    echo -e "\n\033[1;32m✅ Terraform is already installed.\033[0m"
+    echo -e "📌 Installed Version: \033[1;36m$(terraform --version | head -n1 | awk '{print $2}')\033[0m\n"
     exit 0
 fi
 
-# Update system and install required dependencies
-echo -e "\n🚀 Updating package list and checking required dependencies to install Terraform..."
+# ==================================================
+# 📦 Installing Dependencies
+# ==================================================
+echo -e "\n\033[1;34m🚀 Updating package list and checking required dependencies to install Terraform...\033[0m"
 sudo apt update -qq && sudo apt install -yq software-properties-common lsb-release gnupg > /dev/null 2>&1
 
 DEPS=("curl" "wget")
-
 for pkg in "${DEPS[@]}"; do
     if ! command -v "$pkg" &>/dev/null; then
-        echo -e "🔹 Installing missing dependency: $pkg..."
+        echo -e "\033[1;33m🔹 Installing missing dependency: $pkg...\033[0m"
         sudo apt-get install -yq "$pkg" > /dev/null 2>&1
     else
-        echo -e "✅ $pkg is already installed."
+        echo -e "\033[1;32m✅ $pkg is already installed.\033[0m"
     fi
 done
 
-# Add HashiCorp GPG key and repository
+# ==================================================
+# 🔑 Adding HashiCorp Repository
+# ==================================================
 if wget -qO- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg; then
-    echo -e "\n✅ HashiCorp GPG key added successfully."
+    echo -e "\n\033[1;32m✅ HashiCorp GPG key added successfully.\033[0m"
 else
-    echo -e "\n❌ Failed to add HashiCorp GPG key. Exiting...\n"
+    echo -e "\n\033[1;31m❌ Failed to add HashiCorp GPG key. Exiting...\033[0m\n"
     exit 1
 fi
 
 if echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null; then
-    echo -e "✅ HashiCorp repository added successfully."
+    echo -e "\033[1;32m✅ HashiCorp repository added successfully.\033[0m"
 else
-    echo -e "\n❌ Failed to add HashiCorp repository. Exiting...\n"
+    echo -e "\n\033[1;31m❌ Failed to add HashiCorp repository. Exiting...\033[0m\n"
     exit 1
 fi
 
-# Install Terraform
-echo -e "\n🚀 Installing Terraform...\n"
+# ==================================================
+# 📥 Installing Terraform
+# ==================================================
+echo -e "\n\033[1;34m🚀 Installing Terraform...\033[0m\n"
 if sudo apt update -qq && sudo apt install -y terraform > /dev/null 2>&1; then
-    echo -e "\n✅ Terraform installed successfully. Version: $(terraform --version | head -n1 | awk '{print $2}')"
+    echo -e "\n\033[1;32m✅ Terraform installed successfully.\033[0m"
+    echo -e "📌 Installed Version: \033[1;36m$(terraform --version | head -n1 | awk '{print $2}')\033[0m\n"
 else
-    echo -e "\n❌ Terraform installation failed. Exiting...\n"
+    echo -e "\n\033[1;31m❌ Terraform installation failed. Exiting...\033[0m\n"
     exit 1
 fi
+
+# ==================================================
+# ℹ️ CLI Argument Handling (Future Support)
+# ==================================================
+echo -e "\n\033[1;33m⚠️  If you want CLI argument handling (e.g., -q for quiet mode, --no-update to skip updates), let me know, and I'll add it!\033[0m\n"

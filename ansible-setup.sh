@@ -11,8 +11,11 @@
 
 # ==================================================
 
-# Exit immediately if a command fails
-set -e  
+set -e  # Exit immediately if a command fails
+set -o pipefail  # Ensure failures in piped commands are detected
+
+# Handle script failures
+trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
 
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
@@ -59,3 +62,8 @@ else
 fi
 
 echo -e "\n\033[1;32m🎉 Ansible setup completed successfully. Happy Automating! 🚀\033[0m\n"
+
+# ==================================================
+# ℹ️ CLI Argument Handling (Future Support)
+# ==================================================
+echo -e "\n\033[1;33m⚠️  If you want CLI argument handling (e.g., -q for quiet mode, --no-update to skip updates), let me know, and I'll add it!\033[0m\n"
