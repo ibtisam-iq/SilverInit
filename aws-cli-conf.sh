@@ -8,14 +8,11 @@
 # Exit immediately if a command fails
 set -e
 
-# Ensure the system is running on a 64-bit architecture (x86_64 or amd64)
-ARCH=$(uname -m)
-if [[ "$ARCH" == "x86_64" || "$ARCH" == "amd64" ]]; then
-    echo -e "\n✅ Architecture supported: $ARCH"
-else
-    echo -e "\n❌ Unsupported architecture: $ARCH. This script only supports x86_64 (amd64). Exiting...\n"
-    exit 1
-fi
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements ..."
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
+echo -e "\n✅ System meets the requirements."
 
 # Check if AWS CLI is installed
 if command -v aws &>/dev/null; then
@@ -69,6 +66,62 @@ echo -e "\n✅ AWS CLI is installed successfully."
 echo -e "\n🔹 AWS CLI Version: $(aws --version | awk '{print $1}' | cut -d'/' -f2)"
 
 # Configure AWS CLI
-echo -e "\n🔧 Configuring AWS CLI..."
-aws configure
-echo -e "✅ AWS CLI is installed and configured successfully.\n"
+
+echo -e "\n🔧 Checking AWS CLI configuration..."
+
+# Function to configure AWS CLI
+configure_aws_cli() {
+    while true; do
+        read -p "AWS Access Key ID: " AWS_ACCESS_KEY
+        read -p "AWS Secret Access Key: " AWS_SECRET_KEY
+        read -p "Default region name: " AWS_REGION
+        read -p "Default output format [json/text/table]: " AWS_OUTPUT
+
+        # Set credentials
+        aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
+        aws configure set aws_secret_access_key "$AWS_SECRET_KEY"
+        aws configure set region "$AWS_REGION"
+        aws configure set output "${AWS_OUTPUT:-json}"  # Default to JSON if empty
+
+        echo -e "\nPlease wait, verifying AWS CLI credentials...\n"
+
+        # Verify AWS configuration
+        if aws sts get-caller-identity &>/dev/null; then
+            echo -e "✅ AWS CLI setup verified successfully.\n"
+            break  # Exit loop if credentials are correct
+        else
+            echo -e "❌ AWS CLI setup failed. Incorrect credentials. Please try again.\n"
+        fi
+    done
+}
+
+# Check if AWS credentials file exists
+if [[ -f "$HOME/.aws/credentials" ]]; then
+    echo -e "✅ AWS credentials found. Extracting details...\n"
+
+    AWS_ACCESS_KEY=$(awk '/aws_access_key_id/ {print $3}' "$HOME/.aws/credentials")
+    AWS_SECRET_KEY=$(awk '/aws_secret_access_key/ {print $3}' "$HOME/.aws/credentials")
+    AWS_REGION=$(awk '/region/ {print $3}' "$HOME/.aws/config")
+
+    if [[ -n "$AWS_ACCESS_KEY" && -n "$AWS_SECRET_KEY" && -n "$AWS_REGION" ]]; then
+        echo -e "🔹 Using existing credentials."
+        aws configure set aws_access_key_id "$AWS_ACCESS_KEY"
+        aws configure set aws_secret_access_key "$AWS_SECRET_KEY"
+        aws configure set region "$AWS_REGION"
+        
+        # Verify existing credentials
+        if aws sts get-caller-identity &>/dev/null; then
+            echo -e "✅ AWS CLI is configured with existing credentials.\n"
+            exit 0
+        else
+            echo -e "⚠️  Existing credentials are incorrect. Reconfiguring...\n"
+            configure_aws_cli
+        fi
+    else
+        echo -e "⚠️  Credentials file is incomplete. Prompting for new credentials...\n"
+        configure_aws_cli
+    fi
+else
+    echo -e "⚠️ No AWS credentials found. Prompting for setup...\n"
+    configure_aws_cli
+fi
