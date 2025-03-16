@@ -52,17 +52,16 @@ sudo apt-get install -yq containerd.io > /dev/null 2>&1
 echo -e "\n🔹 Checking containerd service file path...\n"
 sudo systemctl show -p FragmentPath containerd
 
+# Configure containerd
 echo -e "\n🔹 Configuring containerd...\n"
 sudo mkdir -p /etc/containerd
 
-# Generate config.toml only if it doesn't exist
-if [[ ! -f /etc/containerd/config.toml ]]; then
-    echo -e "\n🔹 Generating default containerd configuration...\n"
-    sudo containerd config default | sudo tee /etc/containerd/config.toml > /dev/null
-    if [[ $? -ne 0 ]]; then
-        echo -e "\n❌ Failed to generate /etc/containerd/config.toml. Exiting...\n"
-        exit 1
-    fi
+# Force regenerate config.toml with CRI enabled
+echo -e "\n🔹 Generating default containerd configuration...\n"
+sudo containerd config default | sudo tee /etc/containerd/config.toml > /dev/null
+if [[ $? -ne 0 ]]; then
+    echo -e "\n❌ Failed to generate /etc/containerd/config.toml. Exiting...\n"
+    exit 1
 fi
 
 # Ensure SystemdCgroup is set to true
@@ -70,12 +69,18 @@ if grep -q 'SystemdCgroup = false' /etc/containerd/config.toml; then
     sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
     echo -e "\n✅ SystemdCgroup set to true.\n"
 else
-    echo -e "\n✅ SystemdCgroup is already set to true.\n"
+    echo -e "\n✅ SystemdCgroup is already set to true or missing in config.\n"
 fi
 
-# Confirm the change
+# Restart containerd
+echo -e "\n🔄 Restarting containerd...\n"
+sudo systemctl restart containerd
+sudo systemctl enable containerd --now
+
+# Confirm the changes
+echo -e "\n🔍 Checking SystemdCgroup setting in config...\n"
+sleep 10  # Wait for containerd to restart
 grep 'SystemdCgroup' /etc/containerd/config.toml
-echo -e "\n✅ Containerd configuration updated successfully.\n"
 
 # Create directory for CNI plugins
 echo -e "\n🔹 Ensuring CNI plugins directory exists...\n"

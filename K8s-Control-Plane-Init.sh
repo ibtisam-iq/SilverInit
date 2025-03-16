@@ -38,6 +38,7 @@ sudo systemctl restart kubelet
 
 # Verify required ports are listening
 echo -e "\n🔹 Checking if containerd and Kubernetes API server ports are open before initializing control plane..."
+sleep 60  # Wait for services to start
 sudo netstat -tulnp | grep -E 'containerd|6443' || { echo -e "\n❌ Required ports are not open. Exiting...\n"; exit 1; }
 
 # Pull Kubernetes control plane images
@@ -59,8 +60,8 @@ sudo kubeadm init \
   --cri-socket=unix:///var/run/containerd/containerd.sock || { echo -e "\n❌ kubeadm init failed. Exiting...\n"; exit 1; }
 
 # Wait for the control plane components to stabilize
-echo -e "\n⏳ Waiting for 60 seconds to stabilize the cluster components..."
-sleep 60  # Give time for pods to initialize
+echo -e "\n⏳ Waiting for 100 seconds to stabilize the cluster components..."
+sleep 120  # Give time for pods to initialize
 
 # Configure kubectl for the current user
 echo -e "\n🔹 Setting up kubectl access..."
