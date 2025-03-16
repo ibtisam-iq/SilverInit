@@ -101,8 +101,12 @@ sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc 
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 
+divider
+
 echo -e "\n🚀 Adding Docker repository..."
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+divider
 
 echo -e "\n🚀 Installing Docker..."
 sudo apt-get update -qq
@@ -120,6 +124,7 @@ log "\n🚀 Added the current user to the Docker group."
 log "🔄 Please run: newgrp docker to apply changes."
 
 # Enable & Start Docker Service
+log "\n🚀 Enabling & Starting Docker Service..."
 sudo systemctl enable docker > /dev/null 2>&1
 sudo systemctl restart docker > /dev/null 2>&1
 
