@@ -8,14 +8,11 @@
 # Exit immediately if a command fails
 set -e  
 
-# Ensure the system is running on a 64-bit architecture (x86_64 or amd64)
-ARCH=$(uname -m)
-if [[ "$ARCH" == "x86_64" || "$ARCH" == "amd64" ]]; then
-    echo -e "\n✅ Architecture supported: $ARCH"
-else
-    echo -e "\n❌ Unsupported architecture: $ARCH. This script only supports x86_64 (amd64). Exiting...\n"
-    exit 1
-fi
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements to install kubectl and eksctl..."
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
+echo -e "\n✅ System meets the requirements to install kubectl and eksctl."
 
 
 # Install Kubectl
@@ -36,10 +33,10 @@ fi
 
 # Install kubectl
 echo -e "\n🚀 Installing kubectl...\n"
-curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" > /dev/null 2>&1
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
-echo -e "✅ kubectl installed successfully. Version:\n$(kubectl version --client --output=yaml | grep gitVersion | awk '{print $2}')"
+echo -e "\n✅ kubectl installed successfully. Version: $(kubectl version --client --output=yaml | grep gitVersion | awk '{print $2}')"
 
 # Install eksctl
 echo -e "\n🚀 Installing eksctl...\n"
@@ -47,4 +44,4 @@ curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_Li
 tar -xzf eksctl.tar.gz
 sudo mv eksctl /usr/local/bin/
 rm -f eksctl.tar.gz
-echo -e "✅ eksctl installed successfully. Version:\n$(eksctl version)"
+echo -e "\n✅ eksctl installed successfully. Version:$(eksctl version)\n"

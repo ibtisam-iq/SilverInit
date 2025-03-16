@@ -8,19 +8,11 @@
 # Exit immediately if a command fails
 set -e  
 
-# Ensure the script is running on Ubuntu or Linux Mint
-if [[ -f /etc/os-release ]]; then
-    . /etc/os-release
-    if [[ "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]; then
-        echo -e "\n✅ Detected supported OS: $NAME ($ID)"
-    else
-        echo -e "\n❌ This script is only for Ubuntu & Linux Mint. Exiting...\n"
-        exit 1
-    fi
-else
-    echo -e "\n❌ Unable to determine OS type. Exiting...\n"
-    exit 1
-fi
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements to install Ansible..."
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
+echo -e "\n✅ System meets the requirements to install Ansible."
 
 # Check if Ansible is already installed
 if command -v ansible &> /dev/null; then
@@ -29,7 +21,7 @@ if command -v ansible &> /dev/null; then
 fi
 
 # Install dependencies
-echo -e "\n🚀 Installing dependencies...\n"
+echo -e "\n🚀 Installing dependencies to install Ansible...\n"
 sudo apt update -qq && sudo apt install -y software-properties-common > /dev/null 2>&1
 
 # Add Ansible PPA and install Ansible
@@ -42,7 +34,7 @@ else
 fi
 
 if sudo apt update -qq && sudo apt install -y ansible > /dev/null 2>&1; then
-    echo -e "✅ Ansible installed successfully. Version:\n$(ansible --version)\n"
+    echo -e "\n✅ Ansible installed successfully. Version: $(ansible --version | head -n1 | awk '{print $3}')"
 else
     echo -e "\n❌ Ansible installation failed. Exiting...\n"
     exit 1

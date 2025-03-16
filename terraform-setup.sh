@@ -9,7 +9,7 @@ set -e
 
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
-echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements ..."
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements to install Terraform..."
 bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
 echo -e "\n✅ System meets the requirements to install Terraform."
 
@@ -20,7 +20,7 @@ if command -v terraform &> /dev/null; then
 fi
 
 # Update system and install required dependencies
-echo -e "\n🚀 Updating package list and checking required dependencies..."
+echo -e "\n🚀 Updating package list and checking required dependencies to install Terraform..."
 sudo apt update -qq && sudo apt install -yq software-properties-common lsb-release gnupg > /dev/null 2>&1
 
 DEPS=("curl" "wget")
@@ -52,7 +52,7 @@ fi
 # Install Terraform
 echo -e "\n🚀 Installing Terraform...\n"
 if sudo apt update -qq && sudo apt install -y terraform > /dev/null 2>&1; then
-    echo -e "✅ Terraform installed successfully. Version:\n$(terraform --version)"
+    echo -e "\n✅ Terraform installed successfully. Version: $(terraform --version | head -n1 | awk '{print $2}')"
 else
     echo -e "\n❌ Terraform installation failed. Exiting...\n"
     exit 1

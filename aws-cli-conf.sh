@@ -10,7 +10,7 @@ set -e
 
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
-echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements ..."
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements to install AWS CLI v2..."
 bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
 echo -e "\n✅ System meets the requirements to install AWS CLI v2."
 
