@@ -94,5 +94,5 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/trivy-setu
 ### Get System Information
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/sys-info-and-update.sh | sudo bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sys-info-and-update.sh | sudo bash
 ```
