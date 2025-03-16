@@ -32,10 +32,10 @@ fi
 
 # Update and install necessary dependencies
 echo -e "\n🚀 Updating system and installing dependencies...\n"
-sudo apt update -qq && sudo apt install -yq net-tools apt-transport-https ca-certificates curl gpg jq lsb-release python3-pip tree wget gnupg
+sudo apt update -qq && sudo apt install -yq net-tools apt-transport-https ca-certificates curl gpg jq lsb-release python3-pip tree wget gnupg > /dev/null 2>&1
 
 # Prompt user for a hostname (leave empty to keep the current one)
-echo -e "\n🔹 Current hostname: $(hostname)"
+echo -e "\n🔹 Current hostname: $(hostname)\n"
 read -p "🔄 Do you want to update the hostname? Enter new name (or press Enter to keep current): " NEW_HOSTNAME < /dev/tty
 
 # Set hostname if provided
