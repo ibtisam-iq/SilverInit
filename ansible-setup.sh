@@ -1,41 +1,61 @@
 #!/bin/bash
 
+# ==================================================
 # SilverInit - Ansible Setup
-# -------------------------------------------------
+# --------------------------------------------------
 # This script installs Ansible on Ubuntu or Linux Mint.
+# Author: Muhammad Ibtisam Iqbal
+# License: MIT
+# Version: 1.0
+# Usage: sudo bash ansible-setup.sh
 
+# ==================================================
 
 # Exit immediately if a command fails
 set -e  
 
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
-echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements to install Ansible..."
-bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
-echo -e "\n✅ System meets the requirements to install Ansible."
+# ==================================================
+# 🛠️ Preflight Check
+# ==================================================
+echo -e "\n\033[1;34m🚀 Running preflight.sh script to ensure that system meets the requirements to install Ansible...\033[0m"
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo -e "\n\033[1;31m❌ Failed to execute preflight.sh. Exiting...\033[0m"; exit 1; }
+echo -e "\n\033[1;32m✅ System meets the requirements to install Ansible.\033[0m"
 
-# Check if Ansible is already installed
+# ==================================================
+# 🔍 Checking for Existing Installation
+# ==================================================
 if command -v ansible &> /dev/null; then
-    echo -e "\n✅ Ansible is already installed. Version: $(ansible --version | head -n1 | awk '{print $NF}' | tr -d ']')\n"
+    echo -e "\n\033[1;32m✅ Ansible is already installed. Skipping Installation ... Happy Automating! 🚀\033[0m"
+    echo -e "📌 Installed Version: \033[1;36m$(ansible --version | head -n1 | awk '{print $NF}' | tr -d ']')\033[0m\n"
     exit 0
 fi
 
-# Install dependencies
-echo -e "\n🚀 Installing dependencies to install Ansible...\n"
+# ==================================================
+# 📦 Installing Dependencies
+# ==================================================
+echo -e "\n\033[1;34m🚀 Installing dependencies required for Ansible...\033[0m\n"
 sudo apt update -qq && sudo apt install -y software-properties-common > /dev/null 2>&1
 
-# Add Ansible PPA and install Ansible
-echo -e "\n🚀 Adding Ansible PPA...\n"
+echo -e "\n\033[1;34m🚀 Adding Ansible PPA Repository...\033[0m\n"
 if sudo add-apt-repository --yes --update ppa:ansible/ansible > /dev/null 2>&1; then
-    echo -e "✅ Ansible PPA added successfully."
+    echo -e "\033[1;32m✅ Ansible PPA added successfully.\033[0m"
 else
-    echo -e "\n❌ Failed to add Ansible PPA. Exiting...\n"
+    echo -e "\n\033[1;31m❌ Failed to add Ansible PPA. Exiting...\033[0m\n"
     exit 1
 fi
-echo -e "\n🚀 Installing Ansible... Please wait...\n"
+
+# ==================================================
+# 📥 Installing Ansible
+# ==================================================
+echo -e "\n\033[1;34m🚀 Installing Ansible... Please wait for a few minutes...\033[0m\n"
 if sudo apt update -qq && sudo apt install -y ansible > /dev/null 2>&1; then
-    echo -e "\n✅ Ansible installed successfully. Version: $(ansible --version | head -n1 | awk '{print $NF}' | tr -d ']')"
+    echo -e "\n\033[1;32m✅ Ansible installed successfully.\033[0m"
+    echo -e "📌 Installed Version: \033[1;36m$(ansible --version | head -n1 | awk '{print $NF}' | tr -d ']')\033[0m\n"
 else
-    echo -e "\n❌ Ansible installation failed. Exiting...\n"
+    echo -e "\n\033[1;31m❌ Ansible installation failed. Exiting...\033[0m\n"
     exit 1
 fi
+
+echo -e "\n\033[1;32m🎉 Ansible setup completed successfully. Happy Automating! 🚀\033[0m\n"
