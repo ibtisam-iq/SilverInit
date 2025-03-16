@@ -13,7 +13,7 @@ echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requ
 bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
 
 # Update and install necessary dependencies
-echo -e "\n🚀 Updating system and installing dependencies...\n"
+echo -e "\n🚀 Updating the system first time and installing all vital dependencies, please be patient ...\n"
 sudo apt update -qq && sudo apt install -yq net-tools apt-transport-https ca-certificates curl gpg jq lsb-release python3-pip tree wget gnupg > /dev/null 2>&1
 
 # Prompt user for a hostname (leave empty to keep the current one)
