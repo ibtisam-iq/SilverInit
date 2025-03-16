@@ -79,9 +79,8 @@ divider
 
 # Check if Jenkins is already installed
 if command -v jenkins &> /dev/null; then
-    log "✅ Jenkins is already installed."
-    log "📌 Installed Jenkins Version: $(jenkins --version)"
-    log "🔗 Jenkins is not found. Installing Jenkins..."
+    log "\n✅ Jenkins is already installed."
+    log "\n📌 Installed Jenkins Version: $(jenkins --version)"
     exit 0
 fi
 
@@ -95,7 +94,7 @@ if [[ "$QUIET_MODE" == false ]]; then
         read -r -p "Have you opened port 8080 in your AWS Security Group? (yes/no): " port_check < /dev/tty
         port_check=$(echo "$port_check" | tr '[:upper:]' '[:lower:]')
         if [[ "$port_check" == "yes" ]]; then
-            log "✅ Port 8080 is open. Proceeding..."
+            log "\n✅ Port 8080 is open. Proceeding..."
             break
         elif [[ "$port_check" == "no" ]]; then
             read -r -p "🔄 Press Enter after opening port 8080..."
@@ -126,7 +125,7 @@ fi
 divider
 
 # Install Jenkins
-log "🚀 Installing Jenkins..."
+log "🚀 Installing Jenkins... it may take a few minutes."
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key > /dev/null 2>&1
 echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
 
