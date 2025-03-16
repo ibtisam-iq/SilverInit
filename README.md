@@ -82,15 +82,13 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/containerd
 ### Helm
 
 ```bash
-curl -sL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash
-echo -e "\n🔹 Helm Version: $(helm version)\n"
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/helm-setup.sh | sudo bash
 ```
 
 ### Trivy
 
 ``` bash
-curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.60.0
-echo -e "\n🔹 Trivy Version: $(trivy --version | head -n 1 | awk '{print $2}')\n"
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/trivy-setup.sh | sudo bash
 ```
 
 ### Get System Information
