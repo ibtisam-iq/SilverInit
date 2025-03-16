@@ -4,22 +4,18 @@
 # -------------------------------------------------
 # This script installs Jenkins on Ubuntu or Linux Mint.
 
-# Exit immediately if a command fails
-set -e  
+# Safety settings
+set -e  # Exit immediately if a command fails
+set -o pipefail  # Ensure failures in piped commands are detected
 
-# Ensure the script is running on Ubuntu or Linux Mint
-if [[ -f /etc/os-release ]]; then
-    . /etc/os-release
-    if [[ "$ID" == "ubuntu" || "$ID" == "linuxmint" || "$ID" == "debian" ]]; then
-        echo -e "\n✅ Detected supported OS: $NAME ($ID)"
-    else
-        echo -e "\n❌ This script is only for Ubuntu & its derivatives. Exiting...\n"
-        exit 1
-    fi
-else
-    echo -e "\n❌ Unable to determine OS type. Exiting...\n"
-    exit 1
-fi
+# Handle script failures
+trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
+
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements to install Jenkins..."
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
+echo -e "\n✅ System meets the requirements to install Jenkins."
 
 # Check if Jenkins is already installed
 if command -v jenkins &> /dev/null; then
@@ -83,6 +79,7 @@ sudo apt install jenkins -y > /dev/null 2>&1
 # Enable & Start Jenkins
 sudo systemctl enable jenkins > /dev/null 2>&1
 sudo systemctl restart jenkins > /dev/null 2>&1
+sleep 10  # Wait for Jenkins to start
 
 # Check Jenkins Status
 if systemctl is-active --quiet jenkins; then
@@ -104,7 +101,7 @@ LOCAL_IP=$(hostname -I | awk '{print $1}')
 PUBLIC_IP=$(curl -s ifconfig.me || echo "Not Available")
 
 # Print both access URLs and let the user decide
-echo -e "\n🔗 Access Jenkins server using one of the following based on your network:"
+echo -e "\n🔗 Access Jenkins server using one of the following URL based on your setup:"
 echo -e "\n - Local Network:  http://$LOCAL_IP:8080"
 echo -e "\n - Public Network: http://$PUBLIC_IP:8080\n"
 

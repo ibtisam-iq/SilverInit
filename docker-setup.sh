@@ -5,22 +5,18 @@
 # This script installs Docker on Ubuntu or Linux Mint.
 # It installs Docker CE, Docker CLI, Containerd, Docker Buildx, and Docker Compose.
 
-# Exit immediately if a command fails
-set -e  
+# Safety settings
+set -e  # Exit immediately if a command fails
+set -o pipefail  # Ensure failures in piped commands are detected
 
-# Ensure the script is running on Ubuntu or Linux Mint
-if [[ -f /etc/os-release ]]; then
-    . /etc/os-release
-    if [[ "$ID" == "ubuntu" || "$ID" == "linuxmint" ]]; then
-        echo -e "\n✅ Detected supported OS: $NAME ($ID)"
-    else
-        echo -e "\n❌ This script is only for Ubuntu or Linux Mint. Exiting...\n"
-        exit 1
-    fi
-else
-    echo -e "\n❌ Unable to determine OS type. Exiting...\n"
-    exit 1
-fi
+# Handle script failures
+trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
+
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+echo -e "\n🚀 Running preflight.sh script to ensure that system meets the requirements to install Docker..."
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo "❌ Failed to execute preflight.sh. Exiting..."; exit 1; }
+echo -e "\n✅ System meets the requirements to install Docker."
 
 # Check if Docker is already installed
 if command -v docker &> /dev/null; then
@@ -31,17 +27,17 @@ fi
 
 
 # Update system and install required dependencies
-echo -e "\n🚀 Updating package list and checking required dependencies..."
+echo -e "\n🚀 Updating package list and checking required dependencies to install Docker..."
 sudo apt update -qq && sudo apt install -yq ca-certificates > /dev/null 2>&1
 
 DEPS=("curl" "wget")
 
 for pkg in "${DEPS[@]}"; do
     if ! command -v "$pkg" &>/dev/null; then
-        echo -e "🔹 Installing missing dependency: $pkg..."
+        echo -e "\n🔹 Installing missing dependency: $pkg..."
         sudo apt-get install -yq "$pkg" > /dev/null 2>&1
     else
-        echo -e "✅ $pkg is already installed."
+        echo -e "\n✅ $pkg is already installed."
     fi
 done
 
@@ -60,6 +56,7 @@ sudo apt-get update > /dev/null 2>&1
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugins > /dev/null 2>&1
 
 # Add Jenkins user to the Docker group
+echo -e "\n🚀 Adding the current user to the Docker group...\n"
 sudo usermod -aG docker $USER
 
 # Open a new shell for 'newgrp docker' without stopping script execution
