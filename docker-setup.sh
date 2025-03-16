@@ -52,8 +52,8 @@ echo -e "\n🚀 Adding Docker repository for installing Docker...\n"
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 echo -e "\n🚀 Installing Docker ...\n"
-sudo apt-get update > /dev/null 2>&1
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugins > /dev/null 2>&1
+sudo apt-get update -qq
+sudo apt-get install -yq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin > /dev/null 2>&1
 
 # Add Jenkins user to the Docker group
 echo -e "\n🚀 Adding the current user to the Docker group...\n"
