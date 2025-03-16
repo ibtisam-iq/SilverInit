@@ -22,7 +22,7 @@
 #   7️⃣ aws-cli-conf.sh - Configures AWS CLI
 # 
 # 🔧 Usage:
-#   curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/jumpbox-setup.sh | sudo bash
+#   curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/Jumpbox.sh | sudo bash
 # 
 # 📜 License: MIT | 🌐 https://github.com/ibtisam-iq/SilverInit
 
