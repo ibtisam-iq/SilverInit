@@ -49,7 +49,7 @@ else
     chmod +x get-helm.sh
     sudo ./get-helm.sh > /dev/null 2>&1 || { echo "❌ Failed to install Helm. Exiting..."; exit 1; }
 fi
-helm version || echo "⚠️ Helm installed, but version check failed."
+echo -e "\n🔹 Helm version: $(helm version --template '{{.Version}}')"
 
 echo -e "\n✅ All scripts executed successfully.\n"
 
