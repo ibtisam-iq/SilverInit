@@ -48,7 +48,6 @@ fi
 
 echo -e "\n✅ All scripts executed successfully.\n"
 
-
 # Restart Jenkins after adding jenkins user to docker group
 sudo usermod -aG docker jenkins
 echo -e "\n🔄 Restarting Jenkins to apply changes..."
@@ -69,4 +68,9 @@ echo -e "\n - Public Network: http://$PUBLIC_IP:8080\n"
 ## Display Jenkins Initial Admin Password
 echo -e "\n🔑 Please use this password to unlock Jenkins: $(sudo cat /var/lib/jenkins/secrets/initialAdminPassword)\n"
 
+
 echo -e "🎉 Jenkins server setup completed. You can now access Jenkins using the provided URL.\n"
+
+# Display message to apply changes to groups
+echo -e "\n🔄 Jenkins user is added to docker group, please run this command for applying the changes: newgrp docker\n"
+

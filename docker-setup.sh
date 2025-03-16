@@ -81,3 +81,5 @@ else
 fi
 
 echo -e "\n✅ Docker installation completed successfully! 🚀\n"
+
+echo -e "\n🔄 Please run this command: newgrp docker\n"
