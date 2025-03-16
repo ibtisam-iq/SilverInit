@@ -14,6 +14,17 @@
 # 5. kubectl-and-eksctl.sh
 # 6. Helm installation
 
+
+# Ensure script is run as root
+# -------------------------------------------------
+if [[ $EUID -ne 0 ]]; then
+    echo -e "\n❌ This script must be run as root. Run the command with:\n"
+    echo "   sudo bash <(curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/Jumpbox.sh)"
+    exit 1
+fi
+
+# -------------------------------------------------
+
 set -e  # Exit immediately if a command fails
 set -o pipefail  # Ensure failures in piped commands are detected
 
