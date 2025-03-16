@@ -28,7 +28,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/Jenkins-Se
 ### Jenkins
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/jenkins-setup.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/jenkins-setup.sh | sudo bash
 ```
 
 ### Docker
