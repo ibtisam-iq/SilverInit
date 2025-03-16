@@ -15,8 +15,11 @@
 # 6. kubectl-and-eksctl.sh
 # 7. Helm installation
 
+set -e  # Exit immediately if a command fails
+set -o pipefail  # Ensure failures in piped commands are detected
 
-#!/bin/bash
+# Function to handle script failures
+trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
 
 # Define the repository URL
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"

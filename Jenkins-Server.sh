@@ -6,11 +6,12 @@
 # and set up the Jenkins server.
 
 # The following scripts are executed in sequence:
-# 1. sys-info-and-update.sh
-# 2. jenkins-setup.sh
-# 3. docker-setup.sh
-# 4. kubectl-and-eksctl.sh
-# 5. Trivy installation
+# 1. preflight.sh
+# 2. sys-info-and-update.sh
+# 3. jenkins-setup.sh
+# 4. docker-setup.sh
+# 5. kubectl-and-eksctl.sh
+# 6. Trivy installation
 
 set -e  # Exit immediately if a command fails
 set -o pipefail  # Ensure failures in piped commands are detected
@@ -21,27 +22,9 @@ trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ER
 # Define the repository URL
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
-# Function to check if a command exists
-command_exists() {
-    command -v "$1" >/dev/null 2>&1
-}
-
-# Ensure required commands are available
-for cmd in curl bash; do
-    if ! command_exists "$cmd"; then
-        echo -e "\n❌ Missing dependency: $cmd. Please install it and retry.\n"
-        exit 1
-    fi
-done
-
-# Check internet connectivity
-if ! curl -s --head --fail https://www.google.com > /dev/null; then
-    echo -e "\n❌ No internet connection. Please check your network and retry.\n"
-    exit 1
-fi
-
 # Execute required scripts in sequence
 SCRIPTS=(
+    "preflight.sh"
     "sys-info-and-update.sh"
     "jenkins-setup.sh"
     "docker-setup.sh"
