@@ -70,7 +70,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sonarqube-
 ### Nexus Container
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/nexus-cont.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/nexus-cont.sh | sudo bash
 ```
 
 ### Containerd
