@@ -67,7 +67,7 @@ echo -e "\n🔹 AWS CLI Version: $(aws --version | awk '{print $1}' | cut -d'/' 
 
 # Function to configure AWS CLI
 configure_aws_cli() {
-    echo -e "\n🔧 Configuring AWS CLI..."
+    echo -e "\n🔧 Configuring AWS CLI...\n"
 
     # Ensure input works even in 'curl | bash' mode
     exec </dev/tty
