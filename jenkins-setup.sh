@@ -29,31 +29,33 @@ if command -v jenkins &> /dev/null; then
 fi
 
 # AWS Security Group Warning
-echo -e "\n⚠️  If you're running this on an AWS EC2 instance, you must manually open port 8080 in the security group."
+echo -e "\n⚠️  If you're running this on an AWS EC2 instance, ensure port 8080 is open in the security group."
 
 while true; do
-    read -p "Have you already opened port 8080 in your AWS Security Group? (yes/no): " port_check
+    read -r -p "Have you opened port 8080 in your AWS Security Group? (yes/no): " port_check
     port_check=$(echo "$port_check" | tr '[:upper:]' '[:lower:]')  # Convert input to lowercase
 
     if [[ "$port_check" == "yes" ]]; then
-        break  # Proceed with the script
+        echo -e "\n✅ Port 8080 is open. Proceeding...\n"
+        break  # Continue script execution
     elif [[ "$port_check" == "no" ]]; then
         echo -e "\n🔹 Follow these steps to allow external access to Jenkins on port 8080:\n"
-        echo -e "1️⃣ Go to your AWS EC2 Dashboard."
+        echo -e "1️⃣ Open the AWS EC2 Dashboard."
         echo -e "2️⃣ Select your EC2 instance."
-        echo -e "3️⃣ Scroll down to the 'Security' tab and click on your Security Group."
+        echo -e "3️⃣ Go to the 'Security' tab and click your Security Group."
         echo -e "4️⃣ Click 'Edit Inbound Rules' → 'Add Rule'."
         echo -e "5️⃣ Set:"
-        echo -e "   - Type: Custom TCP"
-        echo -e "   - Protocol: TCP"
-        echo -e "   - Port Range: 8080"
-        echo -e "   - Source: 0.0.0.0/0 (or your specific IP for security)"
+        echo -e "   - **Type**: Custom TCP"
+        echo -e "   - **Protocol**: TCP"
+        echo -e "   - **Port Range**: 8080"
+        echo -e "   - **Source**: 0.0.0.0/0 *(or your IP for security)*"
         echo -e "6️⃣ Click 'Save rules'.\n"
-        read -p "🔄 Press Enter once you have opened port 8080..."
+        read -r -p "🔄 Press Enter after opening port 8080..."
     else
         echo -e "\n❌ Invalid input! Please enter **yes** or **no**.\n"
     fi
 done
+
 
 # Update system and install required dependencies
 echo -e "\n🚀 Updating package list and checking required dependencies..."

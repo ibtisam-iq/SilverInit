@@ -62,11 +62,11 @@ done
 # Install AWS CLI
 echo -e "\n🚀 Installing AWS CLI v2..."
 curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-sudo apt update -qq && sudo apt install -yq unzip python3 groff less libc6
+sudo apt update -qq && sudo apt install -yq unzip python3 groff less libc6 > /dev/null 2>&1
 unzip awscliv2.zip > /dev/null 2>&1
 sudo ./aws/install
 rm -rf aws awscliv2.zip aws
-echo -e "✅ AWS CLI is installed successfully. Version:\n$(aws --version)"
+echo -e "/n✅ AWS CLI is installed successfully. Version:$(aws --version)"
 
 # Configure AWS CLI
 echo -e "\n🔧 Configuring AWS CLI..."
