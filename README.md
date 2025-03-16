@@ -52,7 +52,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/terraform-
 ### AWS CLI
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/aws-cli-conf.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/aws-cli-conf.sh | sudo bash
 ```
 
 ### Kubectl & Eksctl
