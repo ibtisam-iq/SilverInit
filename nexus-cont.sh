@@ -28,7 +28,7 @@ if ! command -v docker &> /dev/null; then
     sudo usermod -aG docker $USER
     sudo systemctl enable docker --now
     sudo systemctl start docker
-    echo -e "\n✅ Docker installed successfully to deploy Nexus container!"
+    echo -e "\n✅ Docker installed successfully to deploy Nexus container!\n"
 fi
 
 # ✅ Ensure Docker is running
