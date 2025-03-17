@@ -5,8 +5,11 @@
 # This script installs kubectl and eksctl on Linux.
 
 
-# Exit immediately if a command fails
-set -e  
+set -e  # Exit immediately if a command fails
+set -o pipefail  # Ensure failures in piped commands are detected
+
+# Handle script failures
+trap 'echo -e "\n\033[1;31m❌ Error occurred at line $LINENO. Exiting...\033[0m\n" && exit 1' ERR
 
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 

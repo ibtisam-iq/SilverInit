@@ -1,43 +1,36 @@
 #!/bin/bash
 
+# ==================================================
 # SilverInit - Containerd Setup
-# -------------------------------------------------
-# This script automates the setup of containerd on a Linux system.
-# It installs containerd, configures it, and downloads CNI plugins for networking.
+# --------------------------------------------------
+# This script installs Containerd on Ubuntu or Linux Mint.
+# Author: Muhammad Ibtisam Iqbal
+# License: MIT
+# Version: 1.0
+# Usage: sudo bash containerd-setup.sh
+# ==================================================
 
 set -e  # Exit immediately if a command fails
 set -o pipefail  # Ensure failures in piped commands are detected
 
-# Function to handle script failures
-trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
+# Handle script failures
+trap 'echo -e "\n\033[1;31m❌ Error occurred at line $LINENO. Exiting...\033[0m\n" && exit 1' ERR
 
-# Ensure the script is running on Ubuntu or Linux Mint
-if [[ -f /etc/os-release ]]; then
-    . /etc/os-release
-    if [[ "$ID" != "ubuntu" && "$ID" != "linuxmint" ]]; then
-        echo -e "\n❌ Unsupported OS: $NAME ($ID). This script is only for Ubuntu/Linux Mint. Exiting...\n"
-        exit 1
-    fi
-    echo -e "\n✅ Detected OS: $NAME ($ID)\n"
-else
-    echo -e "\n❌ Unable to determine OS type. Exiting...\n"
-    exit 1
-fi
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
-# Ensure 64-bit architecture
-ARCH=$(uname -m)
-if [[ "$ARCH" != "x86_64" && "$ARCH" != "amd64" ]]; then
-    echo -e "\n❌ Unsupported architecture: $ARCH. This script supports only x86_64 (amd64). Exiting...\n"
-    exit 1
-fi
-echo -e "\n✅ Architecture supported: $ARCH\n"
+# ==================================================
+# 🛠️ Preflight Check
+# ==================================================
+echo -e "\n\033[1;34m🚀 Running preflight.sh script to ensure system meets requirements for Containerd...\033[0m"
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo -e "\n\033[1;31m❌ Failed to execute preflight.sh. Exiting...\033[0m"; exit 1; }
+echo -e "\n\033[1;32m✅ System meets the requirements for Containerd installation.\033[0m"
 
-# Update system and install required dependencies
-echo -e "\n🚀 Updating package list and installing required dependencies...\n"
+# Update system and install dependencies
+echo -e "\n\033[1;34m🚀 Updating package list and installing dependencies...\033[0m"
 sudo apt update -qq && sudo apt install -yq ca-certificates curl jq gpg > /dev/null
 
-# Add Docker repository for containerd
-echo -e "\n🔹 Adding Docker repository for containerd installation...\n"
+# Add Docker repository for containerd installation
+echo -e "\n\033[1;34m🔹 Adding Docker repository for containerd installation...\033[0m"
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -45,90 +38,76 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 sudo apt update -qq
 
 # Install containerd
-echo -e "\n🔹 Installing container runtime (containerd)...\n"
+echo -e "\n\033[1;34m🔹 Installing container runtime (containerd)...\033[0m"
 sudo apt-get install -yq containerd.io > /dev/null 2>&1
 
-# Verify containerd service file path
-echo -e "\n🔹 Checking containerd service file path...\n"
+# Configure containerd
+echo -e "\n\033[1;34m🔹 Verifying containerd service file path...\033[0m"
 sudo systemctl show -p FragmentPath containerd
 
-# Configure containerd
-echo -e "\n🔹 Configuring containerd...\n"
+echo -e "\n\033[1;34m🔹 Configuring containerd...\033[0m"
 sudo mkdir -p /etc/containerd
+sudo containerd config default | sudo tee /etc/containerd/config.toml > /dev/null || { echo -e "\n\033[1;31m❌ Failed to generate /etc/containerd/config.toml. Exiting...\033[0m"; exit 1; }
 
-# Force regenerate config.toml with CRI enabled
-echo -e "\n🔹 Generating default containerd configuration...\n"
-sudo containerd config default | sudo tee /etc/containerd/config.toml > /dev/null
-if [[ $? -ne 0 ]]; then
-    echo -e "\n❌ Failed to generate /etc/containerd/config.toml. Exiting...\n"
-    exit 1
-fi
-
-# Ensure SystemdCgroup is set to true
 if grep -q 'SystemdCgroup = false' /etc/containerd/config.toml; then
     sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
-    echo -e "\n✅ SystemdCgroup set to true.\n"
+    echo -e "\n\033[1;32m✅ SystemdCgroup set to true.\033[0m"
 else
-    echo -e "\n✅ SystemdCgroup is already set to true or missing in config.\n"
+    echo -e "\n\033[1;32m✅ SystemdCgroup is already set to true.\033[0m"
 fi
 
 # Restart containerd
-echo -e "\n🔄 Restarting containerd...\n"
+echo -e "\n\033[1;34m🔄 Restarting containerd...\033[0m"
 sudo systemctl restart containerd
 sudo systemctl enable containerd --now
 
-# Confirm the changes
-echo -e "\n🔍 Checking SystemdCgroup setting in config...\n"
-sleep 10  # Wait for containerd to restart
+# Validate containerd installation
+echo -e "\n\033[1;34m🔍 Checking SystemdCgroup setting in config...\033[0m"
+sleep 10
 grep 'SystemdCgroup' /etc/containerd/config.toml
 
-# Create directory for CNI plugins
-echo -e "\n🔹 Ensuring CNI plugins directory exists...\n"
+# Adding CNI plugins
+echo -e "\n\033[1;34m🔹 Ensuring CNI plugins directory exists...\033[0m"
 sudo mkdir -p /opt/cni/bin
 
-# Download latest CNI plugins
-echo -e "\n🔹 Fetching latest CNI plugin version...\n"
+echo -e "\n\033[1;34m🔹 Fetching latest CNI plugin version...\033[0m"
 CNI_VERSION=$(curl -s https://api.github.com/repos/containernetworking/plugins/releases/latest | jq -r '.tag_name')
 CNI_TARBALL="cni-plugins-linux-amd64-${CNI_VERSION}.tgz"
 
 if [[ ! -f "$CNI_TARBALL" ]]; then
-    echo -e "\n🔹 Downloading CNI plugins...\n"
+    echo -e "\n\033[1;34m🔹 Downloading CNI plugins...\033[0m"
     wget -q "https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/${CNI_TARBALL}"
 fi
 
-# Extract CNI plugins if downloaded
 if [[ -f "$CNI_TARBALL" ]]; then
-    echo -e "\n🔹 Extracting CNI plugins...\n"
+    echo -e "\n\033[1;34m🔹 Extracting CNI plugins...\033[0m"
     sudo tar -C /opt/cni/bin -xzvf "$CNI_TARBALL" > /dev/null
     rm -f "$CNI_TARBALL"
 else
-    echo -e "\n❌ Failed to download CNI plugins. Exiting...\n"
+    echo -e "\n\033[1;31m❌ Failed to download CNI plugins. Exiting...\033[0m"
     exit 1
 fi
 
-# Check CNI plugins installation
-echo -e "\n🔹 Validating CNI plugin installation...\n"
-sudo ls /opt/cni/bin/ || (echo -e "\n❌ CNI plugins not found. Exiting...\n" && exit 1)
+# Validate CNI plugin installation
+echo -e "\n\033[1;34m🔹 Validating CNI plugin installation...\033[0m"
+sudo ls /opt/cni/bin/ || { echo -e "\n\033[1;31m❌ CNI plugins not found. Exiting...\033[0m"; exit 1; }
 
-# Restart containerd to apply changes
-echo -e "\n🔹 Restarting containerd...\n"
 sudo systemctl enable containerd --now
 sudo systemctl restart containerd
 
-# Verify containerd service
 if systemctl is-active --quiet containerd; then
-    echo -e "\n✅ Containerd is running successfully.\n"
+    echo -e "\n\033[1;32m✅ Containerd is running successfully.\033[0m"
 else
-    echo -e "\n❌ Containerd failed to start. Check logs with: sudo journalctl -u containerd --no-pager\n"
+    echo -e "\n\033[1;31m❌ Containerd failed to start. Check logs with: sudo journalctl -u containerd --no-pager\033[0m"
     exit 1
 fi
 
 # Pull Alpine image to test containerd
-echo -e "\n🔹 Pulling Alpine image to test containerd...\n"
+echo -e "\n\033[1;34m🔹 Pulling Alpine image to test containerd...\033[0m"
 sudo ctr images pull docker.io/library/alpine:latest
 
-# Display containerd and runc versions
-echo -e "\n✅ Containerd version: $(containerd --version | awk '{print $3}')\n"
-echo -e "✅ Runc version: $(runc --version | awk '{print $3}')\n"
+# Validate containerd and CNI plugin versions
+echo -e "\n\033[1;32m✅ Containerd version: $(containerd --version | awk '{print $3}')\033[0m"
+echo -e "\033[1;32m✅ Runc version: $(runc --version | awk '{print $3}')\033[0m"
 
-echo -e "\n🎉 Containerd and CNI plugins setup completed successfully!\n"
+echo -e "\n\033[1;33m🎉 Containerd and CNI plugins setup completed successfully!\033[0m\n"

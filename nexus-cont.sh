@@ -4,8 +4,20 @@
 # -------------------------------------------------
 # This script installs and runs Nexus container on Linux.
 
-# Exit on any error
-set -e
+set -e  # Exit immediately if a command fails
+set -o pipefail  # Ensure failures in piped commands are detected
+
+# Handle script failures
+trap 'echo -e "\n\033[1;31m❌ Error occurred at line $LINENO. Exiting...\033[0m\n" && exit 1' ERR
+
+REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
+
+# ==================================================
+# 🛠️ Preflight Check
+# ==================================================
+echo -e "\n\033[1;34m🚀 Running preflight.sh script to ensure system meets requirements for deploying Nexus container...\033[0m\n"
+bash <(curl -sL "$REPO_URL/preflight.sh") || { echo -e "\n\033[1;31m❌ Failed to execute preflight.sh. Exiting...\033[0m"; exit 1; }
+echo -e "\n\033[1;32m✅ System meets the requirements for deploying Nexus container.\033[0m"
 
 # 🛑 Check if Docker is installed
 if ! command -v docker &> /dev/null; then
