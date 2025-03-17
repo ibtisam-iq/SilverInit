@@ -47,4 +47,4 @@ curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_Li
 tar -xzf eksctl.tar.gz
 sudo mv eksctl /usr/local/bin/
 rm -f eksctl.tar.gz
-echo -e "\n✅ eksctl installed successfully. Version: $(eksctl version)\n"
+echo -e "\n✅ eksctl installed successfully. Version: $(eksctl version)\n" 
