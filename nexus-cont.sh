@@ -50,7 +50,7 @@ validate_port() {
 
 # Prompt user for port (default: 8081)
 while true; do
-    read -rp "🔹 Please enter the port for Nexus container (Press Enter for default: 8081): " USER_PORT
+    read -rp "🔹 Please enter the port for Nexus container (Press Enter for default: 8081): " USER_PORT < /dev/tty
     USER_PORT=${USER_PORT:-8081}  # Default to 8081 if empty
     if validate_port "$USER_PORT"; then
         break
