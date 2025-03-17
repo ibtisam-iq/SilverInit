@@ -50,7 +50,7 @@ validate_port() {
 
 # Prompt user for port (default: 9000)
 while true; do
-    read -rp "🔹 Please enter the port for SonarQube container (Press Enter for default: 9000): " USER_PORT
+    read -rp "✅ Please enter the port for SonarQube container (Press Enter for default: 9000): " USER_PORT </dev/tty
     USER_PORT=${USER_PORT:-9000}  # Default to 9000 if empty
     if validate_port "$USER_PORT"; then
         break
