@@ -32,4 +32,4 @@ else
     chmod +x get-helm.sh
     sudo ./get-helm.sh > /dev/null 2>&1 || { echo "❌ Failed to install Helm. Exiting..."; exit 1; }
 fi
-echo -e "\n🔹 Helm Version: $(helm version --template '{{.Version}}')"
+echo -e "\n🔹 Helm Version: $(helm version --template '{{.Version}}')\n"
