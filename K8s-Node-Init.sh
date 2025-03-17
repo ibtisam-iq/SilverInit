@@ -80,3 +80,9 @@ bash <(curl -sL "$REPO_URL/containerd-setup.sh") || { echo -e "${RED}\n❌ Faile
 echo -e "${GREEN}\n✅ All scripts executed successfully.${NC}"
 echo -e "${YELLOW}\n✅ This node is ready to join the Kubernetes cluster.${NC}"
 echo -e "${GREEN}\n🎉 Happy Kuberneting! 🚀${NC}"
+
+# ==================================================
+# 🎉 Setup Complete! Thank You! 🙌
+# ==================================================
+echo -e "\n\033[1;33m✨  Thank you for choosing SilverInit - Muhammad Ibtisam 🚀\033[0m\n"
+echo -e "\033[1;32m💡 Automation is not about replacing humans; it's about freeing them to be more human—to create, innovate, and lead. \033[0m\n"

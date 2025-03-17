@@ -107,3 +107,9 @@ echo -e "\n\033[1;36m🎉 Kubernetes control plane setup is complete!\033[0m"
 echo -e "\033[1;32m✅ The control plane components may take a few more minutes to stabilize.\033[0m"
 echo -e "\033[1;32m✅ You can now join worker nodes to this cluster using the kubeadm join command.\033[0m"
 echo -e "\n\033[1;36m🎉 Happy Kuberneting! 🚀\033[0m\n"
+
+# ==================================================
+# 🎉 Setup Complete! Thank You! 🙌
+# ==================================================
+echo -e "\n\033[1;33m✨  Thank you for choosing SilverInit - Muhammad Ibtisam 🚀\033[0m\n"
+echo -e "\033[1;32m💡 Automation is not about replacing humans; it's about freeing them to be more human—to create, innovate, and lead. \033[0m\n"

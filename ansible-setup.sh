@@ -64,6 +64,7 @@ fi
 echo -e "\n\033[1;32m🎉 Ansible setup completed successfully. Happy Automating! 🚀\033[0m\n"
 
 # ==================================================
-# ℹ️ CLI Argument Handling (Future Support)
+# 🎉 Setup Complete! Thank You! 🙌
 # ==================================================
-echo -e "\n\033[1;33m⚠️  If you want CLI argument handling (e.g., -q for quiet mode, --no-update to skip updates), let me know, and I'll add it!\033[0m\n"
+echo -e "\n\033[1;33m✨  Thank you for choosing SilverInit - Muhammad Ibtisam 🚀\033[0m\n"
+echo -e "\033[1;32m💡 Automation is not about replacing humans; it's about freeing them to be more human—to create, innovate, and lead. \033[0m\n"

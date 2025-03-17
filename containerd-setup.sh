@@ -111,3 +111,9 @@ echo -e "\n\033[1;32m✅ Containerd version: $(containerd --version | awk '{prin
 echo -e "\033[1;32m✅ Runc version: $(runc --version | awk '{print $3}')\033[0m"
 
 echo -e "\n\033[1;33m🎉 Containerd and CNI plugins setup completed successfully!\033[0m\n"
+
+# ==================================================
+# 🎉 Setup Complete! Thank You! 🙌
+# ==================================================
+echo -e "\n\033[1;33m✨  Thank you for choosing SilverInit - Muhammad Ibtisam 🚀\033[0m\n"
+echo -e "\033[1;32m💡 Automation is not about replacing humans; it's about freeing them to be more human—to create, innovate, and lead. \033[0m\n"

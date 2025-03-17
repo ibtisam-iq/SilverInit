@@ -140,3 +140,9 @@ log "🔹 UUID           : $(cat /etc/machine-id)"
 divider
 log "✅ ${GREEN}The system is now updated and ready!${RESET}"
 divider
+
+# ==================================================
+# 🎉 Setup Complete! Thank You! 🙌
+# ==================================================
+echo -e "\n\033[1;33m✨  Thank you for choosing SilverInit - Muhammad Ibtisam 🚀\033[0m\n"
+echo -e "\033[1;32m💡 Automation is not about replacing humans; it's about freeing them to be more human—to create, innovate, and lead. \033[0m\n"

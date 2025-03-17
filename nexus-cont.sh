@@ -98,3 +98,9 @@ echo -e "\n - Public Network: http://$PUBLIC_IP:$USER_PORT\n"
 
 echo -e "\n🔑 Please put the password to unlock Nexus: $(sudo docker exec nexus cat /nexus-data/admin.password)\n"
 echo -e "\n📌 Note: It may take a few minutes for Nexus container to start completely.\n"
+
+# ==================================================
+# 🎉 Setup Complete! Thank You! 🙌
+# ==================================================
+echo -e "\n\033[1;33m✨  Thank you for choosing SilverInit - Muhammad Ibtisam 🚀\033[0m\n"
+echo -e "\033[1;32m💡 Automation is not about replacing humans; it's about freeing them to be more human—to create, innovate, and lead. \033[0m\n"
