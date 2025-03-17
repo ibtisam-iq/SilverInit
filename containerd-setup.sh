@@ -30,7 +30,7 @@ echo -e "\n\033[1;34m🚀 Updating package list and installing dependencies...\0
 sudo apt update -qq && sudo apt install -yq ca-certificates curl jq gpg > /dev/null
 
 # Add Docker repository for containerd installation
-echo -e "\n\033[1;34m🔹 Adding Docker repository for containerd installation...\033[0m"
+echo -e "\n\033[1;34m✅ Adding Docker repository for containerd installation...\033[0m"
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
@@ -38,14 +38,14 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 sudo apt update -qq
 
 # Install containerd
-echo -e "\n\033[1;34m🔹 Installing container runtime (containerd)...\033[0m"
+echo -e "\n\033[1;34m✅ Installing container runtime (containerd)...\033[0m"
 sudo apt-get install -yq containerd.io > /dev/null 2>&1
 
 # Configure containerd
-echo -e "\n\033[1;34m🔹 Verifying containerd service file path...\033[0m"
+echo -e "\n\033[1;34m✅ Verifying containerd service file path...\033[0m"
 sudo systemctl show -p FragmentPath containerd
 
-echo -e "\n\033[1;34m🔹 Configuring containerd...\033[0m"
+echo -e "\n\033[1;34m✅ Configuring containerd...\033[0m"
 sudo mkdir -p /etc/containerd
 sudo containerd config default | sudo tee /etc/containerd/config.toml > /dev/null || { echo -e "\n\033[1;31m❌ Failed to generate /etc/containerd/config.toml. Exiting...\033[0m"; exit 1; }
 
@@ -67,20 +67,20 @@ sleep 10
 grep 'SystemdCgroup' /etc/containerd/config.toml
 
 # Adding CNI plugins
-echo -e "\n\033[1;34m🔹 Ensuring CNI plugins directory exists...\033[0m"
+echo -e "\n\033[1;34m✅ Ensuring CNI plugins directory exists...\033[0m"
 sudo mkdir -p /opt/cni/bin
 
-echo -e "\n\033[1;34m🔹 Fetching latest CNI plugin version...\033[0m"
+echo -e "\n\033[1;34m✅ Fetching latest CNI plugin version...\033[0m"
 CNI_VERSION=$(curl -s https://api.github.com/repos/containernetworking/plugins/releases/latest | jq -r '.tag_name')
 CNI_TARBALL="cni-plugins-linux-amd64-${CNI_VERSION}.tgz"
 
 if [[ ! -f "$CNI_TARBALL" ]]; then
-    echo -e "\n\033[1;34m🔹 Downloading CNI plugins...\033[0m"
+    echo -e "\n\033[1;34m✅ Downloading CNI plugins...\033[0m"
     wget -q "https://github.com/containernetworking/plugins/releases/download/${CNI_VERSION}/${CNI_TARBALL}"
 fi
 
 if [[ -f "$CNI_TARBALL" ]]; then
-    echo -e "\n\033[1;34m🔹 Extracting CNI plugins...\033[0m"
+    echo -e "\n\033[1;34m✅ Extracting CNI plugins...\033[0m"
     sudo tar -C /opt/cni/bin -xzvf "$CNI_TARBALL" > /dev/null
     rm -f "$CNI_TARBALL"
 else
@@ -89,7 +89,7 @@ else
 fi
 
 # Validate CNI plugin installation
-echo -e "\n\033[1;34m🔹 Validating CNI plugin installation...\033[0m"
+echo -e "\n\033[1;34m✅ Validating CNI plugin installation...\033[0m"
 sudo ls /opt/cni/bin/ || { echo -e "\n\033[1;31m❌ CNI plugins not found. Exiting...\033[0m"; exit 1; }
 
 sudo systemctl enable containerd --now
@@ -103,7 +103,7 @@ else
 fi
 
 # Pull Alpine image to test containerd
-echo -e "\n\033[1;34m🔹 Pulling Alpine image to test containerd...\033[0m"
+echo -e "\n\033[1;34m✅ Pulling Alpine image to test containerd...\033[0m"
 sudo ctr images pull docker.io/library/alpine:latest
 
 # Validate containerd and CNI plugin versions
