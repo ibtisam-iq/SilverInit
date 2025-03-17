@@ -97,7 +97,7 @@ if [[ "$SKIP_UPDATE" == false ]]; then
     log "🚀 ${YELLOW}Updating system and installing dependencies...${RESET}"
     divider
     sudo apt update -qq && sudo apt install -yq net-tools apt-transport-https ca-certificates curl gpg jq lsb-release python3-pip tree wget gnupg > /dev/null 2>&1
-    log "✅ ${GREEN}System update completed successfully.${RESET}"
+    log "\n✅ ${GREEN}System update completed successfully.${RESET}"
 fi
 
 # -------------------------------
@@ -110,7 +110,7 @@ if [[ "$QUIET_MODE" == false ]]; then
     if [[ -n "$NEW_HOSTNAME" ]]; then
         log "\n🖥️ Updating hostname to '$NEW_HOSTNAME'..."
         sudo hostnamectl set-hostname "$NEW_HOSTNAME"
-        log "✅ ${GREEN}Hostname updated successfully.${RESET}"
+        log "\n✅ ${GREEN}Hostname updated successfully.${RESET}"
     else
         log "\nℹ️ Keeping the existing hostname: $(hostname)"
     fi
