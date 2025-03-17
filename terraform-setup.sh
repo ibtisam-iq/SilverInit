@@ -25,7 +25,7 @@ echo -e "\n\033[1;32m✅ System meets the requirements to install Terraform.\033
 # ==================================================
 if command -v terraform &> /dev/null; then
     echo -e "\n\033[1;32m✅ Terraform is already installed.\033[0m"
-    echo -e "📌 Installed Version: \033[1;36m$(terraform --version | head -n1 | awk '{print $2}')\033[0m\n"
+    echo -e "\n📌 Installed Version: \033[1;36m$(terraform --version | head -n1 | awk '{print $2}')\033[0m\n"
     exit 0
 fi
 
