@@ -41,7 +41,7 @@ for pkg in "${DEPS[@]}"; do
         echo -e "\033[1;33m🔹 Installing missing dependency: $pkg...\033[0m"
         sudo apt-get install -yq "$pkg" > /dev/null 2>&1
     else
-        echo -e "\033[1;32m✅ $pkg is already installed.\033[0m"
+        echo -e "\n\033[1;32m✅ $pkg is already installed.\033[0m"
     fi
 done
 
@@ -68,7 +68,7 @@ fi
 echo -e "\n\033[1;34m🚀 Installing Terraform...\033[0m\n"
 if sudo apt update -qq && sudo apt install -y terraform > /dev/null 2>&1; then
     echo -e "\n\033[1;32m✅ Terraform installed successfully.\033[0m"
-    echo -e "📌 Installed Version: \033[1;36m$(terraform --version | head -n1 | awk '{print $2}')\033[0m\n"
+    echo -e "\n📌 Installed Version: \033[1;36m$(terraform --version | head -n1 | awk '{print $2}')\033[0m\n"
 else
     echo -e "\n\033[1;31m❌ Terraform installation failed. Exiting...\033[0m\n"
     exit 1
