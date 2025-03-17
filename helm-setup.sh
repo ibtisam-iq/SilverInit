@@ -23,7 +23,7 @@ if command -v helm &> /dev/null; then
 fi
 
 # Install Helm securely
-echo -e "\n🚀 Installing Helm..."
+echo -e "\n🚀 Installing Helm...\n"
 if curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash; then
     echo -e "\n✅ Helm installation completed successfully."
 else
