@@ -76,12 +76,9 @@ sudo kubeadm init \
   --apiserver-advertise-address="${CONTROL_PLANE_IP}" \
   --node-name "${NODE_NAME}" \
   --cri-socket=unix:///var/run/containerd/containerd.sock || { echo -e "\n\033[1;31m❌ kubeadm init failed. Exiting...\033[0m"; exit 1; }
-echo -e "\033[1;32m✅ Kubernetes control plane initialized successfully.\033[0m"
 
-# Wait for cluster components to stabilize
-echo -e "\n\033[1;33m⏳ Waiting for cluster components to stabilize...\033[0m"
-sleep 120
-echo -e "\033[1;32m✅ Cluster components are now stable.\033[0m"
+# Control plane initialization complete
+echo -e "\033[1;32m✅ Kubernetes control plane initialized successfully.\033[0m"
 
 # Configure kubectl access
 echo -e "\n\033[1;33m🔹 Configuring kubectl access...\033[0m"
@@ -94,6 +91,35 @@ echo -e "\033[1;32m✅ Kubectl configured successfully.\033[0m"
 echo -e "\n\033[1;34m🚀 Deploying Calico network plugin...\033[0m"
 kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml || { echo -e "\n\033[1;31m❌ Failed to apply Calico CNI. Exiting...\033[0m"; exit 1; }
 echo -e "\033[1;32m✅ Calico network plugin deployed successfully.\033[0m"
+
+# Wait for Kubernetes components to be fully up
+echo -e "\n\033[1;33m⏳ Waiting for cluster components to be ready...\033[0m"
+
+READY=false
+TIMEOUT=600   # Timeout in seconds (10 minutes)
+INTERVAL=30   # Check every 30 seconds
+ELAPSED=0
+
+while [ $ELAPSED -lt $TIMEOUT ]; do
+    NODES_STATUS=$(kubectl get nodes --no-headers 2>/dev/null | awk '{print $2}')
+    PODS_STATUS=$(kubectl get pods -A --no-headers 2>/dev/null | awk '{print $4}' | grep -v "Running\|Completed")
+
+    if [[ $NODES_STATUS == "Ready" && -z "$PODS_STATUS" ]]; then
+        READY=true
+        break
+    fi
+
+    echo -e "\033[1;33m⏳ Cluster is still initializing... waiting ($ELAPSED/$TIMEOUT seconds)\033[0m"
+    sleep $INTERVAL
+    ELAPSED=$((ELAPSED + INTERVAL))
+done
+
+if [ "$READY" = false ]; then
+    echo -e "\033[1;31m❌ Cluster did not become ready in time. Exiting...\033[0m"
+    exit 1
+fi
+
+echo -e "\033[1;32m✅ Cluster components are now stable.\033[0m"
 
 # Verify cluster status
 echo -e "\n\033[1;33m🔍 Checking Kubernetes cluster status...\033[0m"
