@@ -35,14 +35,14 @@ echo -e "\n✅ System meets the requirements to install kubectl and eksctl."
 # rm -rf eksctl_$PLATFORM.tar.gz
 
 # Install kubectl
-echo -e "\n🚀 Installing kubectl...\n"
+echo -e "\n🚀 Installing kubectl..."
 curl -LO "https://dl.k8s.io/release/$(curl -sL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" > /dev/null 2>&1
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 echo -e "\n✅ kubectl installed successfully. Version: $(kubectl version --client --output=yaml | grep gitVersion | awk '{print $2}')"
 
 # Install eksctl
-echo -e "\n🚀 Installing eksctl...\n"
+echo -e "\n🚀 Installing eksctl..."
 curl -sL "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz" -o eksctl.tar.gz
 tar -xzf eksctl.tar.gz
 sudo mv eksctl /usr/local/bin/
