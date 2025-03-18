@@ -30,8 +30,8 @@ for service in containerd kubelet; do
 done
 
 # Check required ports
-local timeout=60
-local elapsed=0
+timeout=60
+elapsed=0
 echo "⏳ Waiting for Kubernetes API server to be ready..." | tee -a "$LOG_FILE"
 while ! sudo netstat -tulnp | grep -E "6443" &>/dev/null; do
     if [[ $elapsed -ge $timeout ]]; then

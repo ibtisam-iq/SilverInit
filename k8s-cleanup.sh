@@ -8,19 +8,20 @@ trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ER
 
 EXISTING_FILES=(
     "/etc/kubernetes/admin.conf"
+    "/etc/kubernetes/super-admin.conf"
     "/etc/kubernetes/controller-manager.conf"
     "/etc/kubernetes/kubelet.conf"
     "/etc/kubernetes/scheduler.conf"
+    "/etc/kubernetes/bootstrap-kubelet.conf"
     "/etc/kubernetes/manifests/kube-apiserver.yaml"
     "/etc/kubernetes/manifests/kube-controller-manager.yaml"
     "/etc/kubernetes/manifests/kube-scheduler.yaml"
     "/etc/kubernetes/manifests/etcd.yaml"
     "/etc/kubernetes/manifests/coredns.yaml"
     "/etc/kubernetes/pki/"
-    "/etc/kubernetes/scheduler.conf"
     "/etc/kubernetes/ssl/"
-    "/etc/kubernetes/super-admin.conf"
     "/var/lib/etcd"
+    "/var/lib/kubelet"
     "$HOME/.kube/"
 )
 EXISTING_SERVICES=(
@@ -58,11 +59,13 @@ for port in "${EXISTING_PORTS[@]}"; do
     fi
 done
 
-# If any conflicting resources are found, ask user for action
-if [ "$found_existing" = true ]; then
+# FINAL CHECK before prompting
+if [ "$found_existing" = false ]; then
+    echo -e "\033[1;32m✅ No conflicting resources found. Proceeding...\033[0m"
+else
     read -r -p "⚠️  Conflicting resources found! Do you want to delete them? (y/n): " answer < /dev/tty
     if [[ ! $answer =~ ^[Yy]$ ]]; then
-        echo -e "\n\033[1;31m❌ Cluster initialization aborted. You must remove existing resources first.\033[0m"
+        echo -e "\n\033[1;31m❌ Cluster initialization aborted. You must remove existing resources first. You can run kubeadm reset -f to remove all kubernetes resources manually.\033[0m"
         exit 1
     fi
 fi
@@ -103,6 +106,6 @@ sudo pkill -9 containerd || true
 echo -e "\033[1;32m✅ Processes terminated.\033[0m"
 
 # Reset Kubernetes setup
-echo -e "\n\033[1;33m🧹 Resetting Kubernetes installation...\033[0m"
-sudo kubeadm reset -f || true
-echo -e "\033[1;32m✅ Kubernetes reset complete.\033[0m"
+# echo -e "\n\033[1;33m🧹 Resetting Kubernetes installation...\033[0m"
+# sudo kubeadm reset -f || true
+# echo -e "\033[1;32m✅ Kubernetes reset complete.\033[0m"
