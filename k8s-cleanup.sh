@@ -21,7 +21,7 @@ EXISTING_FILES=(
     "/etc/kubernetes/pki/"
     "/etc/kubernetes/ssl/"
     "/var/lib/etcd"
-    "/var/lib/kubelet"
+#   "/var/lib/kubelet"
     "$HOME/.kube/"
 )
 EXISTING_SERVICES=(

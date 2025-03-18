@@ -77,6 +77,13 @@ echo -e "${GREEN}\n✅ Kernel modules loaded, and sysctl settings applied!${NC}"
 echo -e "${BLUE}\n🚀 Running containerd-setup.sh script...${NC}"
 bash <(curl -sL "$REPO_URL/containerd-setup.sh") || { echo -e "${RED}\n❌ Failed to execute containerd-setup.sh. Exiting...${NC}"; exit 1; }
 
+echo -e "\n\033[1;33m🔍 Status of the installed services...\033[0m"
+echo -e "\n"
+for service in containerd kubelet; do
+    echo -n "$service: "
+    systemctl is-active "$service"
+done
+
 echo -e "${GREEN}\n✅ All scripts executed successfully.${NC}"
 echo -e "${YELLOW}\n✅ This node is ready to join the Kubernetes cluster.${NC}"
 echo -e "${GREEN}\n🎉 Happy Kuberneting! 🚀${NC}"

@@ -1,10 +1,32 @@
 #!/bin/bash
 
-set -e  # Exit immediately if a command fails
-set -o pipefail  # Ensure failures in piped commands are detected
+set -euo pipefail
+trap 'echo -e "\n\033[1;31m❌ Error at line $LINENO. Exiting...\033[0m"; exit 1' ERR
 
-# Function to handle script failures
-trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
+# Debug mode (set DEBUG=true to enable)
+DEBUG=${DEBUG:-false}
+if [ "$DEBUG" == "true" ]; then
+    set -x
+fi
+
+# Logging setup
+LOG_FILE="/var/log/k8s-setup.log"
+echo "$(date) - Starting Kubernetes Control Plane Setup" | tee -a "$LOG_FILE"
+
+# Check Kubernetes API server readiness
+timeout=90
+elapsed=0
+echo "⏳ Waiting for Kubernetes API server to be ready..." | tee -a "$LOG_FILE"
+while ! ss -tulnp | grep -E "6443" &>/dev/null; do # sudo netstat is deprecated
+    if [[ $elapsed -ge $timeout ]]; then
+        echo "❌ Kubernetes API server did not start within $timeout seconds. Exiting..." | tee -a "$LOG_FILE"
+        exit 1
+    fi
+    echo "⏳ Still waiting... ($elapsed s elapsed)" | tee -a "$LOG_FILE"
+    sleep 5
+    ((elapsed+=5))
+done
+echo -e "\033[1;32m✅ Kubernetes API server is running.\033[0m" | tee -a "$LOG_FILE"
 
 # Waiting for Cluster Readiness (10 min max)
 echo -e "\n\033[1;33m⏳ Waiting up to 10 minutes for the control plane and pods to become ready...\033[0m"
@@ -13,7 +35,8 @@ INTERVAL=30  # Check every 30 seconds
 elapsed=0
 
 while [[ $elapsed -lt $TIMEOUT ]]; do
-    NODES_READY=$(kubectl get nodes --no-headers 2>/dev/null | grep -c ' Ready ')
+    NODES_READY=$(kubectl get nodes -o=jsonpath='{.items[*].status.conditions[?(@.type=="Ready")].status}' | grep -c True)
+#   NODES_READY=$(kubectl get nodes --no-headers 2>/dev/null | grep -c ' Ready ')
     PODS_READY=$(kubectl get pods -A --no-headers 2>/dev/null | awk '{print $4}' | grep -c 'Running')
 
     echo -e "\n\033[1;33m📊 Status: Nodes Ready: $NODES_READY | Pods Running: $PODS_READY (Elapsed: $elapsed sec)\033[0m"
