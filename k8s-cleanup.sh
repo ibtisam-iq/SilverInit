@@ -7,7 +7,19 @@ set -o pipefail  # Ensure failures in piped commands are detected
 trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
 
 EXISTING_FILES=(
-    "/etc/kubernetes/"
+    "/etc/kubernetes/admin.conf"
+    "/etc/kubernetes/controller-manager.conf"
+    "/etc/kubernetes/kubelet.conf"
+    "/etc/kubernetes/scheduler.conf"
+    "/etc/kubernetes/manifests/kube-apiserver.yaml"
+    "/etc/kubernetes/manifests/kube-controller-manager.yaml"
+    "/etc/kubernetes/manifests/kube-scheduler.yaml"
+    "/etc/kubernetes/manifests/etcd.yaml"
+    "/etc/kubernetes/manifests/coredns.yaml"
+    "/etc/kubernetes/pki/"
+    "/etc/kubernetes/scheduler.conf"
+    "/etc/kubernetes/ssl/"
+    "/etc/kubernetes/super-admin.conf"
     "/var/lib/etcd"
     "$HOME/.kube/"
 )
@@ -48,7 +60,7 @@ done
 
 # If any conflicting resources are found, ask user for action
 if [ "$found_existing" = true ]; then
-    read -r -p "⚠️  Conflicting resources found! Do you want to delete them? (y/n): " answer > /dev/tty
+    read -r -p "⚠️  Conflicting resources found! Do you want to delete them? (y/n): " answer < /dev/tty
     if [[ ! $answer =~ ^[Yy]$ ]]; then
         echo -e "\n\033[1;31m❌ Cluster initialization aborted. You must remove existing resources first.\033[0m"
         exit 1
