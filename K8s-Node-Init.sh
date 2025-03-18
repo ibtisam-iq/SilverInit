@@ -81,7 +81,9 @@ echo -e "\n\033[1;33m🔍 Status of the installed services...\033[0m"
 echo -e "\n"
 for service in containerd kubelet; do
     echo -n "$service: "
-    systemctl is-active "$service"
+    status=$(systemctl is-active "$service")
+    echo "$status"
+# systemctl is-active "$service"
 done
 
 echo -e "${GREEN}\n✅ All scripts executed successfully.${NC}"
