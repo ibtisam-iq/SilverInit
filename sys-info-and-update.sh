@@ -106,6 +106,7 @@ fi
 divider
 log "🔹 ${YELLOW}Current hostname${RESET}: $(hostname)"
 if [[ "$QUIET_MODE" == false ]]; then
+    echo -e "\n"
     read -p "🔄 Change hostname? Enter new name (or press Enter to keep current): " NEW_HOSTNAME < /dev/tty
     if [[ -n "$NEW_HOSTNAME" ]]; then
         log "\n🖥️ Updating hostname to '$NEW_HOSTNAME'..."
