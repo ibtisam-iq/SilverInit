@@ -79,7 +79,7 @@ echo -e "\033[1;32m✅ Kubernetes control plane initialized successfully.\033[0m
 
 # Configure kubectl
 echo -e "\n\033[1;33m🔧 Configuring kubectl...\033[0m"
-sudo bash <(curl -fsSL "$REPO_URL/kube-config-setup.sh") || { echo -e "\n\033[1;31m❌ Cluster not ready. Exiting...\033[0m"; exit 1; }
+curl -fsSL "$REPO_URL/kube-config-setup.sh | sudo bash" || { echo -e "\n\033[1;31m❌ Cluster not ready. Exiting...\033[0m"; exit 1; }
 
 # Deploying Calico CNI
 echo -e "\n\033[1;34m🚀 Deploying Calico network plugin...\033[0m"

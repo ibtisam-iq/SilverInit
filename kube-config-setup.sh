@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 # Ensure ~/.kube/config exists before proceeding
 while [ ! -f "$HOME/.kube/config" ]; do
     echo "🔍 ~/.kube/config not found. Setting it up..."
