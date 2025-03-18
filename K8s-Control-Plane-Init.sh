@@ -77,12 +77,16 @@ sudo kubeadm init \
   --cri-socket=unix:///var/run/containerd/containerd.sock || { echo -e "\n\033[1;31m❌ kubeadm init failed. Exiting...\033[0m"; exit 1; } | tee -a "$LOG_FILE"
 echo -e "\033[1;32m✅ Kubernetes control plane initialized successfully.\033[0m"
 
+sleep 30
+
 # Configure kubectl
 echo -e "\n\033[1;33m🔧 Configuring kubectl...\033[0m"
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 echo -e "\033[1;32m✅ kubectl configured successfully.\033[0m"
+
+sleep 30
 
 # Deploying Calico CNI
 echo -e "\n\033[1;34m🚀 Deploying Calico network plugin...\033[0m"
