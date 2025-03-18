@@ -10,7 +10,7 @@ if [ "$DEBUG" == "true" ]; then
 fi
 
 # Logging setup
-LOG_FILE="/var/log/k8s-setup.log"
+LOG_FILE="/var/log/k8s-readiness-check.log"
 echo "$(date) - Starting Kubernetes Control Plane Setup" | tee -a "$LOG_FILE"
 
 # Check Kubernetes API server readiness

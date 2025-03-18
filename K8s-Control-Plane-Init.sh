@@ -77,21 +77,19 @@ sudo kubeadm init \
   --cri-socket=unix:///var/run/containerd/containerd.sock || { echo -e "\n\033[1;31m❌ kubeadm init failed. Exiting...\033[0m"; exit 1; } | tee -a "$LOG_FILE"
 echo -e "\033[1;32m✅ Kubernetes control plane initialized successfully.\033[0m"
 
-sleep 30
-
 # Configure kubectl
 echo -e "\n\033[1;33m🔧 Configuring kubectl...\033[0m"
-mkdir -p $HOME/.kube
-sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-sudo chown $(id -u):$(id -g) $HOME/.kube/config
-echo -e "\033[1;32m✅ kubectl configured successfully.\033[0m"
-
-sleep 30
+sudo bash <(curl -fsSL "$REPO_URL/kube-config-setup.sh") || { echo -e "\n\033[1;31m❌ Cluster not ready. Exiting...\033[0m"; exit 1; }
 
 # Deploying Calico CNI
 echo -e "\n\033[1;34m🚀 Deploying Calico network plugin...\033[0m"
 kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml || { echo -e "\n\033[1;31m❌ Failed to apply Calico CNI. Exiting...\033[0m"; exit 1; }
 echo -e "\033[1;32m✅ Calico network plugin deployed successfully.\033[0m"
+
+# Validate CNI plugin installation
+echo -e "\n\033[1;34m✅ Validating CNI plugin installation...\033[0m"
+sudo ls /opt/cni/bin/ || { echo -e "\n\033[1;31m❌ CNI plugins not found. Exiting...\033[0m"; exit 1; }
+echo -e "\n\033[1;32m✅ CNI plugins found.\033[0m"
 
 # Readiness Check
 echo -e "\n\033[1;33m⏳ Waiting for the control plane and pods to become ready...\033[0m"
