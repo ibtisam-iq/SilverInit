@@ -35,7 +35,7 @@ echo -e "\n\033[1;34m🚀 Initializing Kubernetes control plane...\033[0m"
 sudo kubeadm init \
   --control-plane-endpoint "${CONTROL_PLANE_IP}:6443" \
   --upload-certs \
-  --pod-network-cidr 10.244.0.0/16 \
+  # --pod-network-cidr 10.244.0.0/16 \
   --apiserver-advertise-address="${CONTROL_PLANE_IP}" \
   --node-name "${NODE_NAME}" \
   --cri-socket=unix:///var/run/containerd/containerd.sock || { echo -e "\n\033[1;31m❌ kubeadm init failed. Exiting...\033[0m"; exit 1; }
