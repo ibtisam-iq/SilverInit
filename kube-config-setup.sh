@@ -3,7 +3,7 @@
 # Ensure ~/.kube/config exists before proceeding
 while [ ! -f "$HOME/.kube/config" ]; do
     echo "🔍 ~/.kube/config not found. Setting it up..."
-    mkdir -p $HOME/.kube
+    sudo mkdir -p $HOME/.kube
     sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
     sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
