@@ -11,6 +11,8 @@ set -o pipefail  # Ensure failures in piped commands are detected
 # Function to handle script failures
 trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
 
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-start-services.sh | sudo bash
+
 # Deploying Calico CNI
 echo -e "\n\033[1;34m🚀 Deploying Calico network plugin...\033[0m"
 sleep 30
