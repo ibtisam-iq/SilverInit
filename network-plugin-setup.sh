@@ -13,7 +13,8 @@ trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ER
 
 # Deploying Calico CNI
 echo -e "\n\033[1;34m🚀 Deploying Calico network plugin...\033[0m"
-kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml || { echo -e "\n\033[1;31m❌ Failed to apply Calico CNI. Exiting...\033[0m"; exit 1; }
+sleep 30
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml || { echo -e "\n\033[1;31m❌ Failed to apply Calico CNI. Exiting...\033[0m"; exit 1; }
 echo -e "\033[1;32m✅ Calico network plugin deployed successfully.\033[0m"
 
 # Validate CNI plugin installation
