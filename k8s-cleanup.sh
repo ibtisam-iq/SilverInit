@@ -60,14 +60,6 @@ for file in "${EXISTING_FILES[@]}"; do
     fi
 done
 
-# Check if services are running
-for service in "${EXISTING_SERVICES[@]}"; do
-    if systemctl is-active --quiet "$service"; then
-        echo -e "\033[1;31m⚠️  Service is running: $service\033[0m"
-        found_existing=true
-    fi
-done
-
 # Check if required ports are in use
 for port in "${EXISTING_PORTS[@]}"; do
     if sudo netstat -tulnp | grep -q ":$port "; then
@@ -91,13 +83,6 @@ fi
 # 🛑 Cleaning Up Existing Resources
 # ==================================================
 
-# Stop running services
-echo -e "\n\033[1;33m🛑 Stopping Kubernetes-related services...\033[0m"
-for service in "${EXISTING_SERVICES[@]}"; do
-    sudo systemctl stop "$service" || true
-done
-echo -e "\033[1;32m✅ Services stopped successfully.\033[0m"
-
 # Delete old Kubernetes files
 echo -e "\n\033[1;33m🧹 Removing existing Kubernetes configuration...\033[0m"
 for file in "${EXISTING_FILES[@]}"; do
@@ -118,8 +103,8 @@ sudo pkill -9 kube-apiserver || true
 sudo pkill -9 etcd || true
 sudo pkill -9 kube-controller || true
 sudo pkill -9 kube-scheduler || true
-sudo pkill -9 kubelet || true
-sudo pkill -9 containerd || true
+# sudo pkill -9 kubelet || true
+# sudo pkill -9 containerd || true
 echo -e "\033[1;32m✅ Processes terminated.\033[0m"
 
 # Reset Kubernetes setup
