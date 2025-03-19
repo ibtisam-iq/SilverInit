@@ -25,6 +25,11 @@ EXISTING_FILES=(
     "/var/lib/kubelet"
     "$HOME/.kube/"
 )
+# EXCLUDE_FILES=(".kubernetes-cni-keep" ".kubelet-keep")
+EXCLUDE_FILES=(
+    ".kubernetes-cni-keep"
+    ".kubelet-keep"
+)
 EXISTING_SERVICES=(
     "kubelet"
     "containerd"
@@ -36,11 +41,22 @@ found_existing=false
 
 echo -e "\n\033[1;33m🔍 Checking for existing Kubernetes resources...\033[0m"
 
-# Check for existing directories
+# Check for existing directories but ignore specific keep files
 for file in "${EXISTING_FILES[@]}"; do
-    if [ -e "$file" ]; then
-        echo -e "\033[1;31m⚠️  Found existing Kubernetes directory: $file\033[0m"
-        found_existing=true
+    if [ -d "$file" ]; then
+        # Find any real files inside the directory (excluding .kubernetes-cni-keep & .kubelet-keep)
+        real_files=$(find "$file" -mindepth 1 ! -name ".kubernetes-cni-keep" ! -name ".kubelet-keep" -print -quit 2>/dev/null)
+        if [ -n "$real_files" ]; then
+            echo -e "\033[1;31m⚠️  Found existing Kubernetes directory: $file\033[0m"
+            found_existing=true
+        fi
+    elif [ -f "$file" ]; then
+        # Ignore keep files
+        base_name=$(basename "$file")
+        if [[ ! " ${EXCLUDE_FILES[*]} " =~ " $base_name " ]]; then
+            echo -e "\033[1;31m⚠️  Found existing Kubernetes file: $file\033[0m"
+            found_existing=true
+        fi
     fi
 done
 
