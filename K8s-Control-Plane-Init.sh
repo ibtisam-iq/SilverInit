@@ -38,9 +38,9 @@ for script in "${SCRIPTS[@]}"; do
 done
 
 # Verifying Cluster Status
-echo -e "\n\033[1;33m🩺 Checking Kubernetes cluster status...\033[0m"
-kubectl get nodes -o wide
-kubectl get pods -A -o wide
+# echo -e "\n\033[1;33m🩺 Checking Kubernetes cluster status...\033[0m"
+# kubectl get nodes -o wide
+# kubectl get pods -A -o wide
 
 # ==================================================
 # 🎉 Final Messages
