@@ -110,3 +110,5 @@ echo -e "\033[1;32m✅ Processes terminated.\033[0m"
 # echo -e "\n\033[1;33m🧹 Resetting Kubernetes installation...\033[0m"
 # sudo kubeadm reset -f || true
 # echo -e "\033[1;32m✅ Kubernetes reset complete.\033[0m"
+
+echo -e "\n\033[1;32m ✨ k8s-cleanup.sh script is completed!\033[0m\n"
