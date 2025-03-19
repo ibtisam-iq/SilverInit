@@ -39,7 +39,32 @@ sudo kubeadm init \
   --apiserver-advertise-address="${CONTROL_PLANE_IP}" \
   --node-name "${NODE_NAME}" \
   --cri-socket=unix:///var/run/containerd/containerd.sock || { echo -e "\n\033[1;31m❌ kubeadm init failed. Exiting...\033[0m"; exit 1; }
-echo -e "\033[1;32m✅ Kubernetes control plane initialized successfully.\033[0m"
+
+# Total duration: 5 minutes (300 seconds)
+DURATION=$((5 * 60))
+INTERVAL=30
+END_TIME=$((SECONDS + DURATION))
 
 echo -e "\n\033[1;36m🎉 kubeadm-init.sh script is completed!\033[0m"
+echo -e "\n\033[1;33m📌 Please wait, the cluster is stabilizing... Good things take time! ⏳✨\033[0m"
 
+QUOTES=(
+    "🚀 **Your cluster is like a rocket—fueling up for launch!** Hold tight! 🛸"
+    "💡 **Patience is not just waiting, but keeping a great attitude while waiting!** 😃"
+    "🏗️ **Every strong system starts with a stable foundation. Kubernetes is no different!** 🏛️"
+    "✨ **Your cluster is doing yoga—finding its inner peace before greatness!** 🧘"
+    "🌱 **Growth takes time, but oh, the view from the top is worth it!** 🚀"
+    "🕰️ **Good things come to those who wait…** and to those who run ‘kubectl get pods’! 😆"
+    "💪 **Resilience is built in silence. Your cluster is becoming unstoppable!** 🔥"
+    "😎 **Be like Kubernetes—always self-healing, always scaling!** 🔄"
+    "🎯 **Mastery takes time, but every great engineer started here! Keep going!** 💙"
+    "📈 **Success is not a straight line, but a rolling update! Keep upgrading!** 🔄"
+)
+
+while [ $SECONDS -lt $END_TIME ]; do
+    RANDOM_QUOTE=${QUOTES[$RANDOM % ${#QUOTES[@]}]}
+    echo -e "\n\033[1;32m$RANDOM_QUOTE\033[0m"
+    sleep $INTERVAL
+done
+
+echo -e "\n\033[1;36m✅ The cluster should now be stable! 🎯 Time to deploy greatness! 🚀💪\033[0m"
