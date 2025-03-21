@@ -55,7 +55,7 @@ else
     exit 1
 fi
 
-if echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null; then
+if echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com noble main" | sudo tee /etc/apt/sources.list.d/hashicorp.list > /dev/null; then
     echo -e "\033[1;32m✅ HashiCorp repository added successfully.\033[0m"
 else
     echo -e "\n\033[1;31m❌ Failed to add HashiCorp repository. Exiting...\033[0m\n"
