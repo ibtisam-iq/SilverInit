@@ -10,7 +10,7 @@
 
 set -e  # Exit immediately if a command fails
 set -o pipefail  # Ensure failures in piped commands are detected
-trap 'echo -e "\n\e[1;31m❌ Error occurred at line $LINENO. Exiting...\e[0m\n" && exit 1' ERR  # Handle script failures
+# trap 'echo -e "\n\e[1;31m❌ Error occurred at line $LINENO. Exiting...\e[0m\n" && exit 1' ERR  # Handle script failures
 
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
