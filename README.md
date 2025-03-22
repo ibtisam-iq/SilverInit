@@ -99,3 +99,9 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sys-info-a
 curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sys-info-and-update.sh | sudo bash -s -- --no-update
 curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/sys-info-and-update.sh | sudo bash -s -- -h
 ```
+
+### Installed Packages Version Check
+
+```bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/version-check.sh | sudo bash
+```
