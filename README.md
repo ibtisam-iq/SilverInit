@@ -16,7 +16,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Contro
 ## Kubernetes Cluster Initialization with Kind
 
 ```bash
-kubectl apply -f https://github.com/ibtisam-iq/SilverKube/blob/main/kind-config-file.yaml
+kind create cluster --config https://github.com/ibtisam-iq/SilverKube/blob/main/kind-config-file.yaml
 ```
 
 ## Jumpbox Server Initialization
