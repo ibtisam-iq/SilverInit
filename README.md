@@ -13,10 +13,21 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Contro
 ```
 ---
 
-## Kubernetes Cluster Initialization with Kind
+## Kubernetes Cluster Initialization with `Kind`
+
+- **Create a cluster named `ibtisam` with 1 control plane node and 1 worker node, and default CNI (Flannel)**
+```bash
+curl -s https://raw.githubusercontent.com/ibtisam-iq/SilverKube/main/kind-config-file.yaml | kind create cluster --config -
+```
+
+- **Create a cluster named `ibtisam` with 1 control plane node and 1 worker, and Calico CNI**
 
 ```bash
-kind create cluster --config https://github.com/ibtisam-iq/SilverKube/blob/main/kind-config-file.yaml
+curl -s https://raw.githubusercontent.com/ibtisam-iq/SilverKube/main/kind-calico-config-file.yaml | kind create cluster --config -
+curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
+sed -i 's/# - name: CALICO_IPV4POOL_CIDR/- name: CALICO_IPV4POOL_CIDR/' calico.yaml
+sed -i 's/#   value: "192.168.0.0\/16"/  value: "10.244.0.0\/16"/' calico.yaml
+kubectl apply -f calico.yaml
 ```
 
 ## Jumpbox Server Initialization
