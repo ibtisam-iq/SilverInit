@@ -149,7 +149,7 @@ fi
 divider
 
 log "\n✅ Docker installation completed successfully! 🚀"
-log "\n🔄 Please run: newgrp docker"
+log "\n🔄 Please run: sudo usermod -aG docker $USER && newgrp docker && docker info"
 
 # ==================================================
 # 🎉 Setup Complete! Thank You! 🙌
