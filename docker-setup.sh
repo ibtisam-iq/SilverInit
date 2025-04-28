@@ -128,13 +128,7 @@ if id "$REAL_USER" | grep -qE '\bdocker\b'; then
 else
     sudo usermod -aG docker "$REAL_USER"
     log "\n🚀 Added the current user ($REAL_USER) to the 'docker' group."
-    log "🔄 Please either log out and log back in, or run: newgrp docker"
 fi
-
-# Add user to Docker group
-# sudo usermod -aG docker $USER
-# log "\n🚀 Added the current user to the Docker group."
-# log "🔄 Please run: newgrp docker to apply changes."
 
 # Enable & Start Docker Service
 log "\n🚀 Enabling & Starting Docker Service..."
@@ -161,13 +155,8 @@ fi
 
 divider
 
-# log "\n✅ Docker installation completed successfully! 🚀"
-# log "\n🔄 Please run: sudo usermod -aG docker $USER && newgrp docker && docker info"
-
-# Final Tip
-echo -e "\n\033[1;36m🔄 Tip: If 'docker ps' shows a permission error, simply run:\033[0m"
-echo -e "\033[1;32m   newgrp docker\033[0m"
-echo -e "\033[1;36mOr logout and login again to fully apply group membership.\033[0m"
+log "\n✅ Docker installation completed successfully! 🚀"
+log "\n🔄 Please run: newgrp docker && docker ps"
 
 # ==================================================
 # 🎉 Setup Complete! Thank You! 🙌
