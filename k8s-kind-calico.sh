@@ -82,8 +82,8 @@ kubectl get nodes -o wide
 echo
 kubectl cluster-info
 echo -e "\033[1;32m✅ Kind cluster verified successfully.\033[0m\n"
-echo -e "\033[1;33m💡 Please run: kind export kubeconfig --name ibtisam \033[0m\n"
-echo -e "\033[1;33m💡 Also: newgrp docker \033[0m\n"
+echo -e "💡 Please run: newgrp docker"
+echo -e "💡 Also: kind export kubeconfig --name ibtisam\n"
 
 
 
