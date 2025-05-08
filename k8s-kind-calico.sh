@@ -49,7 +49,7 @@ done
 # ==================================================
 # 🎉 Kind Cluster Setup
 # ==================================================
-echo -e "\n\033[1;34m🚀 Setting up kind cluster with Calico...\033[0m"
+echo -e "\033[1;34m🚀 Setting up kind cluster with Calico...\033[0m"
 curl -s https://raw.githubusercontent.com/ibtisam-iq/SilverKube/main/kind-calico-config-file.yaml | kind create cluster --config -
 echo -e "\033[1;32m✅ Kind cluster created successfully.\033[0m\n"
 # ==================================================
