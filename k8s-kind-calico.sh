@@ -8,10 +8,8 @@
 # 
 # 📌 Description:
 # This script automates the setup of a kind (Kubernetes in Docker) cluster using Calico. 
-# It executes a sequence of scripts to configure the OS, install required tools,
-# and set up the kind cluster.
+# It executes a sequence of scripts to install required tools, and set up the kind cluster.
 #   - ✅ System preflight checks
-#   - ✅ OS and system updates
 #   - ✅ Docker installation and setup
 #   - ✅ kubectl installation
 #   - ✅ kind installation
@@ -33,7 +31,7 @@ REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 # List of scripts to execute
 SCRIPTS=(
     "preflight.sh"
-    "sys-info-and-update.sh"
+    # "sys-info-and-update.sh"
     "docker-setup.sh"
     "kubectl-and-eksctl.sh"
     "kind-setup.sh"
