@@ -30,7 +30,7 @@ REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
 # List of scripts to execute
 SCRIPTS=(
-    "preflight.sh"
+    # "preflight.sh"
     # "sys-info-and-update.sh"
     "docker-setup.sh"
     "kubectl-and-eksctl.sh"
