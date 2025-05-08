@@ -73,14 +73,17 @@ echo -e "\033[1;32m✅ Calico installed successfully.\033[0m\n"
 # ==================================================
 # 🎉 Kind Cluster Setup Complete!
 # ==================================================
-echo -e "\n\033[1;34m🚀 Setting up kind cluster...\033[0m"
+echo -e "\033[1;34m🚀 Setting up kind cluster...\033[0m"
 echo -e "\033[1;33m💡 Kind cluster setup may take a few minutes. Please wait...\033[0m\n"
-sleep 30
+sleep 10
+kind export kubeconfig --name ibtisam
 echo -e "\033[1;32m✅ Kind cluster setup completed successfully.\033[0m\n"
 # ==================================================
 # 🎉 Verify the kind cluster
 echo -e "\033[1;34m🚀 Verifying the kind cluster...\033[0m\n"
-kubectl get nodes
+kubectl get nodes -o wide
+echo
+kubectl cluster-info
 
 # ==================================================
 # 🎉 Setup Complete! Thank You! 🙌
