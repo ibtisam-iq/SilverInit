@@ -99,10 +99,10 @@ echo -e "\033[1;32m▶️  Kind Port Mapping (host:8081 → node:30000):\033[0m"
 
 if [[ "$PUBLIC_IP" != "Unavailable" && "$PUBLIC_IP" != "127.0.0.1" ]]; then
     echo -e "\n📌 It seems, you're on a remote VM or a cloud server, please click on the link below to access the AMOR app:\n"
-    echo -e "\033[1;34m🌐 http://${PUBLIC_IP}:8081\033[0m"
+    echo -e "\033[1;34m🌐 http://${PUBLIC_IP}:8081\033[0m\n"
 else
     echo -e "\n📌 Maybe you're running locally, please click on the link below to access the AMOR app:\n"
-    echo -e "\033[1;34m🖥️  http://localhost:8081\033[0m"
+    echo -e "\033[1;34m🖥️  http://localhost:8081\033[0m\n"
 fi
 
 # ==================================================
