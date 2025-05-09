@@ -73,7 +73,7 @@ echo -e "\033[1;32m✅ Calico installed successfully.\033[0m\n"
 # ==================================================
 echo -e "\033[1;34m🚀 Setting up kind cluster...\033[0m"
 echo -e "\033[1;33m💡 Kind cluster setup may take a few minutes. Please wait...\033[0m\n"
-sleep 10
+sleep 30
 echo -e "\033[1;32m✅ Kind cluster setup completed successfully.\033[0m\n"
 # ==================================================
 # 🎉 Verify the kind cluster
