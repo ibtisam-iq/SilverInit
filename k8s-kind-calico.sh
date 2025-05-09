@@ -68,6 +68,7 @@ echo -e "\033[1;32m✅ calico.yaml modified successfully.\033[0m\n"
 echo -e "\033[1;34m🚀 Applying Calico configuration...\033[0m"
 kubectl apply -f calico.yaml
 echo -e "\033[1;32m✅ Calico installed successfully.\033[0m\n"
+rm -rf calico.yaml
 # ==================================================
 # 🎉 Kind Cluster Setup Complete!
 # ==================================================
