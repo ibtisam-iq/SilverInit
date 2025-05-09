@@ -86,7 +86,7 @@ echo -e "\033[1;32m✅ Kind cluster verified successfully.\033[0m\n"
 # ==================================================
 # 🎉 Install AMOR
 echo -e "\033[1;34m🚀 Installing AMOR...\033[0m\n"
-kubectl apply -f https://github.com/ibtisam-iq/SilverKube/blob/main/amor.yaml
+kubectl apply -f https://raw.githubusercontent.com/ibtisam-iq/SilverKube/main/amor.yaml
 echo -e "\033[1;32m✅ AMOR installed successfully.\033[0m\n"
 # ==================================================
 echo -e "💡 Please run: newgrp docker"
@@ -95,22 +95,20 @@ echo -e "💡 Also: kind export kubeconfig --name ibtisam\n"
 # ==================================================
 # 🌐 AMOR Access Instructions
 # ==================================================
-echo -e "\033[1;34m🌐 Accessing the AMOR App...\033[0m\n"
+echo -e "\033[1;34m🌐 AMOR App Access URLs\033[0m\n"
 
 PUBLIC_IP=$(curl -s ifconfig.me || echo "Unavailable")
 
 echo -e "💡 AMOR app is exposed via:\n"
-echo -e "\033[1;32m▶️  HostPort; Kind Port Mapping (host:8081 → node:30000):\033[0m   http://localhost:8081"
-echo -e "\033[1;32m▶️  NodePort; (via Kubernetes Service, Direct NodePort (skip port mapping)):\033[0m http://localhost:30000"
+echo -e "\033[1;32m▶️  Kind Port Mapping (host:8081 → node:30000):\033[0m   http://localhost:8081"
 
 if [[ "$PUBLIC_IP" != "Unavailable" && "$PUBLIC_IP" != "127.0.0.1" ]]; then
-    echo -e "\n📌 If you're running on a remote VM or cloud server:"
-    echo -e "\033[1;34m🌐 http://${PUBLIC_IP}:8081\033[0m  or  \033[1;34mhttp://${PUBLIC_IP}:30000\033[0m"
+    echo -e "\n📌 If you're on a remote VM or cloud server:"
+    echo -e "\033[1;34m🌐 http://${PUBLIC_IP}:8081\033[0m"
 else
-    echo -e "\n📌 Since you're running locally, just open:"
-    echo -e "\033[1;34m🖥️  http://localhost:8081\033[0m  or  \033[1;34mhttp://localhost:30000\033[0m"
+    echo -e "\n📌 If you're running locally:"
+    echo -e "\033[1;34m🖥️  http://localhost:8081\033[0m"
 fi
-
 
 # ==================================================
 # 🎉 Setup Complete! Thank You! 🙌
