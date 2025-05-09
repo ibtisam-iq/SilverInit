@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# ╔══════════════════════════════════════════════════                ╗
-# ║          SilverInit - Kubernetes Kind Cluster Setup Using Calico ║
-# ║          (c) 2025 Muhammad Ibtisam Iqbal                         ║
-# ║          License: MIT                                            ║
-# ╚══════════════════════════════════════════════════                ╝
+# ╔══════════════════════════════════════════════════╗
+# ║     SilverInit - Kind Cluster Setup Using Calico ║
+# ║     (c) 2025 Muhammad Ibtisam Iqbal              ║
+# ║     License: MIT                                 ║
+# ╚══════════════════════════════════════════════════╝
 # 
 # 📌 Description:
 # This script automates the setup of a kind (Kubernetes in Docker) cluster using Calico. 
@@ -85,8 +85,6 @@ kubectl cluster-info
 echo -e "\033[1;32m✅ Kind cluster verified successfully.\033[0m\n"
 echo -e "💡 Please run: newgrp docker"
 echo -e "💡 Also: kind export kubeconfig --name ibtisam\n"
-
-
 
 # ==================================================
 # 🎉 Setup Complete! Thank You! 🙌
