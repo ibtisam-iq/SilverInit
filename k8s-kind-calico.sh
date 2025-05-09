@@ -85,9 +85,8 @@ kubectl cluster-info
 echo -e "\033[1;32m✅ Kind cluster verified successfully.\033[0m\n"
 # ==================================================
 # 🎉 Install AMOR
-echo -e "\033[1;34m🚀 Installing AMOR...\033[0m\n"
+echo -e "\033[1;34m🚀 Installing AMOR app for testing the cluster...\033[0m\n"
 kubectl apply -f https://raw.githubusercontent.com/ibtisam-iq/SilverKube/main/amor.yaml
-echo -e "\033[1;32m✅ AMOR installed successfully.\033[0m\n"
 # ==================================================
 # 🌐 AMOR Access Instructions
 # ==================================================
@@ -99,14 +98,15 @@ echo -e "💡 AMOR app is exposed via:\n"
 echo -e "\033[1;32m▶️  Kind Port Mapping (host:8081 → node:30000):\033[0m"
 
 if [[ "$PUBLIC_IP" != "Unavailable" && "$PUBLIC_IP" != "127.0.0.1" ]]; then
-    echo -e "\n📌 If you're on a remote VM or cloud server:"
+    echo -e "\n📌 It seems, you're on a remote VM or a cloud server, please click on the link below to access the AMOR app:\n"
     echo -e "\033[1;34m🌐 http://${PUBLIC_IP}:8081\033[0m"
 else
-    echo -e "\n📌 If you're running locally:"
+    echo -e "\n📌 Maybe you're running locally, please click on the link below to access the AMOR app:\n"
     echo -e "\033[1;34m🖥️  http://localhost:8081\033[0m"
 fi
 
 # ==================================================
+echo -e "\033[1;34m💡 Final Steps:\033[0m\n"
 echo -e "💡 Please run: newgrp docker"
 echo -e "💡 Also: kind export kubeconfig --name ibtisam\n"
 
