@@ -28,6 +28,9 @@ echo -e "\033[1;32m✅ Calico network plugin deployed successfully.\033[0m"
 echo -e "\n\033[1;34m✅ Validating CNI plugin installation...\033[0m"
 sleep 60
 sudo ls /opt/cni/bin/ || { echo -e "\n\033[1;31m❌ CNI plugins not found. Exiting...\033[0m"; exit 1; }
+echo
+sudo ls /etc/cni/net.d/
+
 echo -e "\n\033[1;32m✅ CNI plugins found.\033[0m"
 
 echo -e "\n\033[1;36m🎉 network-plugin-setup.sh script is completed!\033[0m"
