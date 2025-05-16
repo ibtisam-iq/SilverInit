@@ -15,7 +15,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-start-
 
 # Deploying Calico CNI
 echo -e "\n\033[1;34m🚀 Deploying Calico network plugin...\033[0m"
-sleep 30
+sleep 5
 # kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml || { echo -e "\n\033[1;31m❌ Failed to apply Calico CNI. Exiting...\033[0m"; exit 1; }
 curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.28.0/manifests/calico.yaml
 sed -i 's/# - name: CALICO_IPV4POOL_CIDR/- name: CALICO_IPV4POOL_CIDR/' calico.yaml
