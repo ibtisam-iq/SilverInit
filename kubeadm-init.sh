@@ -41,7 +41,7 @@ sudo kubeadm init \
   --cri-socket=unix:///var/run/containerd/containerd.sock || { echo -e "\n\033[1;31m❌ kubeadm init failed. Exiting...\033[0m"; exit 1; }
 
 # Total duration: 5 minutes (300 seconds)
-DURATION=$((2 * 60))
+DURATION=$((1 * 60))
 INTERVAL=15
 END_TIME=$((SECONDS + DURATION))
 
