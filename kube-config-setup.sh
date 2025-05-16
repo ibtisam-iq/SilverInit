@@ -16,6 +16,8 @@ while [ ! -f "$USER_HOME/.kube/config" ]; do
     sleep 5
     sudo cp -i /etc/kubernetes/admin.conf $USER_HOME/.kube/config
     sleep 5
+    # ✅ Fix ownership of the directory *and* the config file
+    sudo chown -R $SUDO_USER:$SUDO_USER $USER_HOME/.kube
     sudo chown $SUDO_USER:$SUDO_USER $USER_HOME/.kube/config
 
     # Wait for a second before rechecking (prevents infinite fast loop)
