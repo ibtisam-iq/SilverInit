@@ -104,6 +104,12 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/helm-setup
 curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/trivy-setup.sh | sudo bash
 ```
 
+### Calico CNI
+
+```bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/network-plugin-setup.sh | bash
+```
+
 ### Get System Information
 
 ```bash
