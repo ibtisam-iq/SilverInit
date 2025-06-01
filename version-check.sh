@@ -39,7 +39,7 @@ log "  \e[1;36m🔹 Docker:         \e[0m \e[1;32m$(docker --version | awk '{pri
 log "  \e[1;36m🔹 Containerd:     \e[0m \e[1;32m$(containerd --version | awk '{print $3}')\e[0m"
 log "  \e[1;36m🔹 Runc:           \e[0m \e[1;32m$(runc --version | awk '{print $3}')\e[0m"
 log "  \e[1;36m🔹 Git:            \e[0m \e[1;32m$(git --version | awk '{print $3}')\e[0m"
-log "  \e[1;36m🔹 Python:         \e[0  \e[1;32m$(python3 --version | awk '{print $2}')\e[0m"
+log "  \e[1;36m🔹 Python:         \e[0m \e[1;32m$(python3 --version | awk '{print $2}')\e[0m"
 log "  \e[1;36m🔹 Node.js:        \e[0m \e[1;32m$(node --version)\e[0m"
 log "  \e[1;36m🔹 npm:            \e[0m \e[1;32m$(npm --version)\e[0m"
 log "  \e[1;36m🔹 Helm:           \e[0m \e[1;32m$(helm version --template '{{.Version}}')\e[0m"
