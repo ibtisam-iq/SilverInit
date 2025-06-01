@@ -43,7 +43,7 @@ fi
 # Update system and install required dependencies
 echo -e "\n🚀 Updating package list and checking required dependencies to install AWS CLI v2..."
 sudo apt update -qq
-
+sudo apt install -yq unzip
 DEPS=("unzip" "python3" "groff" "less")
 
 for pkg in "${DEPS[@]}"; do
