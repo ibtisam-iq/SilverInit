@@ -117,3 +117,4 @@ echo
 
 echo -e "${CYAN}✨ Thank you for using ${BOLD}SilverInit${CYAN} – crafted with care by Muhammad Ibtisam!${RESET}"
 echo -e "${CYAN}───────────────────────────────────────────────────────────────${RESET}"
+echo
