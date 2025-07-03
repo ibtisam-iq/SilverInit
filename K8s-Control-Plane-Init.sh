@@ -104,7 +104,7 @@ echo
 
 echo -e "${BOLD}${GREEN}🚀 To complete the final setup step, run:${RESET}"
 echo
-echo -e "${GREEN}curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-cni-setup.sh | bash${RESET}"
+echo -e "   ${GREEN}curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-cni-setup.sh | bash${RESET}"
 echo
 
 echo -e "${CYAN}🛠️ This script will:${RESET}"
