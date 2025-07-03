@@ -32,6 +32,7 @@ FILE="custom-resources.yaml"
 # 🛠️ Patch the CIDR dynamically
 cp "$FILE" "${FILE}.bak"
 sed -i "s|cidr: 192.168.0.0/16|cidr: ${POD_CIDR}|" "$FILE"
+echo
 echo "✅ CIDR updated to ${POD_CIDR} in $FILE"
 
 # 📤 Apply the Calico configuration
