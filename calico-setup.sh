@@ -12,9 +12,8 @@ trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ER
 # 🔗 Fetch dynamic cluster environment variables
 echo -e "\n\033[1;36m🔗 Fetching cluster environment variables...\033[0m"
 eval "$(curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/cluster-params.sh)"
-echo -e "🧠 CONTROL_PLANE_IP: $CONTROL_PLANE_IP"
-echo -e "🖥️ NODE_NAME: $NODE_NAME"
-echo -e "📦 POD_CIDR: $POD_CIDR"
+
+echo -e "📦 POD_CIDR to be configured: $POD_CIDR"
 
 # 🔄 Start Kubernetes services
 curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-start-services.sh | sudo bash
