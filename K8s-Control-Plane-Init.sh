@@ -26,8 +26,8 @@ SCRIPTS=(
     "k8s-start-services.sh"
     "kubeadm-init.sh"
     "kube-config-setup.sh"
-    # "network-plugin-setup.sh"
-    # "k8s-readiness-check.sh"
+    "network-plugin-setup.sh"
+    "k8s-readiness-check.sh"
 )
 
 # 🚀 Executing Scripts
