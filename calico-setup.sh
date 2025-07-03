@@ -11,8 +11,8 @@
 kubectl delete ns calico-system tigera-operator --force
 kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd --force
 kubectl get crd | grep projectcalico.org | awk '{print $1}' | xargs kubectl delete crd --force
-kubectl delete crd installations.operator.tigera.io --force
-kubectl delete crd adminnetworkpolicies.policy.networking.k8s.io baselineadminnetworkpolicies.policy.networking.k8s.io installations.operator.tigera.io --force
+# kubectl delete crd installations.operator.tigera.io --force
+kubectl delete crd --force adminnetworkpolicies.policy.networking.k8s.io baselineadminnetworkpolicies.policy.networking.k8s.io # installations.operator.tigera.io
 sudo rm -rf /etc/cni/net.d/
 
 # 🔗 Fetch dynamic cluster environment variables
