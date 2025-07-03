@@ -55,6 +55,7 @@ sudo apt-get install -yq kubelet='${K8S_VERSION}.0-*' kubectl='${K8S_VERSION}.0-
 sudo apt-mark hold kubelet kubeadm kubectl
 
 echo -e "${GREEN}\n✅ Kubernetes components installed successfully!${NC}"
+echo -e "🔖 K8S_VERSION:       \033[1;33m$K8S_VERSION\033[0m"
 
 echo -e "${YELLOW}\n🛠️ Loading required kernel modules...${NC}"
 cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf > /dev/null
