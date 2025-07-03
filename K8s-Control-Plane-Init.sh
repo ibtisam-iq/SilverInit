@@ -26,6 +26,7 @@ SCRIPTS=(
     "k8s-start-services.sh"
     "kubeadm-init.sh"
     "kube-config-setup.sh"
+    "calico-setup.sh"
 )
 
 # 🚀 Executing Scripts
