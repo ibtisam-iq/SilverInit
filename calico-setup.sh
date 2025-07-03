@@ -28,6 +28,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-start-
 echo -e "\n\033[1;34m🚀 Deploying Calico network plugin...\033[0m"
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/operator-crds.yaml
 sleep 30
+echo
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/tigera-operator.yaml
 
 
@@ -40,7 +41,7 @@ cp "$FILE" "${FILE}.bak"
 sed -i "s|cidr: 192.168.0.0/16|cidr: ${POD_CIDR}|" "$FILE"
 echo
 echo "✅ CIDR updated to ${POD_CIDR} in $FILE"
-
+echo
 # 📤 Apply the Calico configuration
 kubectl create -f "$FILE"
 
