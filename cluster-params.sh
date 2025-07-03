@@ -11,4 +11,4 @@ export NODE_NAME=$(hostnamectl --static)
 export POD_CIDR="10.244.0.0/16"
 
 # 📦 Kubernetes Version
-export K8S_VERSION="1.32"
+export K8S_VERSION="1.33"
