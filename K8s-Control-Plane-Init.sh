@@ -49,9 +49,6 @@ trap 'echo -e "\n\033[1;31m❌ Error at line $LINENO. Exiting...\033[0m"; exit 1
 
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
-# ✅ Dynamically source cluster-params.sh
-eval "$(curl -sL "$REPO_URL/cluster-params.sh")"
-
 # List of scripts to execute
 SCRIPTS=(
     "K8s-Node-Init.sh"
