@@ -31,12 +31,14 @@ echo -e "\n\033[1;36m🔗 Fetching cluster environment variables...\033[0m"
 # ✅ Dynamically source cluster-params.sh
 eval "$(curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/cluster-params.sh)"
 
-echo -e "🧠 CONTROL_PLANE_IP: $CONTROL_PLANE_IP"
-echo -e "🖥️ NODE_NAME: $NODE_NAME"
-echo -e "📦 POD_CIDR: $POD_CIDR"
+echo -e "🧠 CONTROL_PLANE_IP: \033[1;33m$CONTROL_PLANE_IP\033[0m"
+echo -e "🖥️ NODE_NAME: \033[1;33m$NODE_NAME\033[0m"
+echo -e "📦 POD_CIDR: \033[1;33m$POD_CIDR\033[0m"
+echo -e "🔖 K8S_VERSION: \033[1;33m$K8S_VERSION\033[0m"
 
 # Initialize Kubernetes control plane
 echo -e "\n\033[1;34m🚀 Initializing Kubernetes control plane...\033[0m"
+echo
 sudo kubeadm init \
   --control-plane-endpoint "${CONTROL_PLANE_IP}:6443" \
   --upload-certs \
