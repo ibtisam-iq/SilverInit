@@ -45,13 +45,13 @@ sudo sed -i '/\s\+swap\s\+/d' /etc/fstab
 echo -e "${BLUE}\n📦 Adding Kubernetes APT repository...${NC}"
 sudo mkdir -p -m 755 /etc/apt/keyrings
 if [[ ! -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg ]]; then
-    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/v${K8S_VERSION}/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 fi
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v${K8S_VERSION}/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
 sudo apt update -qq
 
 echo -e "${YELLOW}\n📥 Installing Kubernetes components...${NC}"
-sudo apt-get install -yq kubelet kubeadm kubectl > /dev/null 2>&1
+sudo apt-get install -yq kubelet='${K8S_VERSION}.0-*' kubectl='${K8S_VERSION}.0-*' kubeadm='${K8S_VERSION}.0-*' > /dev/null 2>&1
 sudo apt-mark hold kubelet kubeadm kubectl
 
 echo -e "${GREEN}\n✅ Kubernetes components installed successfully!${NC}"
