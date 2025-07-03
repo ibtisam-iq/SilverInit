@@ -110,6 +110,18 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/trivy-setu
 curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/calico-setup.sh | bash
 ```
 
+### Flannel CNI
+
+```bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/flannel-setup.sh | bash
+```
+
+### Weave CNI
+
+```bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/weave-setup.sh | bash
+```
+
 ### Get System Information
 
 ```bash
