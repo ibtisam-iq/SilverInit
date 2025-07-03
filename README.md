@@ -107,7 +107,7 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/trivy-setu
 ### Calico CNI
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/network-plugin-setup.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/calico-setup.sh | bash
 ```
 
 ### Get System Information
