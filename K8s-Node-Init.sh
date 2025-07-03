@@ -47,7 +47,8 @@ echo -e "🔖 WEAVE_VERSION being configured:       \033[1;33m$K8S_VERSION\033[0
 
 echo -e "${BLUE}\n📦 Adding Kubernetes APT repository...${NC}"
 sudo mkdir -p -m 755 /etc/apt/keyrings
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v${K8S_VERSION}/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+# Variables inside single quotes '...' won't expand, use "..."
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v${K8S_VERSION}/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
 
 if [[ ! -f /etc/apt/keyrings/kubernetes-apt-keyring.gpg ]]; then
     curl -fsSL https://pkgs.k8s.io/core:/stable:/v${K8S_VERSION}/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -56,7 +57,10 @@ fi
 sudo apt update -qq
 
 echo -e "${YELLOW}\n📥 Installing Kubernetes components...${NC}"
-sudo apt-get install -yq kubelet='${K8S_VERSION}.0-*' kubectl='${K8S_VERSION}.0-*' kubeadm='${K8S_VERSION}.0-*' > /dev/null 2>&1
+sudo apt-get install -yq \
+  kubelet="${K8S_VERSION}.0-*" \
+  kubectl="${K8S_VERSION}.0-*" \
+  kubeadm="${K8S_VERSION}.0-*" > /dev/null 2>&1
 sudo apt-mark hold kubelet kubeadm kubectl
 
 echo -e "${GREEN}\n✅ Kubernetes components installed successfully!${NC}"
