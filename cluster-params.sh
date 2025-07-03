@@ -9,3 +9,6 @@ NODE_NAME=$(hostnamectl --static)
 
 # 📦 Pod CIDR (e.g., Flannel)
 POD_CIDR="10.244.0.0/16"
+
+# 📦 Kubernetes Version
+K8S_VERSION="1.32"
