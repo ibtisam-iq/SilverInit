@@ -104,7 +104,7 @@ echo -e "${YELLOW}     Do NOT apply the network plugin on any additional control
 echo
 
 echo -e "${BOLD}${GREEN}🚀 To complete the final setup step, run:${RESET}"
-echo -e "${GREEN}bash <(curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-cni-setup.sh)${RESET}"
+echo -e "${GREEN}curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-cni-setup.sh | bash${RESET}"
 echo
 
 echo -e "${CYAN}🛠️ This script will:${RESET}"
