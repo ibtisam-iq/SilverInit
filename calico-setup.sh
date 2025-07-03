@@ -5,8 +5,8 @@
 # It assumes that the Kubernetes cluster is already initialized and running.
 # The script installs the Calico CNI and configures it using the dynamically sourced POD_CIDR.
 
-set -e
-set -o pipefail
+# set -e
+# set -o pipefail
 # Remove calico residuls, if found
 kubectl delete ns calico-system tigera-operator --force
 kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd --force
