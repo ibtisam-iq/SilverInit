@@ -42,8 +42,8 @@ echo -e "${YELLOW}\n🔧 Disabling swap...${NC}"
 sudo swapoff -a
 sudo sed -i '/\s\+swap\s\+/d' /etc/fstab
 
-echo -e "📦 POD_CIDR being configured: $POD_CIDR"
-echo -e "🔖 WEAVE_VERSION being configured:       \033[1;33m$K8S_VERSION\033[0m"
+echo
+echo -e "🔖 K8s Component Version being configured...: \033[1;33m$K8S_VERSION\033[0m"
 
 echo -e "${BLUE}\n📦 Adding Kubernetes APT repository...${NC}"
 sudo mkdir -p -m 755 /etc/apt/keyrings
