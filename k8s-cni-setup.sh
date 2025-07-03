@@ -75,7 +75,7 @@ function main() {
   print_header
   print_cni_menu
 
-  read -p "Enter your choice [1-3]: " choice
+  read -p "Enter your choice [1-3]: " choice < /dev/tty
   case "$choice" in
     1|"") install_cni "Calico"  "https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/calico-setup.sh" ;;
     2)     install_cni "Flannel" "https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/flannel-setup.sh" ;;
