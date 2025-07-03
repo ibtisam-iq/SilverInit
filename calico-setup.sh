@@ -7,7 +7,12 @@
 
 set -e
 set -o pipefail
-trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
+# Remove calico residuls, if found
+kubectl delete ns calico-system tigera-operator --force
+kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd --force
+kubectl get crd | grep projectcalico.org | awk '{print $1}' | xargs kubectl delete crd --force
+kubectl delete crd adminnetworkpolicies.policy.networking.k8s.io baselineadminnetworkpolicies.policy.networking.k8s.io installations.operator.tigera.io --force
+sudo rm -rf /etc/cni/net.d/
 
 # 🔗 Fetch dynamic cluster environment variables
 echo -e "\n\033[1;36m🔗 Fetching cluster environment variables...\033[0m"
@@ -45,7 +50,7 @@ echo -e "\n\033[1;34m🔍 Validating CNI plugin installation...\033[0m"
 sleep 60
 sudo systemctl restart containerd kubelet
 
-sudo ls /opt/cni/bin/ || { echo -e "\n\033[1;31m❌ CNI plugins not found. Exiting...\033[0m"; exit 1; }
+sudo ls /opt/cni/bin/
 echo
 sudo ls -l /etc/cni/net.d/
 echo -e "\n\033[1;32m✅ CNI plugins found.\033[0m"
