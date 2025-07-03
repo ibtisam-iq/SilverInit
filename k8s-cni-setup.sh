@@ -92,5 +92,5 @@ function main() {
 
 main
 
-kubectl delete ns calico-system tigera-operator
+kubectl delete ns calico-system tigera-operator --force
 sudo rm -rf /etc/cni/net.d/
