@@ -8,7 +8,7 @@ CONTROL_PLANE_IP=$(ip route get 8.8.8.8 | awk '{print $7; exit}')
 NODE_NAME=$(hostnamectl --static)
 
 # 📦 Pod CIDR (e.g., Flannel)
-POD_CIDR="10.244.0.0/16"
+POD_CIDR="10.244.0.0/00"
 
 # 📦 Kubernetes Version
 K8S_VERSION="1.32"
