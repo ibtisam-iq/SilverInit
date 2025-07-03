@@ -93,4 +93,6 @@ function main() {
 main
 
 kubectl delete ns calico-system tigera-operator --force
+kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd --force
+kubectl get crd | grep projectcalico.org | awk '{print $1}' | xargs kubectl delete crd --force
 sudo rm -rf /etc/cni/net.d/
