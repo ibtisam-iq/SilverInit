@@ -1,5 +1,37 @@
 #!/bin/bash
 
+clear
+
+# Define Colors
+YELLOW="\e[93m"
+CYAN="\e[96m"
+GREEN="\e[92m"
+BOLD="\e[1m"
+RESET="\e[0m"
+
+# Header Display
+echo -e "${YELLOW}"
+echo "╔════════════════════════════════════════════════════════════╗"
+echo "║                                                            ║"
+echo "║    ███████╗██╗██╗     ██╗   ██╗███████╗██████╗ ██╗████████╗ ║"
+echo "║    ██╔════╝██║██║     ██║   ██║██╔════╝██╔══██╗██║╚══██╔══╝ ║"
+echo "║    █████╗  ██║██║     ██║   ██║█████╗  ██████╔╝██║   ██║    ║"
+echo "║    ██╔══╝  ██║██║     ██║   ██║██╔══╝  ██╔═══╝ ██║   ██║    ║"
+echo "║    ██║     ██║███████╗╚██████╔╝███████╗██║     ██║   ██║    ║"
+echo "║    ╚═╝     ╚═╝╚══════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝   ╚═╝    ║"
+echo "║                                                            ║"
+echo "╚════════════════════════════════════════════════════════════╝"
+echo -e "${RESET}"
+
+echo -e "${BOLD}${CYAN}SilverInit – Kubernetes Bootstrap Utility${RESET}"
+echo -e "${CYAN}Author   : Muhammad Ibtisam Iqbal${RESET}"
+echo -e "${CYAN}Version  : v1.0${RESET}"
+echo -e "${CYAN}Repo     : https://github.com/ibtisam-iq/SilverInit${RESET}"
+echo -e "${CYAN}License  : MIT${RESET}"
+echo
+echo -e "${GREEN}🧊 Initializing your Kubernetes Control Plane...${RESET}"
+echo
+
 # ╔════════════════════════════════════════════════════╗
 # ║   SilverInit - Kubernetes Control Plane Setup      ║
 # ║     (c) 2025 Muhammad Ibtisam Iqbal                ║
