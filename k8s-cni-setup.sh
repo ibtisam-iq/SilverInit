@@ -67,6 +67,7 @@ function verify_cluster() {
   echo -e "\n⏳ Waiting 60 seconds for CNI to stabilize..."
   sleep 60
   echo -e "\n🔍 ${CYAN}Cluster Status:${RESET}"
+  echo
   kubectl get nodes -o wide || echo -e "${RED}❌ Failed to get node status.${RESET}"
   echo
   kubectl get pods -A || echo -e "${RED}❌ Failed to get pod status.${RESET}"
