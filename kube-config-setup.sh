@@ -35,6 +35,6 @@ sleep 60
 echo -e "\n🔍 Verifying kubectl access...\n"
 kubectl cluster-info || { echo "⚠️ Failed to connect to Kubernetes cluster"; exit 1; }
 
-echo -e "\n\033[1;32m✅ kubectl configured successfully.\033[0m"
+echo -e "\n\033[1;32m✅ kubeconfig configured successfully.\033[0m"
 
 echo -e "\n\033[1;36m🎉 kube-config-setup.sh script is completed!\033[0m"
