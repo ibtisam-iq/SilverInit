@@ -33,6 +33,9 @@ NC="\033[0m" # No Color
 
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
+# ✅ Dynamically source cluster-params.sh
+eval "$(curl -sL "$REPO_URL/cluster-params.sh")"
+
 echo -e "${BLUE}\n🚀 Running sys-info-and-update.sh...${NC}"
 bash <(curl -sL "$REPO_URL/sys-info-and-update.sh") || { echo -e "${RED}\n❌ Failed to execute sys-info-and-update.sh. Exiting...${NC}"; exit 1; }
 
