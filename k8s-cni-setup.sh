@@ -92,4 +92,5 @@ function main() {
 
 main
 
-
+kubectl delete deploy,ds,svc,po,rc --all -n calico-system
+sudo rm -rf /etc/cni/net.d/
