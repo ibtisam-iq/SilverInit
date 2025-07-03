@@ -86,6 +86,7 @@ echo -e "   ✅ Cluster is now ready to accept and manage worker nodes."
 echo
 
 echo -e "${BOLD}🧩 Step 1 (Recommended): Join Worker Nodes${RESET}"
+echo
 echo -e "${CYAN}📌 The join command was printed by 'kubeadm init' above 👆.${RESET}"
 echo -e "   Please copy that command and run it on each worker node to join the cluster."
 echo -e "${YELLOW}⚠️ That token is time-sensitive. Use it within 24 hours or regenerate with:${RESET}"
@@ -93,6 +94,7 @@ echo -e "${YELLOW}   kubeadm token create --print-join-command${RESET}"
 echo
 
 echo -e "${BOLD}🌐 Final Setup Step – Deploy a CNI (Mandatory)${RESET}"
+echo
 echo -e "   Kubernetes requires a CNI plugin for pod networking and intercommunication."
 echo -e "   You’ll be able to choose between Calico, Flannel, or Weave in the next step."
 echo
