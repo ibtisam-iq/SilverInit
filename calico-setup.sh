@@ -36,7 +36,7 @@ echo
 echo "✅ CIDR updated to ${POD_CIDR} in $FILE"
 
 # 📤 Apply the Calico configuration
-kubectl create -f "$FILE" || { echo -e "\n\033[1;31m❌ Failed to apply Calico CNI. Exiting...\033[0m"; exit 1; }
+kubectl create -f "$FILE"
 
 echo -e "\n\033[1;32m✅ Calico network plugin deployed successfully.\033[0m"
 
