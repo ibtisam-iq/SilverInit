@@ -92,5 +92,5 @@ function main() {
 
 main
 
-kubectl delete deploy,ds,svc,po,rc --all -n calico-system
+kubectl delete ns calico-system tigera-operator
 sudo rm -rf /etc/cni/net.d/
