@@ -6,6 +6,7 @@ clear
 YELLOW="\e[93m"
 CYAN="\e[96m"
 GREEN="\e[92m"
+RED="\e[91m"
 BOLD="\e[1m"
 RESET="\e[0m"
 
@@ -22,29 +23,26 @@ echo "║    ╚═╝     ╚═╝╚══════╝ ╚═════�
 echo "║                                                            ║"
 echo "╚════════════════════════════════════════════════════════════╝"
 echo -e "${RESET}"
+echo -e "${BOLD}${CYAN}               Kubernetes Control Plane Bootstrapper${RESET}\n"
 
-echo -e "${BOLD}${CYAN}SilverInit – Kubernetes Bootstrap Utility${RESET}"
+# Info Block
+echo -e "${CYAN}───────────────────────────────────────────────────────────────${RESET}"
+echo -e "${BOLD}SilverInit – Kubernetes Bootstrap Utility${RESET}"
 echo -e "${CYAN}Author   : Muhammad Ibtisam Iqbal${RESET}"
 echo -e "${CYAN}Version  : v1.0${RESET}"
 echo -e "${CYAN}Repo     : https://github.com/ibtisam-iq/SilverInit${RESET}"
 echo -e "${CYAN}License  : MIT${RESET}"
+echo -e "${CYAN}───────────────────────────────────────────────────────────────${RESET}"
+
 echo
 echo -e "${GREEN}🧊 Initializing your Kubernetes Control Plane...${RESET}"
 echo
 
-# ╔════════════════════════════════════════════════════╗
-# ║   SilverInit - Kubernetes Control Plane Setup      ║
-# ║     (c) 2025 Muhammad Ibtisam Iqbal                ║
-# ║     License: MIT                                   ║
-# ╚════════════════════════════════════════════════════╝
-#
 # 📌 Description:
 # This script automates the initialization of the first Kubernetes control plane node.
 #
 # 🚀 Usage:
 #   curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/K8s-Control-Plane-Init.sh | sudo bash
-#
-# 📜 License: MIT | 🌐 https://github.com/ibtisam-iq/SilverInit
 
 set -euo pipefail
 trap 'echo -e "\n\033[1;31m❌ Error at line $LINENO. Exiting...\033[0m"; exit 1' ERR
@@ -52,7 +50,7 @@ trap 'echo -e "\n\033[1;31m❌ Error at line $LINENO. Exiting...\033[0m"; exit 1
 REPO_URL="https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main"
 
 # ✅ Dynamically source cluster-params.sh
-eval "$(curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/cluster-params.sh)"
+eval "$(curl -sL "$REPO_URL/cluster-params.sh")"
 
 # List of scripts to execute
 SCRIPTS=(
@@ -65,33 +63,58 @@ SCRIPTS=(
 
 # 🚀 Executing Scripts
 for script in "${SCRIPTS[@]}"; do
-    echo -e "\n\033[1;34m🚀 Running $script script...\033[0m"
-    bash <(curl -fsSL "$REPO_URL/$script") || { echo -e "\n\033[1;31m❌ Failed to execute $script. Exiting...\033[0m\n"; exit 1; }
-    echo -e "\033[1;32m✅ Successfully executed $script.\033[0m\n"
+    echo -e "\n${CYAN}▶️ Executing: ${script}...${RESET}"
+    bash <(curl -fsSL "$REPO_URL/$script") || {
+        echo -e "\n${RED}❌ Error: Failed to execute ${script}. Exiting.${RESET}\n"
+        exit 1
+    }
+    echo -e "${GREEN}✅ Done: ${script}${RESET}\n"
 done
 
-echo
-echo -e "\n\033[1;34m🚀 Your Kubernetes Control Plane is now ready!\033[0m"
-echo -e "\033[1;32mTo complete the setup and begin using your cluster, please follow these final steps:\033[0m"
-echo -e "\033[1;37m────────────────────────────────────────────────────────────\033[0m"
+echo -e "${CYAN}───────────────────────────────────────────────────────────────${RESET}"
 
 # ==================================================
 # 🎉 Final Messages
 # ==================================================
+echo
+echo -e "${GREEN}🎉 Cluster Initialized Successfully!${RESET}"
+echo
 
-# Step 1: Show join command for worker nodes
-echo -e "\n\033[1;35m🔗 Step 1: Join Worker Nodes\033[0m"
-JOIN_CMD=$(kubeadm token create --print-join-command 2>/dev/null || echo "⚠️ kubeadm join command not available. Make sure 'kubeadm init' ran successfully.")
-echo -e "\033[1;36m$JOIN_CMD\033[0m"
+echo -e "${BOLD}📋 Summary of What’s Done So Far:${RESET}"
+echo -e "   ✅ Kubernetes control plane has been successfully initialized."
+echo -e "   ✅ kubeconfig has been configured for the current user."
+echo -e "   ✅ Cluster is now ready to accept and manage worker nodes."
+echo
 
-# Step 2: Deploy Calico CNI plugin
-echo -e "\n\033[1;35m🌐 Step 2: Deploy the Calico Network Plugin\033[0m"
-echo -e "\033[1;36mcurl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/calico-setup.sh | bash\033[0m"
+echo -e "${BOLD}🧩 Step 1 (Recommended): Join Worker Nodes${RESET}"
+echo -e "${CYAN}📌 The join command was printed by 'kubeadm init' above 👆.${RESET}"
+echo -e "   Please copy that command and run it on each worker node to join the cluster."
+echo -e "${YELLOW}⚠️ That token is time-sensitive. Use it within 24 hours or regenerate with:${RESET}"
+echo -e "${YELLOW}   kubeadm token create --print-join-command${RESET}"
+echo
 
-# Step 3: Verify the cluster status
-echo -e "\n\033[1;35m🔍 Step 3: Verify the Cluster Status\033[0m"
-echo -e "\033[1;36mkubectl get nodes -o wide\033[0m"
+echo -e "${BOLD}🌐 Final Setup Step – Deploy a CNI (Mandatory)${RESET}"
+echo -e "   Kubernetes requires a CNI plugin for pod networking and intercommunication."
+echo -e "   You’ll be able to choose between Calico, Flannel, or Weave in the next step."
+echo
 
-# Final closing message
-echo -e "\n\033[1;33m✨ Thank you for using SilverInit - Muhammad Ibtisam 🚀\033[0m"
-echo -e "\033[1;32m💡 Automation is about freeing humans to innovate!\033[0m\n"
+echo -e "${RED}🔒 Important:${RESET}"
+echo -e "${YELLOW}   ➤ CNI should be installed ONLY ON THE FIRST CONTROL PLANE NODE!${RESET}"
+echo -e "${YELLOW}     Do NOT apply the network plugin on any additional control plane or worker node.${RESET}"
+echo
+
+echo -e "${BOLD}${GREEN}🚀 To complete the final setup step, run:${RESET}"
+echo -e "${GREEN}bash <(curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-cni-setup.sh)${RESET}"
+echo
+
+echo -e "${CYAN}🛠️ This script will:${RESET}"
+echo -e "   ─ Prompt you to select a CNI plugin"
+echo -e "   ─ Deploy it seamlessly"
+echo -e "   ─ Assist you in verifying that your Kubernetes cluster is fully operational"
+echo
+
+echo -e "${BOLD}${GREEN}🎯 Congratulations! You're just one step away from a complete Kubernetes cluster.${RESET}"
+echo
+
+echo -e "${CYAN}✨ Thank you for using ${BOLD}SilverInit${CYAN} – crafted with care by Muhammad Ibtisam!${RESET}"
+echo -e "${CYAN}───────────────────────────────────────────────────────────────${RESET}"
