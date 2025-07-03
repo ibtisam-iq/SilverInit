@@ -104,22 +104,10 @@ curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/helm-setup
 curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/trivy-setup.sh | sudo bash
 ```
 
-### Calico CNI
+### CNI
 
 ```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/calico-setup.sh | bash
-```
-
-### Flannel CNI
-
-```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/flannel-setup.sh | bash
-```
-
-### Weave CNI
-
-```bash
-curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/weave-setup.sh | bash
+curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/k8s-cni-setup.sh | bash
 ```
 
 ### Get System Information
