@@ -93,9 +93,3 @@ function main() {
 }
 
 main
-# calico residuals
-kubectl delete ns calico-system tigera-operator --force
-kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd --force
-kubectl get crd | grep projectcalico.org | awk '{print $1}' | xargs kubectl delete crd --force
-kubectl delete crd adminnetworkpolicies.policy.networking.k8s.io baselineadminnetworkpolicies.policy.networking.k8s.io installations.operator.tigera.io --force
-sudo rm -rf /etc/cni/net.d/
