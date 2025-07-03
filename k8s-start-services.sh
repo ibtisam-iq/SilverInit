@@ -21,9 +21,8 @@ for service in containerd kubelet; do
     echo -n "$service: "
     systemctl is-active "$service"
 done
-echo -e "\n"
+
 echo -e "\n\033[1;32m kubelet is activating, because it's waiting for the API server (which kubeadm init starts)..\033[0m"
-echo -e "\n"
 # Since kubeadm init is not run, and kubelet needs a valid configuration to work, it keeps crashing and restarting.
 
 # ubuntu@ip-172-31-17-2:~$ systemctl is-active "kubelet"
