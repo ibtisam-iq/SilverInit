@@ -1,6 +1,8 @@
 #!/bin/bash
 
-clear
+if [[ "$1" == "--clear" ]]; then
+  clear
+fi
 
 # ╔═══════════════════════════════════╗
 # │ SilverInit – CNI Network Utility │
