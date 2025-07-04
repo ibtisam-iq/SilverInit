@@ -68,8 +68,8 @@ function cleanup_old_cni() {
       
       echo -e "${YELLOW}Deleting interface: $iface${RESET}"
       sudo ip link delete "$iface" > /dev/null 2>&1 || {
-        echo -e "${YELLOW}⚠️ $iface could not be deleted immediately. Retrying after 10s...${RESET}"
-        sleep 10
+        echo -e "${YELLOW}⚠️ $iface could not be deleted immediately. Retrying after 30s...${RESET}"
+        sleep 30
         sudo ip link delete "$iface" > /dev/null 2>&1 || echo -e "${RED}❌ Failed to delete $iface after retry.${RESET}"
       }
     done
