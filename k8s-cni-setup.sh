@@ -151,11 +151,13 @@ function verify_cluster() {
 # ───── MAIN FLOW ─────
 function main() {
   print_header
+  echo
   print_cni_menu
+  echo
+  read -p "Enter your choice [1-3]: " choice < /dev/tty
   cleanup_old_cni
 
-  read -p "Enter your choice [1-3]: " choice < /dev/tty
-  echo
+  
   case "$choice" in
     1|"") install_cni "Calico"  "https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/calico-setup.sh" ;;
     2)     install_cni "Flannel" "https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/flannel-setup.sh" ;;
