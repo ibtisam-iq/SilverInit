@@ -58,6 +58,7 @@ function cleanup_old_cni() {
   sudo ip link set datapath down > /dev/null 2>&1
   sudo ovs-vsctl add-br datapath > /dev/null 2>&1
   sudo ovs-vsctl del-br datapath > /dev/null 2>&1
+  sudo apt-get remove --purge openvswitch-switch && sudo apt-get autoremove > /dev/null 2>&1
 
   for pattern in "${PATTERNS[@]}"; do
     regex="^${pattern//\*/.*}$"
