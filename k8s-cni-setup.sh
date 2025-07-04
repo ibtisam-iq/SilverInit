@@ -18,7 +18,8 @@ RESET="\e[0m"
 
 echo -e "${CYAN}Removing the residues ..."
 sudo ip link delete weave
-kubectl delete -f "https://reweave.azurewebsites.net/k8s/v${K8S_VERSION}/net.yaml?env.IPALLOC_RANGE=${POD_CIDR}" --force > /dev/null 2>&1
+kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net clusterrolebinding.rbac.authorization.k8s.io/weave-net
+kubectl delete -n kube-system serviceaccount/weave-net role.rbac.authorization.k8s.io/weave-net rolebinding.rbac.authorization.k8s.io/weave-net daemonset.apps/weave-net
 sudo rm -rf /etc/cni/net.d/*
 
 # ───── HEADER ─────
