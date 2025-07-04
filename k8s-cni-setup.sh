@@ -31,9 +31,9 @@ function print_cni_menu() {
   echo -e "${GREEN}🌐 Proceeding with Post-Initialization Steps...${RESET}"
   echo -e "${GREEN}→ CNI Network Setup and Cluster Verification${RESET}\n"
   echo -e "${CYAN}📡 Select a CNI plugin to install:${RESET}"
-  echo "1️⃣ Calico  - Best for advanced policy and large-scale clusters"
-  echo "2️⃣ Flannel - Lightweight and simple (default for many demos)"
-  echo "3️⃣ Weave   - Secure encryption, great for small clusters"
+  echo " 1 Calico  - Best for advanced policy and large-scale clusters"
+  echo " 2 Flannel - Lightweight and simple (default for many demos)"
+  echo " 3 Weave   - Secure encryption, great for small clusters"
   echo
 }
 
