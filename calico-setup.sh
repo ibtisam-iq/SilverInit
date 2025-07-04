@@ -46,16 +46,4 @@ echo
 kubectl create -f "$FILE"
 
 echo -e "\n\033[1;32m✅ Calico network plugin deployed successfully.\033[0m"
-
-# 🔎 Validate CNI plugin installation
-echo -e "\n\033[1;34m🔍 Validating CNI plugin installation...\033[0m"
-sleep 60
-sudo systemctl restart containerd kubelet
-
-sudo ls /opt/cni/bin/
-echo
-sudo ls -l /etc/cni/net.d/
-echo -e "\n\033[1;32m✅ CNI plugins found.\033[0m"
-
-echo -e "\n\033[1;36m🎉 calico-setup.sh script is completed!\033[0m"
-
+echo -e "\n\033[1;36m🎉 calico-setup.sh script is completed!\033\n[0m"
