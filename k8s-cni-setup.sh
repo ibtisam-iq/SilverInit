@@ -16,6 +16,7 @@ RED="\e[91m"
 BOLD="\e[1m"
 RESET="\e[0m"
 
+echo -e "${CYAN}Removing the residues ..."
 sudo ip link delete weave
 kubectl delete -f "https://reweave.azurewebsites.net/k8s/v${K8S_VERSION}/net.yaml?env.IPALLOC_RANGE=${POD_CIDR}" --force > /dev/null 2>&1
 sudo rm -rf /etc/cni/net.d/*
