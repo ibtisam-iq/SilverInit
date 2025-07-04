@@ -18,19 +18,8 @@ RESET="\e[0m"
 
 # ───── HEADER ─────
 function print_header() {
-  echo -e "${YELLOW}"
-  echo "╔════════════════════════════════════════════════════════════╗"
-  echo "║                                                            ║"
-  echo "║    ███████╗██╗██╗     ██╗   ██╗███████╗██████╗ ██╗████████╗ ║"
-  echo "║    ██╔════╝██║██║     ██║   ██║██╔════╝██╔══██╗██║╚══██╔══╝ ║"
-  echo "║    █████╗  ██║██║     ██║   ██║█████╗  ██████╔╝██║   ██║    ║"
-  echo "║    ██╔══╝  ██║██║     ██║   ██║██╔══╝  ██╔═══╝ ██║   ██║    ║"
-  echo "║    ██║     ██║███████╗╚██████╔╝███████╗██║     ██║   ██║    ║"
-  echo "║    ╚═╝     ╚═╝╚══════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝   ╚═╝    ║"
-  echo "║                                                            ║"
-  echo "╚════════════════════════════════════════════════════════════╝"
-  echo -e "${RESET}"
   echo -e "${BOLD}${CYAN}SilverInit – CNI Network Setup Utility${RESET}"
+  echo
   echo -e "${CYAN}Author   : Muhammad Ibtisam Iqbal"
   echo -e "Version  : v1.1"
   echo -e "Repo     : https://github.com/ibtisam-iq/SilverInit"
