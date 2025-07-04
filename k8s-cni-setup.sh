@@ -116,6 +116,25 @@ function install_cni() {
   fi
 }
 
+#  ───── CNI CHECK ─────
+function restart_and_validate_cni() {
+  echo -e "\n${CYAN}🔁 Restarting system services...${RESET}"
+  sudo systemctl restart containerd kubelet
+
+  echo -e "\n${BLUE}🔍 Validating CNI plugin installation...${RESET}"
+  sleep 30
+
+  if ! sudo ls /opt/cni/bin/ &> /dev/null; then
+    echo -e "\n${RED}❌ CNI plugins not found. Exiting...${RESET}"
+    exit 1
+  fi
+
+  echo -e "\n${GREEN}✅ CNI plugins found.${RESET}"
+
+  echo -e "\n${CYAN}📁 CNI config files in /etc/cni/net.d/:${RESET}"
+  sudo ls -l /etc/cni/net.d/
+}
+
 # ───── CLUSTER CHECK ─────
 function verify_cluster() {
   echo -e "\n⏳ Waiting 60 seconds for CNI to stabilize..."
@@ -144,8 +163,18 @@ function main() {
       install_cni "Calico"  "https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/calico-setup.sh"
       ;;
   esac
-
+  
+  restart_and_validate_cni
   verify_cluster
 }
 
 main
+
+# Functions:
+# ─ print_header
+# ─ cleanup_old_cni
+# ─ print_cni_menu
+# ─ install_cni_plugin
+# ─ restart_and_validate_cni
+# ─ verify_cluster_ready
+# ─ main
