@@ -16,6 +16,10 @@ RED="\e[91m"
 BOLD="\e[1m"
 RESET="\e[0m"
 
+sudo ip link delete weave
+kubectl delete -f "https://reweave.azurewebsites.net/k8s/v${K8S_VERSION}/net.yaml?env.IPALLOC_RANGE=${POD_CIDR}" --force > /dev/null 2>&1
+sudo rm -rf /etc/cni/net.d/*
+
 # ───── HEADER ─────
 function print_header() {
   echo -e "${BOLD}${CYAN}SilverInit – CNI Network Setup Utility${RESET}"
@@ -28,10 +32,10 @@ function print_header() {
 
 # ───── CNI OPTIONS ─────
 function print_cni_menu() {
+
   echo -e "${GREEN}🌐 Proceeding with Post-Initialization Steps...${RESET}"
   echo -e "${GREEN}→ CNI Network Setup and Cluster Verification${RESET}\n"
   echo -e "${CYAN}📡 Select a CNI plugin to install:${RESET}"
-  sudo rm -rf /etc/cni/net.d/
   echo
   echo " 1 Calico  - Best for advanced policy and large-scale clusters"
   echo " 2 Flannel - Lightweight and simple (default for many demos)"
