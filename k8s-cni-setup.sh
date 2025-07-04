@@ -32,7 +32,7 @@ function print_header() {
 
 # ───── CLEANUP OLD CNI RESIDUES ─────
 function cleanup_old_cni() {
-  echo -e "${CYAN}🧹 Removing previous CNI residues...${RESET}"
+  echo -e "${CYAN}🧹 Removing previous CNI residues, it may take some time...${RESET}"
 
   kubectl delete ns kube-flannel --force > /dev/null 2>&1
 
