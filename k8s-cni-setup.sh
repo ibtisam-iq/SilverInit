@@ -62,6 +62,7 @@ function verify_cluster() {
   kubectl get nodes -o wide || echo -e "${RED}❌ Failed to get node status.${RESET}"
   echo
   kubectl get pods -A || echo -e "${RED}❌ Failed to get pod status.${RESET}"
+  echo
 }
 
 # ───── MAIN FLOW ─────
