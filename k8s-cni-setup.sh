@@ -20,55 +20,6 @@ RESET="\e[0m"
 # ───── TRAP FOR CTRL+C ─────
 trap 'echo -e "\n${RED}❌ Script interrupted. Exiting...${RESET}"; exit 1' INT
 
-# ───── CLEANUP OLD CNI RESIDUES ─────
-echo -e "${CYAN}🧹 Removing previous CNI residues...${RESET}"
-
-kubectl delete ns kube-flannel --force > /dev/null 2>&1
-
-kubectl delete -n kube-system \
-  serviceaccount/weave-net \
-  role.rbac.authorization.k8s.io/weave-net \
-  rolebinding.rbac.authorization.k8s.io/weave-net \
-  daemonset.apps/weave-net > /dev/null 2>&1
-
-kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net \
-  clusterrolebinding.rbac.authorization.k8s.io/weave-net > /dev/null 2>&1
-
-sudo rm -rf /etc/cni/net.d/*
-
-if systemctl is-active --quiet kubelet; then
-  sudo systemctl stop kubelet
-fi
-
-PATTERNS=("flannel*" "cni0" "weave" "datapath" "vxlan*" "veth*")
-
-for pattern in "${PATTERNS[@]}"; do
-  regex="^${pattern//\*/.*}$"
-  for iface in $(ip -o link show | awk -F': ' '{print $2}' | cut -d'@' -f1 | grep -E "$regex"); do
-    echo -e "${YELLOW}Bringing down interface: $iface${RESET}"
-    sudo ip link set "$iface" down > /dev/null 2>&1 || echo -e "${RED}⚠️ Could not bring down $iface${RESET}"
-
-    echo -e "${YELLOW}Deleting interface: $iface${RESET}"
-    sudo ip link delete "$iface" > /dev/null 2>&1 || {
-      echo -e "${YELLOW}⚠️ $iface could not be deleted immediately. Retrying after 10s...${RESET}"
-      sleep 10
-      sudo ip link delete "$iface" > /dev/null 2>&1 || echo -e "${RED}❌ Failed to delete $iface after retry.${RESET}"
-    }
-  done
-done
-
-for ns in $(ip netns list | awk '{print $1}'); do
-  echo -e "${YELLOW}🧹 Deleting namespace: $ns${RESET}"
-  sudo ip netns delete "$ns" > /dev/null 2>&1 || echo -e "${RED}❌ Failed to delete $ns${RESET}"
-done
-
-if ip route | grep -q cni0; then
-  sudo ip route flush table main
-  sudo ip route flush cache
-fi
-
-sudo systemctl restart kubelet containerd
-
 # ───── HEADER ─────
 function print_header() {
   echo -e "${BOLD}${CYAN}SilverInit – CNI Network Setup Utility${RESET}"
@@ -77,6 +28,59 @@ function print_header() {
   echo -e "Version  : v1.1"
   echo -e "Repo     : https://github.com/ibtisam-iq/SilverInit"
   echo -e "License  : MIT${RESET}\n"
+}
+
+# ───── CLEANUP OLD CNI RESIDUES ─────
+function cleanup_old_cni() {
+  echo -e "${CYAN}🧹 Removing previous CNI residues...${RESET}"
+
+  kubectl get ns kube-flannel > /dev/null 2>&1 && \
+  kubectl delete ns kube-flannel --force > /dev/null 2>&1
+
+  kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net \
+    clusterrolebinding.rbac.authorization.k8s.io/weave-net > /dev/null 2>&1
+
+  kubectl delete -n kube-system \
+    serviceaccount/weave-net \
+    role.rbac.authorization.k8s.io/weave-net \
+    rolebinding.rbac.authorization.k8s.io/weave-net \
+    daemonset.apps/weave-net > /dev/null 2>&1
+
+  sudo rm -rf /etc/cni/net.d/*
+
+  if systemctl is-active --quiet kubelet; then
+    sudo systemctl stop kubelet
+  fi
+
+  PATTERNS=("flannel*" "cni0" "weave" "datapath" "vxlan*" "veth*")
+
+  for pattern in "${PATTERNS[@]}"; do
+    regex="^${pattern//\*/.*}$"
+    for iface in $(ip -o link show | awk -F': ' '{print $2}' | cut -d'@' -f1 | grep -E "$regex"); do
+      echo -e "${YELLOW}Bringing down interface: $iface${RESET}"
+      sudo ip link set "$iface" down > /dev/null 2>&1 || echo -e "${RED}⚠️ Could not bring down $iface${RESET}"
+      
+      echo -e "${YELLOW}Deleting interface: $iface${RESET}"
+      sudo ip link delete "$iface" > /dev/null 2>&1 || {
+        echo -e "${YELLOW}⚠️ $iface could not be deleted immediately. Retrying after 10s...${RESET}"
+        sleep 10
+        sudo ip link delete "$iface" > /dev/null 2>&1 || echo -e "${RED}❌ Failed to delete $iface after retry.${RESET}"
+      }
+    done
+  done
+
+  for ns in $(ip netns list | awk '{print $1}'); do
+    echo -e "${YELLOW}🧹 Deleting namespace: $ns${RESET}"
+    sudo ip netns delete "$ns" > /dev/null 2>&1 || echo -e "${RED}❌ Failed to delete $ns${RESET}"
+  done
+
+  if ip route | grep -q cni0; then
+    sudo ip route flush table main
+    sudo ip route flush cache
+  fi
+
+  sudo systemctl restart kubelet containerd
+  echo -e "${CYAN} Previous CNI Residues Cleaned.${RESET}\n
 }
 
 # ───── CNI OPTIONS ─────
@@ -121,6 +125,7 @@ function verify_cluster() {
 function main() {
   print_header
   print_cni_menu
+  cleanup_old_cni
 
   read -p "Enter your choice [1-3]: " choice < /dev/tty
   echo
