@@ -9,6 +9,10 @@ set -e
 set -o pipefail
 trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
 
+sudo ip link delete weave
+kubectl apply -f "https://reweave.azurewebsites.net/k8s/v${K8S_VERSION}/net.yaml?env.IPALLOC_RANGE=${POD_CIDR}" --force > /dev/null 2>&1
+sudo rm /etc/cni/net.d/*
+
 # 🔗 Fetch dynamic cluster environment variables
 echo -e "\n\033[1;36m🔗 Fetching cluster environment variables...\033[0m"
 eval "$(curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/cluster-params.sh)"
