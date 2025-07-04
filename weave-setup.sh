@@ -35,8 +35,8 @@ sleep 60
 sudo systemctl restart containerd kubelet
 
 sudo ls /opt/cni/bin/ || { echo -e "\n\033[1;31m❌ CNI plugins not found. Exiting...\033[0m"; exit 1; }
-echo
+echo -e "\n\033[1;32m✅ CNI plugins found.\033\n[0m"
 sudo ls -l /etc/cni/net.d/
-echo -e "\n\033[1;32m✅ CNI plugins found.\033[0m"
+
 
 echo -e "\n\033[1;36m🎉 weave-setup.sh script is completed!\033[0m"
