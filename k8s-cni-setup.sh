@@ -78,7 +78,7 @@ function cleanup_old_cni() {
     sudo ip route flush cache
   fi
 
-  sudo systemctl restart kubelet containerd
+  sudo systemctl restart kubelet containerd systemd-networkd
   echo -e "${CYAN} Previous CNI Residues Cleaned.${RESET}\n"
 }
 
