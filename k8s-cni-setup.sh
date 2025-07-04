@@ -17,10 +17,14 @@ BOLD="\e[1m"
 RESET="\e[0m"
 
 echo -e "${CYAN}Removing the residues ..."
-sudo ip link delete weave
-kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net clusterrolebinding.rbac.authorization.k8s.io/weave-net
-kubectl delete -n kube-system serviceaccount/weave-net role.rbac.authorization.k8s.io/weave-net rolebinding.rbac.authorization.k8s.io/weave-net daemonset.apps/weave-net
+
+kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net clusterrolebinding.rbac.authorization.k8s.io/weave-net > /dev/null 2>&1
+kubectl delete -n kube-system serviceaccount/weave-net role.rbac.authorization.k8s.io/weave-net rolebinding.rbac.authorization.k8s.io/weave-net daemonset.apps/weave-net > /dev/null 2>&1
+kubectl delete ns kube-flannel --force > /dev/null 2>&1
 sudo rm -rf /etc/cni/net.d/*
+sudo ip link delete weave > /dev/null 2>&1
+sudo ip link delete flannel.1 > /dev/null 2>&1
+sudo ip link delete cni0 > /dev/null 2>&1
 
 # ───── HEADER ─────
 function print_header() {
