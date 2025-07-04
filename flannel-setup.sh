@@ -9,12 +9,6 @@ set -e
 set -o pipefail
 trap 'echo -e "\n❌ Error occurred at line $LINENO. Exiting...\n" && exit 1' ERR
 
-# Removing existing residuals
-kubectl delete ns kube-flannel --force > /dev/null 2>&1
-sudo ip link delete flannel.1
-sudo ip link delete cni0
-sudo rm -rf /etc/cni/net.d/*
-
 # 🔗 Fetch dynamic cluster environment variables
 echo -e "\n\033[1;36m🔗 Fetching cluster environment variables...\033[0m"
 eval "$(curl -sL https://raw.githubusercontent.com/ibtisam-iq/SilverInit/main/cluster-params.sh)"
