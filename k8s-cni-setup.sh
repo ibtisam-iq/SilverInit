@@ -25,7 +25,7 @@ function print_header() {
   echo -e "${BOLD}${CYAN}SilverInit – CNI Network Setup Utility${RESET}"
   echo
   echo -e "${CYAN}Author   : Muhammad Ibtisam Iqbal"
-  echo -e "Version  : v1.1"
+  echo -e "Version  : v1.0"
   echo -e "Repo     : https://github.com/ibtisam-iq/SilverInit"
   echo -e "License  : MIT${RESET}\n"
 }
@@ -52,15 +52,17 @@ function cleanup_old_cni() {
   fi
 
   PATTERNS=("flannel*" "cni0" "weave" "datapath" "vxlan*" "veth*")
-
-  sudo apt-get install -y openvswitch-switch > /dev/null 2>&1
-  sudo systemctl restart networkd-dispatcher.service unattended-upgrades.service
-  sudo ip link set datapath down > /dev/null 2>&1
-  sudo ovs-vsctl add-br datapath > /dev/null 2>&1
-  sudo ovs-vsctl del-br datapath > /dev/null 2>&1
-  sudo apt-get remove --purge openvswitch-switch > /dev/null 2>&1
-  sudo apt-get autoremove > /dev/null 2>&1
-  sleep 30
+  
+  if ip a | grep -q datapath; then
+    sudo apt-get install -y openvswitch-switch > /dev/null 2>&1
+    sudo systemctl restart networkd-dispatcher.service unattended-upgrades.service
+    sudo ip link set datapath down > /dev/null 2>&1
+    sudo ovs-vsctl add-br datapath > /dev/null 2>&1
+    sudo ovs-vsctl del-br datapath > /dev/null 2>&1
+    sudo apt-get remove --purge openvswitch-switch > /dev/null 2>&1
+    sudo apt-get autoremove > /dev/null 2>&1
+    sleep 60
+  fi
 
   for pattern in "${PATTERNS[@]}"; do
     regex="^${pattern//\*/.*}$"
@@ -70,9 +72,9 @@ function cleanup_old_cni() {
       
       echo -e "${YELLOW}Deleting interface: $iface${RESET}"
       sudo ip link delete "$iface" > /dev/null 2>&1 || {
-        echo -e "${YELLOW}⚠️ $iface could not be deleted immediately. Retrying after 30s...${RESET}"
-        sleep 30
-        sudo ip link delete "$iface" > /dev/null 2>&1 || echo -e "${RED}❌ Failed to delete $iface after retry.${RESET}"
+        echo -e "${YELLOW}⚠️ $iface could not be deleted immediately. Retrying after 10s ...${RESET}"
+        sleep
+        sudo ip link delete "$iface" > /dev/null 2>&1 || echo -e "${RED}❌ Failed to delete $iface, will delete automatically after a few minutes.${RESET}"
       }
     done
   done
@@ -156,6 +158,7 @@ function main() {
   print_cni_menu
   echo
   read -p "Enter your choice [1-3]: " choice < /dev/tty
+  echo
   cleanup_old_cni
 
   
