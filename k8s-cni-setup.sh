@@ -34,7 +34,6 @@ function print_header() {
 function cleanup_old_cni() {
   echo -e "${CYAN}🧹 Removing previous CNI residues...${RESET}"
 
-  kubectl get ns kube-flannel > /dev/null 2>&1 && \
   kubectl delete ns kube-flannel --force > /dev/null 2>&1
 
   kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net \
