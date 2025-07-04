@@ -31,6 +31,7 @@ function print_cni_menu() {
   echo -e "${GREEN}🌐 Proceeding with Post-Initialization Steps...${RESET}"
   echo -e "${GREEN}→ CNI Network Setup and Cluster Verification${RESET}\n"
   echo -e "${CYAN}📡 Select a CNI plugin to install:${RESET}"
+  sudo rm -rf /etc/cni/net.d/
   echo
   echo " 1 Calico  - Best for advanced policy and large-scale clusters"
   echo " 2 Flannel - Lightweight and simple (default for many demos)"
