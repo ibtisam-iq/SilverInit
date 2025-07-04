@@ -53,6 +53,12 @@ function cleanup_old_cni() {
 
   PATTERNS=("flannel*" "cni0" "weave" "datapath" "vxlan*" "veth*")
 
+  sudo apt-get install -y openvswitch-switch > /dev/null 2>&1
+  sudo systemctl restart networkd-dispatcher.service unattended-upgrades.service
+  sudo ip link set datapath down > /dev/null 2>&1
+  sudo ovs-vsctl add-br datapath > /dev/null 2>&1
+  sudo ovs-vsctl del-br datapath > /dev/null 2>&1
+
   for pattern in "${PATTERNS[@]}"; do
     regex="^${pattern//\*/.*}$"
     for iface in $(ip -o link show | awk -F': ' '{print $2}' | cut -d'@' -f1 | grep -E "$regex"); do
