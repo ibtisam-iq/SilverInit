@@ -30,9 +30,10 @@ sudo ls -la $USER_HOME/.kube/config
 # Ensure KUBECONFIG is set
 export KUBECONFIG=$USER_HOME/.kube/config
 echo -e "\n📌 KUBECONFIG set to $KUBECONFIG"
-sleep 60
+
 # Verify kubectl access
-echo -e "\n🔍 Verifying kubectl access...\n"
+echo -e "\n🔍 Verifying kubectl access, please wait for 60s ...\n"
+sleep 60
 kubectl cluster-info || { echo "⚠️ Failed to connect to Kubernetes cluster"; exit 1; }
 
 echo -e "\n\033[1;32m✅ kubeconfig configured successfully.\033[0m"
