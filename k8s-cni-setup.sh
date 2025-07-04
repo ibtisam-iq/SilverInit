@@ -79,7 +79,7 @@ function cleanup_old_cni() {
   fi
 
   sudo systemctl restart kubelet containerd
-  echo -e "${CYAN} Previous CNI Residues Cleaned.${RESET}\n
+  echo -e "${CYAN} Previous CNI Residues Cleaned.${RESET}\n"
 }
 
 # ───── CNI OPTIONS ─────
