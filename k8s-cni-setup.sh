@@ -5,7 +5,7 @@ if [[ "$1" == "--clear" ]]; then
 fi
 
 # ╔═══════════════════════════════════╗
-# │ SilverInit – CNI Network Utility │
+# │ SilverInit – CNI Network Utility  │
 # ╚═══════════════════════════════════╝
 
 # ───── COLORS ─────
