@@ -38,16 +38,4 @@ echo "✅ CIDR updated to ${POD_CIDR} in $FILE"
 echo -e "\n\033[1;34m🚀 Applying Flannel network configuration...\033[0m"
 kubectl apply -f "$FILE" || { echo -e "\n\033[1;31m❌ Failed to apply Flannel CNI. Exiting...\033[0m"; exit 1; }
 
-# 🔄 Restart container runtime and kubelet
-echo -e "\n\033[1;36m🔁 Restarting system services...\033[0m"
-sudo systemctl restart containerd kubelet
-
-# 🔎 Validate CNI plugin installation
-echo -e "\n\033[1;34m🔍 Validating CNI plugin installation...\033[0m"
-sleep 30
-sudo ls /opt/cni/bin/ || { echo -e "\n\033[1;31m❌ CNI plugins not found. Exiting...\033[0m"; exit 1; }
-echo
-sudo ls -l /etc/cni/net.d/
-echo -e "\n\033[1;32m✅ CNI plugins found.\033[0m"
-
-echo -e "\n\033[1;36m🎉 flannel-setup.sh script is completed!\033[0m"
+echo -e "\n\033[1;36m🎉 flannel-setup.sh script is completed!\033\n[0m"
