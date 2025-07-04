@@ -23,17 +23,16 @@ trap 'echo -e "\n${RED}❌ Script interrupted. Exiting...${RESET}"; exit 1' INT
 # ───── CLEANUP OLD CNI RESIDUES ─────
 echo -e "${CYAN}🧹 Removing previous CNI residues...${RESET}"
 
-kubectl get ns kube-flannel > /dev/null 2>&1 && \
 kubectl delete ns kube-flannel --force > /dev/null 2>&1
-
-kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net \
-  clusterrolebinding.rbac.authorization.k8s.io/weave-net > /dev/null 2>&1
 
 kubectl delete -n kube-system \
   serviceaccount/weave-net \
   role.rbac.authorization.k8s.io/weave-net \
   rolebinding.rbac.authorization.k8s.io/weave-net \
   daemonset.apps/weave-net > /dev/null 2>&1
+
+kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net \
+  clusterrolebinding.rbac.authorization.k8s.io/weave-net > /dev/null 2>&1
 
 sudo rm -rf /etc/cni/net.d/*
 
@@ -95,11 +94,6 @@ function print_cni_menu() {
 function install_cni() {
   local name="$1"
   local url="$2"
-
-  if kubectl get pods -A | grep -qi "$name"; then
-    echo -e "${YELLOW}⚠️ $name CNI appears already installed. Skipping...${RESET}"
-    return
-  fi
 
   echo -e "${GREEN}🔌 Installing ${BOLD}$name${RESET}${GREEN} CNI...${RESET}"
   echo
