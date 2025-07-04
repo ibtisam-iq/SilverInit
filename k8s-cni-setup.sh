@@ -45,8 +45,10 @@ function cleanup_old_cni() {
     rolebinding.rbac.authorization.k8s.io/weave-net \
     daemonset.apps/weave-net > /dev/null 2>&1
 
-  sudo rm -rf /etc/cni/net.d/*
-
+  if [ -d /etc/cni/net.d ]; then
+    sudo rm -rf /etc/cni/net.d/*
+  fi
+  
   if systemctl is-active --quiet kubelet; then
     sudo systemctl stop kubelet
   fi
