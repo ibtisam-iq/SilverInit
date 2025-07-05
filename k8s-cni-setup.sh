@@ -135,7 +135,7 @@ function restart_and_validate_cni() {
     echo -e "\n${RED}❌ CNI plugins not found. Exiting...${RESET}"
     exit 1
   fi
-
+  sudo ls /opt/cni/bin/
   echo -e "\n${GREEN}✅ CNI plugins found.${RESET}"
   echo -e "\n${CYAN}📁 CNI config files in /etc/cni/net.d/:${RESET}"
   echo
