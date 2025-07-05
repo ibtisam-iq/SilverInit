@@ -71,11 +71,11 @@ function cleanup_old_cni() {
     for iface in $(ip -o link show | awk -F': ' '{print $2}' | cut -d'@' -f1 | grep -E "$regex"); do
       echo -e "${YELLOW}Bringing down interface: $iface${RESET}"
       sudo ip link set "$iface" down > /dev/null 2>&1 || echo -e "${RED}⚠️ Could not bring down $iface${RESET}"
-      
+      sleep 10
       echo -e "${YELLOW}Deleting interface: $iface${RESET}"
       sudo ip link delete "$iface" > /dev/null 2>&1 || {
-        echo -e "${YELLOW}⚠️ $iface could not be deleted immediately. Retrying after 10s ...${RESET}"
-        sleep 10
+        echo -e "${YELLOW}⚠️ $iface could not be deleted immediately. Retrying after 30s ...${RESET}"
+        sleep 30
         sudo ip link delete "$iface" > /dev/null 2>&1 || echo -e "${RED}❌ Failed to delete $iface, will delete automatically after a few minutes.${RESET}"
       }
     done
