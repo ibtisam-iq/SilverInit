@@ -53,7 +53,7 @@ function cleanup_old_cni() {
     sudo systemctl stop kubelet
   fi
 
-  PATTERNS=("flannel*" "cni0" "weave" "datapath" "vxlan*" "veth*")
+  PATTERNS=("*.calico" "flannel*" "cni0" "weave" "datapath" "vxlan*" "veth*")
   
   if ip a | grep -q datapath; then
     sudo apt-get install -y openvswitch-switch > /dev/null 2>&1
