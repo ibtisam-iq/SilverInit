@@ -10,7 +10,7 @@
 # ───── TRAP FOR CTRL+C ─────
 trap 'echo -e "\n${RED}❌ Script interrupted. Exiting...${RESET}"; exit 1' INT
 # Remove calico residuls, if found
-kubectl delete ns calico-system tigera-operator --force > /dev/null 2>&1
+kubectl delete ns calico-system tigera-operator calico-apiserver --force > /dev/null 2>&1
 kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
 kubectl get crd | grep projectcalico.org | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
 # kubectl delete crd installations.operator.tigera.io --force > /dev/null 2>&1
