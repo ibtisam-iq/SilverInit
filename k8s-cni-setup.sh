@@ -46,7 +46,7 @@ function cleanup_old_cni() {
     daemonset.apps/weave-net > /dev/null 2>&1
 
   if [ -d /etc/cni/net.d ]; then
-    sudo rm -rf /etc/cni/net.d/*
+    sudo bash -c 'rm -rf /etc/cni/net.d/*'
   fi
   
   if systemctl is-active --quiet kubelet; then
@@ -139,7 +139,7 @@ function restart_and_validate_cni() {
   echo -e "\n${GREEN}✅ CNI plugins found.${RESET}"
   echo -e "\n${CYAN}📁 CNI config files in /etc/cni/net.d/:${RESET}"
   echo
-  sudo ls /etc/cni/net.d/*
+  sudo bash -c 'ls /etc/cni/net.d/*'
 }
 
 # ───── CLUSTER CHECK ─────
