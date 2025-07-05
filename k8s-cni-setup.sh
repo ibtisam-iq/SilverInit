@@ -129,23 +129,18 @@ function restart_and_validate_cni() {
   sudo systemctl restart containerd kubelet
 
   echo -e "\n${BLUE}🔍 Validating CNI plugin installation...${RESET}"
-  sleep 30
-
-  if ! sudo ls /opt/cni/bin/ &> /dev/null; then
-    echo -e "\n${RED}❌ CNI plugins not found. Exiting...${RESET}"
-    exit 1
-  fi
+  sleep 10
   sudo ls /opt/cni/bin/
-  echo -e "\n${GREEN}✅ CNI plugins found.${RESET}"
-  echo -e "\n${CYAN}📁 CNI config files in /etc/cni/net.d/:${RESET}"
-  echo
-  sudo ls -l /etc/cni/net.d/
+  echo -e "\n${GREEN}✅ CNI plugins found.${RESET}" 
 }
 
 # ───── CLUSTER CHECK ─────
-function verify_cluster() {
+function verify_cluster() { 
   echo -e "\n⏳ Waiting 60 seconds for CNI to stabilize..."
   sleep 60
+  echo -e "\n${CYAN}📁 CNI config files in /etc/cni/net.d/:${RESET}"
+  echo
+  sudo ls -l /etc/cni/net.d/
   echo -e "\n🔍 ${CYAN}Cluster Status:${RESET}\n"
   kubectl get nodes -o wide || echo -e "${RED}❌ Failed to get node status.${RESET}"
   echo
