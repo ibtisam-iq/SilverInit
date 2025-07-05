@@ -139,7 +139,7 @@ function restart_and_validate_cni() {
   echo -e "\n${GREEN}✅ CNI plugins found.${RESET}"
   echo -e "\n${CYAN}📁 CNI config files in /etc/cni/net.d/:${RESET}"
   echo
-  sudo bash -c 'ls /etc/cni/net.d/*'
+  sudo ls -l /etc/cni/net.d/
 }
 
 # ───── CLUSTER CHECK ─────
