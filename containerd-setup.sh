@@ -30,7 +30,7 @@ echo -e "\n\033[1;34m🚀 Updating package list and installing dependencies...\0
 sudo apt update -qq && sudo apt install -yq ca-certificates curl jq gpg > /dev/null
 
 # Add Docker repository for containerd installation
-echo -e "\n\033[1;34m✅ Adding Docker repository for containerd installation...\033[0m"
+echo -e "\033[1;34m✅ Adding Docker repository for containerd installation...\033[0m"
 sudo install -m 0755 -d /etc/apt/keyrings
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 sudo chmod a+r /etc/apt/keyrings/docker.asc
