@@ -9,18 +9,6 @@
 # set -o pipefail
 # ───── TRAP FOR CTRL+C ─────
 trap 'echo -e "\n${RED}❌ Script interrupted. Exiting...${RESET}"; exit 1' INT
-# Remove calico residuls, if found
-
-kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
-kubectl get crd | grep calico | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
-kubectl get crd | grep calico | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
-kubectl delete crd --force adminnetworkpolicies.policy.networking.k8s.io baselineadminnetworkpolicies.policy.networking.k8s.io > /dev/null 2>&1 # installations.operator.tigera.io
-kubectl delete po -n calico-apiserver -l k8s-app=calico-apiserver --force
-kubectl delete ns calico-system tigera-operator calico-apiserver --force > /dev/null 2>&1
-
-# kubectl delete crd installations.operator.tigera.io --force > /dev/null 2>&1
-
-sudo rm -rf /etc/cni/net.d/*
 
 # 🔗 Fetch dynamic cluster environment variables
 echo -e "\n\033[1;36m🔗 Fetching cluster environment variables...\033[0m"
