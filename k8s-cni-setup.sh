@@ -48,12 +48,13 @@ function cleanup_old_cni() {
   if [ -d /etc/cni/net.d ]; then
     sudo bash -c 'rm -rf /etc/cni/net.d/*'
   fi
+  sudo rm -rf /etc/cni/net.d/
   
   if systemctl is-active --quiet kubelet; then
     sudo systemctl stop kubelet
   fi
 
-  PATTERNS=("*.calico" "flannel*" "cni0" "weave" "datapath" "vxlan*" "veth*")
+  PATTERNS=("vxlan.calico" "flannel*" "cni0" "weave" "datapath" "vxlan*" "veth*")
   
   if ip a | grep -q datapath; then
     sudo apt-get install -y openvswitch-switch > /dev/null 2>&1
