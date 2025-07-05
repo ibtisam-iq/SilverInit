@@ -15,7 +15,7 @@ kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd -
 kubectl get crd | grep calico | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
 kubectl get crd | grep calico | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
 kubectl delete crd --force adminnetworkpolicies.policy.networking.k8s.io baselineadminnetworkpolicies.policy.networking.k8s.io > /dev/null 2>&1 # installations.operator.tigera.io
-kubectl delete po -n calico-apiserver -l k8s-app=calico-apiserver
+kubectl delete po -n calico-apiserver -l k8s-app=calico-apiserver --force
 kubectl delete ns calico-system tigera-operator calico-apiserver --force > /dev/null 2>&1
 
 # kubectl delete crd installations.operator.tigera.io --force > /dev/null 2>&1
