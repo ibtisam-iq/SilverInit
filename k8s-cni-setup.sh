@@ -34,11 +34,18 @@ function print_header() {
 function cleanup_old_cni() {
   echo -e "${CYAN}🧹 Removing previous CNI residues, it may take some time...${RESET}"
 
+  kubectl get crd | grep tigera.io | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
+  kubectl get crd | grep calico | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
+  kubectl get crd | grep calico | awk '{print $1}' | xargs kubectl delete crd --force > /dev/null 2>&1
+  kubectl delete crd --force adminnetworkpolicies.policy.networking.k8s.io baselineadminnetworkpolicies.policy.networking.k8s.io > /dev/null 2>&1 # installations.operator.tigera.io
+  kubectl delete po -n calico-apiserver -l k8s-app=calico-apiserver --force
+  kubectl delete ns calico-system tigera-operator calico-apiserver --force > /dev/null 2>&1
+  # kubectl delete crd installations.operator.tigera.io --force > /dev/null 2>&1
+  
   kubectl delete ns kube-flannel --force > /dev/null 2>&1
 
   kubectl delete clusterrole.rbac.authorization.k8s.io/weave-net \
     clusterrolebinding.rbac.authorization.k8s.io/weave-net > /dev/null 2>&1
-
   kubectl delete -n kube-system \
     serviceaccount/weave-net \
     role.rbac.authorization.k8s.io/weave-net \
@@ -49,6 +56,7 @@ function cleanup_old_cni() {
     sudo bash -c 'rm -rf /etc/cni/net.d/*'
   fi
   sudo rm -rf /etc/cni/net.d/
+  sudo rm -rf /etc/cni/net.d/*
   
   if systemctl is-active --quiet kubelet; then
     sudo systemctl stop kubelet
